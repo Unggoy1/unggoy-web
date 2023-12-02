@@ -1,0 +1,325 @@
+//https://discovery-infiniteugc.svc.halowaypoint.com/hi/ugcGameVariants/445c9709-2f39-4b0b-9e4a-b509dd8671e9
+{
+	"CustomData": {
+		"KeyValues": {
+			"attritionoptions_deathvolumeenabled": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"attritionoptions_lifepoolsizeperteam": {
+				"uint_value": 7,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"attritionoptions_reviveenabled": {
+				"uint_value": 0,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"attritionoptions_revivetimesec": {
+				"uint_value": 4,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"difficultylevel": {
+				"uint_value": 3,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.maxfragcountmodifier": {
+				"uint_value": 4,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.maxlightninggrenadecountmodifier": {
+				"uint_value": 2,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.maxplasmacountmodifier": {
+				"uint_value": 2,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.maxshieldvitality": {
+				"uint_value": 3,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.maxspikegrenadecountmodifier": {
+				"uint_value": 4,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.motiontrackerenabled": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.overshielddecayrate": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.shieldrechargerate": {
+				"uint_value": 0,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"globalmalleableproperties.shieldstunduration": {
+				"uint_value": 0,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"loadoutoptions.loadout[0].primaryweaponandconfigurationidentifier": {
+				"uint_value": 10,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"loadoutoptions.loadout[0].primaryweapontotalrounds": {
+				"uint_value": 31,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"loadoutoptions.loadout[0].secondaryweaponandconfigurationidentifier": {
+				"uint_value": 15,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"matchflowoptions.earlyvictoryroundwincount": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"matchflowoptions.roundlimit": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"miscellaneousoptions.aioutlines": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"miscellaneousoptions.aivehicleoutlines": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"miscellaneousoptions.enemyplayeroutlinesenabled": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"miscellaneousoptions.enemyvehicleoutlinesenabled": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"miscellaneousoptions.friendlyplayeroutlinesenabled": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"miscellaneousoptions.friendlyvehicleoutlinesenabled": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"respawnoptions.minimumrespawntimeinseconds": {
+				"uint_value": 5,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"socialoptions.friendlyfireenabled": {
+				"uint_value": 0,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"socialoptions.friendlyfiremultiplier": {
+				"uint_value": 4,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			},
+			"socialoptions.friendlyplayercollisionsenabled": {
+				"uint_value": 1,
+				"int_value": 0,
+				"double_value": 0.0,
+				"string_value": "",
+				"wstring_value": "",
+				"nothing": false
+			}
+		},
+		"HasNodeGraph": false
+	},
+	"Tags": [],
+	"EngineGameVariantLink": {
+		"AssetId": "5308a91a-4499-4a04-8764-861ad5803a21",
+		"VersionId": "f81e0471-8f24-4798-8c9e-ee5d2ff850f3",
+		"PublicName": "Attrition",
+		"Description": "Teams have shared respawns. Deplete enemy respawns to win!",
+		"Files": {
+			"Prefix": "https://blobs-infiniteugc.svc.halowaypoint.com/ugcstorage/enginegamevariant/5308a91a-4499-4a04-8764-861ad5803a21/f81e0471-8f24-4798-8c9e-ee5d2ff850f3/",
+			"FileRelativePaths": [],
+			"PrefixEndpoint": {
+				"AuthorityId": "iUgcFiles",
+				"Path": "/ugcstorage/enginegamevariant/5308a91a-4499-4a04-8764-861ad5803a21/f81e0471-8f24-4798-8c9e-ee5d2ff850f3/",
+				"QueryString": null,
+				"RetryPolicyId": "linearretry",
+				"TopicName": "",
+				"AcknowledgementTypeId": 0,
+				"AuthenticationLifetimeExtensionSupported": false,
+				"ClearanceAware": false
+			}
+		},
+		"Contributors": [],
+		"AssetHome": 1,
+		"AssetStats": {
+			"PlaysRecent": 0,
+			"PlaysAllTime": 0,
+			"Favorites": 1,
+			"Likes": 0,
+			"Bookmarks": 0,
+			"ParentAssetCount": 39502,
+			"AverageRating": 0.0,
+			"NumberOfRatings": 0
+		},
+		"InspectionResult": 50,
+		"CloneBehavior": 1,
+		"Order": 0,
+		"PublishedDate": {
+			"ISO8601Date": "2023-06-13T21:00:33.972Z"
+		},
+		"VersionNumber": 58,
+		"Admin": "aaid(5c7909e9-3620-4920-8abf-f18cfb4333b6)"
+	},
+	"AssetId": "445c9709-2f39-4b0b-9e4a-b509dd8671e9",
+	"VersionId": "143132d7-7362-4076-9e49-8a3c69d4cc66",
+	"PublicName": "Dustoff",
+	"Description": "Dustoff campaign (Recommend 2-4 players)",
+	"Files": {
+		"Prefix": "https://blobs-infiniteugc.svc.halowaypoint.com/ugcstorage/ugcgamevariant/445c9709-2f39-4b0b-9e4a-b509dd8671e9/143132d7-7362-4076-9e49-8a3c69d4cc66/",
+		"FileRelativePaths": [
+			"images/hero.png",
+			"images/screenshot1.png",
+			"images/screenshot2.png",
+			"images/screenshot3.png",
+			"images/thumbnail.png"
+		],
+		"PrefixEndpoint": {
+			"AuthorityId": "iUgcFiles",
+			"Path": "/ugcstorage/ugcgamevariant/445c9709-2f39-4b0b-9e4a-b509dd8671e9/143132d7-7362-4076-9e49-8a3c69d4cc66/",
+			"QueryString": null,
+			"RetryPolicyId": "linearretry",
+			"TopicName": "",
+			"AcknowledgementTypeId": 0,
+			"AuthenticationLifetimeExtensionSupported": false,
+			"ClearanceAware": false
+		}
+	},
+	"Contributors": ["xuid(2533274816434040)"],
+	"AssetHome": 2,
+	"AssetStats": {
+		"PlaysRecent": 11,
+		"PlaysAllTime": 11,
+		"Favorites": 1,
+		"Likes": 0,
+		"Bookmarks": 0,
+		"ParentAssetCount": 0,
+		"AverageRating": 0.0,
+		"NumberOfRatings": 0
+	},
+	"InspectionResult": 0,
+	"CloneBehavior": 0,
+	"Order": 0,
+	"PublishedDate": {
+		"ISO8601Date": "2023-11-27T23:53:35.599Z"
+	},
+	"VersionNumber": 6,
+	"Admin": "xuid(2533274816434040)"
+}

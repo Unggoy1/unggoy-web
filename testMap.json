@@ -1,0 +1,69 @@
+{
+	"CustomData": {
+		"NumOfObjectsOnMap": 5636,
+		"TagLevelId": -426470250,
+		"IsBaked": false,
+		"HasNodeGraph": true
+	},
+	"Tags": ["343ask-8v8", "343ask-ODST", "8v8", "CTF", "ODST", "Remake"],
+	"PrefabLinks": [],
+	"AssetId": "ef006625-5780-4d94-abf5-67ec0236a453",
+	"VersionId": "514e16c0-8cb1-48ca-a062-da4e01b50b78",
+	"PublicName": "Rendezvous",
+	"Description": "All roads lead to ONI HQ",
+	"Files": {
+		"Prefix": "https://blobs-infiniteugc.svc.halowaypoint.com/ugcstorage/map/ef006625-5780-4d94-abf5-67ec0236a453/514e16c0-8cb1-48ca-a062-da4e01b50b78/",
+		"FileRelativePaths": [
+			"audioocclusion.blob",
+			"fo11_blank.mvar",
+			"images/hero.jpg",
+			"images/screenshot1.jpg",
+			"images/screenshot2.jpg",
+			"images/screenshot3.jpg",
+			"images/thumbnail.jpg",
+			"lightprobes.blob",
+			"map.mvar",
+			"navmesh.blob"
+		],
+		"PrefixEndpoint": {
+			"AuthorityId": "iUgcFiles",
+			"Path": "/ugcstorage/map/ef006625-5780-4d94-abf5-67ec0236a453/514e16c0-8cb1-48ca-a062-da4e01b50b78/",
+			"QueryString": null,
+			"RetryPolicyId": "linearretry",
+			"TopicName": "",
+			"AcknowledgementTypeId": 0,
+			"AuthenticationLifetimeExtensionSupported": false,
+			"ClearanceAware": false
+		}
+	},
+	"Contributors": [
+		"xuid(2533274816398721)",
+		"xuid(2533274873803946)",
+		"xuid(2533274823295390)",
+		"xuid(2533274858691835)",
+		"xuid(2533274881652233)",
+		"xuid(2533274801395386)",
+		"xuid(2535424707014140)",
+		"xuid(2533274813354675)",
+		"xuid(2533274835876334)"
+	],
+	"AssetHome": 2,
+	"AssetStats": {
+		"PlaysRecent": 16,
+		"PlaysAllTime": 336,
+		"Favorites": 311,
+		"Likes": 0,
+		"Bookmarks": 0,
+		"ParentAssetCount": 0,
+		"AverageRating": 4.611111111111111,
+		"NumberOfRatings": 36
+	},
+	"InspectionResult": 0,
+	"CloneBehavior": 2,
+	"Order": 0,
+	"PublishedDate": {
+		"ISO8601Date": "2023-11-28T00:14:41.982Z"
+	},
+	"VersionNumber": 2271,
+	"Admin": "xuid(2533274816398721)"
+}

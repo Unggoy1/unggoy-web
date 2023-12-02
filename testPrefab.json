@@ -1,0 +1,53 @@
+//https://discovery-infiniteugc.svc.halowaypoint.com/hi/prefabs/da97e75a-66f3-49ac-a89d-2b58b5b45684
+{
+	"CustomData": {
+		"Parts": 41,
+		"HasNodeGraph": false
+	},
+	"Tags": ["Solar Panel", "Zaddy Hammer"],
+	"AssetId": "da97e75a-66f3-49ac-a89d-2b58b5b45684",
+	"VersionId": "7e2cae5c-0dfb-4900-ab99-5f28410ecd83",
+	"PublicName": "Zad's Solar Panel",
+	"Description": "A solar panel rig!",
+	"Files": {
+		"Prefix": "https://blobs-infiniteugc.svc.halowaypoint.com/ugcstorage/prefab/da97e75a-66f3-49ac-a89d-2b58b5b45684/7e2cae5c-0dfb-4900-ab99-5f28410ecd83/",
+		"FileRelativePaths": [
+			"images/hero.jpg",
+			"images/screenshot1.jpg",
+			"images/screenshot2.jpg",
+			"images/screenshot3.jpg",
+			"images/thumbnail.jpg",
+			"prefab.mvar"
+		],
+		"PrefixEndpoint": {
+			"AuthorityId": "iUgcFiles",
+			"Path": "/ugcstorage/prefab/da97e75a-66f3-49ac-a89d-2b58b5b45684/7e2cae5c-0dfb-4900-ab99-5f28410ecd83/",
+			"QueryString": null,
+			"RetryPolicyId": "linearretry",
+			"TopicName": "",
+			"AcknowledgementTypeId": 0,
+			"AuthenticationLifetimeExtensionSupported": false,
+			"ClearanceAware": false
+		}
+	},
+	"Contributors": ["xuid(2533274856251923)"],
+	"AssetHome": 2,
+	"AssetStats": {
+		"PlaysRecent": 0,
+		"PlaysAllTime": 0,
+		"Favorites": 15,
+		"Likes": 0,
+		"Bookmarks": 0,
+		"ParentAssetCount": 0,
+		"AverageRating": 3.0,
+		"NumberOfRatings": 2
+	},
+	"InspectionResult": 0,
+	"CloneBehavior": 2,
+	"Order": 0,
+	"PublishedDate": {
+		"ISO8601Date": "2023-11-27T02:55:21.751Z"
+	},
+	"VersionNumber": 5,
+	"Admin": "xuid(2533274856251923)"
+}
