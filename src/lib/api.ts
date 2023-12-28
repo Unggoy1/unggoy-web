@@ -1,38 +1,43 @@
-export interface UgcData {
-	assetId: string;
-	assetVersionId: string;
-	name: string;
-	description: string;
-	assetKind: number; //replace with enumm for map, variant, prefab
-	tags?: string[]; // list of tags, might replace with diff data type
-	thumbnail: string;
-	refrencedAssets?: string[]; //Seems unused but idk???
-	originalAuthor: string; // of the form "xuid(123123123123)"
-	likes: number;
-	bookmarks: number;
-	playsRecent: number;
-	numberOfObjects: number;
-	dateCreated: Date; //UTC ISO8601 date format
-	dateModified: Date; //UTC ISO8601 date format
-	datePublished: Date; //UTC ISO8601 date format
-	hasNodeGraph: boolean;
-	readOnlyClones: boolean;
-	playsAllTime: number;
-	contributors: string[]; // of the form "xuid()"
-	parentAssetCount: number;
-	averageRating: number; // float/double
-	numberOfRatings: number;
-	profilePicture: string;
-}
-
 export interface UgcFetchData {
-	kind?: string; //'Map' | 'Mode' | 'Prefab';
-	sortt?: string; //'datepublishedutc';
+	assetKind?: string; //'Map' | 'Mode' | 'Prefab';
+	sort?: string; //'datepublishedutc';
 	order?: string; //'desc' | 'asc';
 	page?: string; //number
 }
+export interface UgcData {
+	AssetId: string;
+	AssetVersionId: string;
+	Name: string;
+	Description: string;
+	AssetKind: number; //replace with enumm for map, variant, prefab
+	Tags?: string[]; // list of tags, might replace with diff data type
+	Thumbnail: string;
+	RefrencedAssets?: string[]; //Seems unused but idk???
+	OriginalAuthor: string; // of the form "xuid(123123123123)"
+	Likes: number;
+	Bookmarks: number;
+	PlaysRecent: number;
+	NumberOfObjects: number;
+	DateCreatedUtc: {
+		ISO8601Date: Date;
+	};
 
-const endpoint = 'http://192.168.11.69:8080/api/';
+	DateModifiedUtc: {
+		ISO8601Date: Date;
+	};
+	DatePublishedUtc: {
+		ISO8601Date: Date;
+	};
+	HasNodeGraph: boolean;
+	ReadOnlyClones: boolean;
+	PlaysAllTime: number;
+	Contributors: string[]; // of the form "xuid()"
+	ParentAssetCount: number;
+	AverageRating: number; // float/double
+	NumberOfRatings: number;
+}
+
+const endpoint = 'http://192.168.11.69:3000/';
 
 export async function fetchUgc(params?: UgcFetchData): Promise<UgcData[]> {
 	const ugcEndpoint = endpoint + 'ugc?';
@@ -49,7 +54,7 @@ export async function fetchUgc(params?: UgcFetchData): Promise<UgcData[]> {
 		//pageProps.pageSize
 		const data = await response.json();
 
-		return data.ugcList as UgcData[];
+		return data.results as UgcData[];
 	} catch (error) {
 		console.error('Error fetching data:', error);
 		throw error;
