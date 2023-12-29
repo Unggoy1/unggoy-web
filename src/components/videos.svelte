@@ -9,8 +9,12 @@
 	export let slice = 20;
 
 	async function loadUgc() {
-		const result = await fetchUgc(fetchParams);
-		return result;
+		try {
+			const result = await fetchUgc(fetchParams);
+			return result;
+		} catch (error) {
+			console.log(error);
+		}
 	}
 </script>
 
@@ -20,18 +24,18 @@
 	{:then ugcList}
 		{#each ugcList.slice(0, slice) as ugc}
 			<a
-				href="/{ugc.assetKind == 2
+				href="/{ugc.AssetKind == 2
 					? 'map'
-					: ugc.assetKind == 6
+					: ugc.AssetKind == 6
 					  ? 'mode'
-					  : 'prefab'}?assetId={ugc.assetId}"
+					  : 'prefab'}?assetId={ugc.AssetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
 			</a>
 		{/each}
 	{:catch error}
-		<p>Error loading ugcs: {error.message}</p>
+		<p>Error loading ugcstst: {error.message}</p>
 	{/await}
 	<!-- <div class="video anim" style="--delay: .7s"> -->
 	<!-- 	<div class="video-time">6 min</div> -->

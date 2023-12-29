@@ -61,11 +61,11 @@
 	<!-- 	</div> -->
 	<!-- </div> -->
 	<div class="small-header anim" style="--delay: .3s">New Maps</div>
-	<Videos fetchParams={{ kind: 'Map' }} slice={4}></Videos>
+	<Videos fetchParams={{ assetKind: 'Map' }} slice={4}></Videos>
 	<div class="small-header anim" style="--delay: .3s">Trending Maps</div>
-	<Videos fetchParams={{ sortt: 'playsrecent', kind: 'Map' }} slice={4}></Videos>
+	<Videos fetchParams={{ sort: 'playsrecent', assetKind: 'Map' }} slice={4}></Videos>
 	<div class="small-header anim" style="--delay: .3s">New Modes</div>
-	<Videos fetchParams={{ kind: 'UgcGameVariant' }} slice={4}></Videos>
+	<Videos fetchParams={{ assetKind: 'UgcGameVariant' }} slice={4}></Videos>
 	<div class="small-header anim" style="--delay: .3s">Trending Modes</div>
-	<Videos fetchParams={{ sortt: 'playsrecent', kind: 'UgcGameVariant' }} slice={4}></Videos>
+	<Videos fetchParams={{ sort: 'playsrecent', assetKind: 'UgcGameVariant' }} slice={4}></Videos>
 </div>

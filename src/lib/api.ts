@@ -11,7 +11,7 @@ export interface UgcData {
 	Description: string;
 	AssetKind: number; //replace with enumm for map, variant, prefab
 	Tags?: string[]; // list of tags, might replace with diff data type
-	Thumbnail: string;
+	ThumbnailUrl: string;
 	RefrencedAssets?: string[]; //Seems unused but idk???
 	OriginalAuthor: string; // of the form "xuid(123123123123)"
 	Likes: number;
@@ -37,10 +37,10 @@ export interface UgcData {
 	NumberOfRatings: number;
 }
 
-const endpoint = 'http://192.168.11.69:3000/';
+const endpoint = 'http://localhost:3000/';
 
 export async function fetchUgc(params?: UgcFetchData): Promise<UgcData[]> {
-	const ugcEndpoint = endpoint + 'ugc?';
+	const ugcEndpoint = endpoint + 'browse?';
 	try {
 		const response = await fetch(ugcEndpoint + new URLSearchParams({ ...params }));
 

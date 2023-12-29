@@ -4,5 +4,5 @@
 
 <div class="main-container">
 	<div class="main-header anim" style="--delay: 0s">Discover</div>
-	<Videos fetchParams={{ kind: 'Map' }}></Videos>
+	<Videos fetchParams={{ assetKind: 'Map' }}></Videos>
 </div>
