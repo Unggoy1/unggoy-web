@@ -1131,3 +1131,47 @@ button.vjs-play-control.vjs-control.vjs-button {
 .map-details-icon {
 	width: 15px;
 }
+.pagination-container {
+	width: 300px; /* Set the width of the container */
+	margin: 2rem auto;
+	border-radius: 0.2rem;
+	text-align: center;
+	margin-bottom: auto;
+}
+
+.pagination-container ul {
+	display: flex;
+	justify-content: center;
+	padding: 0;
+}
+
+li {
+	list-style: none;
+	margin-right: 5px;
+}
+
+.prev-nav-group {
+	margin-right: 15px; /* Adjust the margin as needed for space between groups */
+}
+
+.next-nav-group {
+	margin-left: 15px; /* Adjust the margin as needed for space between groups */
+}
+
+li:hover a,
+li.active a {
+	color: #ffffff;
+	background-color: #32a7e2;
+}
+
+li a {
+	background: #353340;
+	border-radius: 10px;
+	color: #808191;
+	text-decoration: none;
+	text-transform: uppercase;
+	display: inline-block;
+	text-align: center;
+	padding: 0.5rem 0.9rem;
+	cursor: pointer;
+}

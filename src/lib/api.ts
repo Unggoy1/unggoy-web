@@ -40,7 +40,7 @@ export interface UgcData {
 const endpoint = 'http://localhost:3000/';
 
 export async function fetchUgc(params?: UgcFetchData): Promise<UgcData[]> {
-	const ugcEndpoint = endpoint + 'browse?';
+	const ugcEndpoint = endpoint + 'ugc/browse?';
 	try {
 		const response = await fetch(ugcEndpoint + new URLSearchParams({ ...params }));
 
