@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Videos from '../../components/videos.svelte';
 	import { onMount, afterUpdate } from 'svelte';
+	import { page } from '$app/stores';
+
+	const assetKind: string = $page.url.searchParams.get('assetKind');
 
 	let currentPage = 1;
 	let totalPages = 1000; // Change this to the total number of pages
@@ -36,7 +39,7 @@
 
 <div class="main-container">
 	<div class="main-header anim" style="--delay: 0s">Discover</div>
-	<Videos fetchParams={{ assetKind: 'Map' }}></Videos>
+	<Videos fetchParams={{ assetKind: assetKind || 'Map' }}></Videos>
 	<div class="pagination-container anim" style="--delay: .5s">
 		<div class="pagination">
 			<ul>

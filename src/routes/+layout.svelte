@@ -25,7 +25,8 @@
 
 		// Find the link corresponding to the current route and add the active class
 		const currentPath = $page.route.id;
-		const currentLink = document.querySelector(`[href="${currentPath}"]`);
+		const currentQuery = location.search;
+		const currentLink = document.querySelector(`[href="${currentPath}${currentQuery}"]`);
 
 		if (currentLink) {
 			currentLink.classList.add('is-active');
@@ -73,7 +74,7 @@
 					on:click={handleClick}
 					class="sidebar-link trending"
 					class:is-active={$activeLink === null}
-					href="/maps"
+					href="/browse?assetKind=Map"
 				>
 					<svg viewBox="0 0 24 24" fill="currentColor">
 						<path
@@ -88,7 +89,7 @@
 					on:click={handleClick}
 					class="sidebar-link"
 					class:is-active={$activeLink === null}
-					href="/gamemodes"
+					href="/browse?assetKind=UgcGameVariant"
 				>
 					<svg viewBox="0 0 24 24" fill="currentColor">
 						<path
@@ -101,7 +102,7 @@
 					on:click={handleClick}
 					class="sidebar-link"
 					class:is-active={$activeLink === null}
-					href="/prefabs"
+					href="/browse?assetKind=Prefab"
 				>
 					<svg viewBox="0 0 24 24" fill="currentColor">
 						<path
@@ -116,7 +117,7 @@
 					on:click={handleClick}
 					class="sidebar-link"
 					class:is-active={$activeLink === null}
-					href="/"
+					href="/browse"
 				>
 					<svg viewBox="0 0 24 24" fill="currentColor">
 						<path

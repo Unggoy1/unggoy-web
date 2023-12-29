@@ -1,5 +1,5 @@
 export interface UgcFetchData {
-	assetKind?: string; //'Map' | 'Mode' | 'Prefab';
+	assetKind?: string; //'Map' | ''UgcGameVariant'' | 'Prefab';
 	sort?: string; //'datepublishedutc';
 	order?: string; //'desc' | 'asc';
 	page?: string; //number
