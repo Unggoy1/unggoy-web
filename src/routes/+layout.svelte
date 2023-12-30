@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import '../assets/css/app.css';
 
@@ -48,6 +48,8 @@
 			window.removeEventListener('resize', handleResize);
 		};
 	});
+
+	$: console.log('activLink:', activeLink);
 </script>
 
 <div class="container">
@@ -58,6 +60,7 @@
 			<div class="side-title">MENU</div>
 			<div class="side-menu">
 				<a
+					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link discover"
 					class:is-active={$activeLink === null}
@@ -71,6 +74,7 @@
 					Featured
 				</a>
 				<a
+					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link trending"
 					class:is-active={$activeLink === null}
@@ -86,6 +90,7 @@
 					Maps
 				</a>
 				<a
+					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link"
 					class:is-active={$activeLink === null}
@@ -99,6 +104,7 @@
 					Gamemodes
 				</a>
 				<a
+					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link"
 					class:is-active={$activeLink === null}
@@ -114,6 +120,7 @@
 					Prefabs
 				</a>
 				<a
+					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link"
 					class:is-active={$activeLink === null}

@@ -1,32 +1,39 @@
 <script lang="ts">
-	import Videos from '../../components/videos.svelte';
 	import { onMount, afterUpdate } from 'svelte';
+	import type { PageData } from './$types';
+	import VideoCard from '../../components/videoCard.svelte';
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
-	const assetKind: string = $page.url.searchParams.get('assetKind');
-
-	let currentPage = 1;
-	let totalPages = 1000; // Change this to the total number of pages
+	export let data: PageData;
 	let pagesPerPage = 10;
 	let visiblePages: number[] = [];
 
-	function changePage(page: number) {
+	const changePage = (page: number) => {
 		if (page < 1) {
-			currentPage = 1;
-		} else if (page > totalPages) {
-			currentPage = totalPages;
+			data.currentPage = 1;
+		} else if (page > data.totalPages) {
+			data.currentPage = data.totalPages;
 		} else {
-			currentPage = page;
+			data.currentPage = page;
 		}
-	}
+		updateUrl();
+	};
+
+	const updateUrl = () => {
+		let query = new URLSearchParams($page.url.searchParams.toString());
+		query.set('page', String(data.currentPage));
+		goto(`?${query.toString()}`);
+	};
 
 	function calculateVisiblePages() {
-		const start = Math.max(1, currentPage - Math.floor(pagesPerPage / 2));
-		const end = Math.min(totalPages, start + pagesPerPage - 1);
+		const start = Math.max(1, data.currentPage - Math.floor(pagesPerPage / 2));
+		const end = Math.min(data.totalPages, start + pagesPerPage - 1);
 		visiblePages = Array.from({ length: end - start + 1 }, (_, index) => start + index);
 	}
 
 	onMount(() => {
+		console.log('onmount');
 		calculateVisiblePages();
 	});
 
@@ -39,32 +46,41 @@
 
 <div class="main-container">
 	<div class="main-header anim" style="--delay: 0s">Discover</div>
-	<Videos fetchParams={{ assetKind: assetKind || 'Map' }}></Videos>
+	<div class="videos">
+		{#each data.ugc as ugc (ugc.AssetId)}
+			<a
+				href="/{ugc.AssetKind == 2
+					? 'map'
+					: ugc.AssetKind == 6
+					  ? 'mode'
+					  : 'prefab'}?assetId={ugc.AssetId}"
+				style="color: inherit; text-decoration: none;"
+			>
+				<VideoCard {ugc} />
+			</a>
+		{/each}
+	</div>
 	<div class="pagination-container anim" style="--delay: .5s">
 		<div class="pagination">
 			<ul>
 				<li>
-					<a role="button" on:click={() => changePage(1)}>&lt;&lt;</a>
+					<button on:click={() => changePage(1)}>&lt;&lt;</button>
 				</li>
 				<li class="prev-nav-group">
-					<a role="button" on:click={() => changePage(currentPage - 1)}>&lt;</a>
+					<button on:click={() => changePage(data.currentPage - 1)}>&lt;</button>
 				</li>
 
 				{#each visiblePages as page}
-					<li class:active={page === currentPage}>
-						<a role="button" on:click={() => changePage(page)}>{page}</a>
+					<li class:active={page === data.currentPage}>
+						<button on:click={() => changePage(page)}>{page}</button>
 					</li>
 				{/each}
 
 				<li class="next-nav-group">
-					<a role="button" on:click={() => changePage(currentPage + 1)}>&gt;</a>
+					<button on:click={() => changePage(data.currentPage + 1)}>&gt;</button>
 				</li>
 				<li>
-					<a
-						role="button"
-						on:click={() => changePage(Math.min(totalPages, currentPage + pagesPerPage))}
-						>&gt;&gt;</a
-					>
+					<button on:click={() => changePage(data.totalPages)}>&gt;&gt;</button>
 				</li>
 			</ul>
 		</div>

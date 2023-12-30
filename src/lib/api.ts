@@ -4,6 +4,14 @@ export interface UgcFetchData {
 	order?: string; //'desc' | 'asc';
 	page?: string; //number
 }
+
+export interface UgcBrowseResponse {
+	results: UgcData[];
+	totalPages: number;
+	totalResults: number;
+	pageSize: number;
+}
+
 export interface UgcData {
 	AssetId: string;
 	AssetVersionId: string;
