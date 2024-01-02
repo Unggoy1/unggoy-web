@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import '../assets/css/app.css';
 
 	let isSidebarCollapsed = false;
 	let activeLink = null;
+	let searchTerm = '';
 
 	const handleClick = (event) => {
 		const clickedLink = event.currentTarget;
@@ -36,6 +38,16 @@
 
 	const handleResize = () => {
 		isSidebarCollapsed = window.innerWidth <= 1090;
+	};
+
+	const updateUrl = (event) => {
+		if (event.key !== 'Enter') {
+			return;
+		}
+
+		let query = new URLSearchParams($page.url.searchParams.toString());
+		query.set('searchTerm', searchTerm);
+		goto(`/browse?${query.toString()}`);
 	};
 
 	onMount(() => {
@@ -186,7 +198,7 @@
 	<div class="wrapper">
 		<div class="header">
 			<div class="search-bar">
-				<input type="text" placeholder="Search" />
+				<input bind:value={searchTerm} on:keydown={updateUrl} type="text" placeholder="Search" />
 			</div>
 			<!-- <div class="user-settings"> -->
 			<!-- 	<img -->

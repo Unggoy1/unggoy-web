@@ -33,7 +33,6 @@
 	}
 
 	onMount(() => {
-		console.log('onmount');
 		calculateVisiblePages();
 	});
 

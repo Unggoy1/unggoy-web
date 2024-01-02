@@ -5,12 +5,21 @@ export const ssr = false;
 export const load: PageLoad = async ({ fetch, url }) => {
 	const endpoint = 'http://localhost:3000/';
 	const fetchParams: UgcFetchData = {
-		assetKind: url.searchParams.get('assetKind'),
 		page: url.searchParams.get('page') || '1'
 	};
+	const assetKind = url.searchParams.get('assetKind');
+	if (assetKind) {
+		fetchParams.assetKind = assetKind;
+	}
+
+	const searchTerm = url.searchParams.get('searchTerm');
+	if (searchTerm) {
+		fetchParams.searchTerm = searchTerm;
+	}
 
 	const ugcEndpoint = endpoint + 'ugc/browse?';
-	const response = await fetch(ugcEndpoint + new URLSearchParams({ ...fetchParams }));
+	const response = await fetch(ugcEndpoint + new URLSearchParams(fetchParams));
+
 	const data: UgcBrowseResponse = await response.json();
 
 	return {

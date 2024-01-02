@@ -3,6 +3,7 @@ export interface UgcFetchData {
 	sort?: string; //'datepublishedutc';
 	order?: string; //'desc' | 'asc';
 	page?: string; //number
+	searchTerm?: string;
 }
 
 export interface UgcBrowseResponse {
