@@ -3,7 +3,7 @@ import type { PageLoad } from './$types';
 
 export const ssr = false;
 export const load: PageLoad = async ({ fetch, url }) => {
-	const endpoint = 'https://api.unggoy.xyz'; //'http://localhost:3000/';
+	const endpoint = 'https://api.unggoy.xyz/'; //'http://localhost:3000/';
 	const fetchParams: UgcFetchData = {
 		page: url.searchParams.get('page') || '1'
 	};
