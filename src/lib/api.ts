@@ -46,7 +46,7 @@ export interface UgcData {
 	NumberOfRatings: number;
 }
 
-const endpoint = 'http://localhost:3000/';
+const endpoint = 'https://api.unggoy.xyz'; //'http://localhost:3000/';
 
 export async function fetchUgc(params?: UgcFetchData): Promise<UgcData[]> {
 	const ugcEndpoint = endpoint + 'ugc/browse?';
