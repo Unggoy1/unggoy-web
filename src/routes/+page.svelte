@@ -1,5 +1,8 @@
-<script>
-	import Videos from '../components/videos.svelte';
+<script lang="ts">
+	import type { PageData } from './$types';
+
+	import VideoCard from '../components/videoCard.svelte';
+	export let data: PageData;
 </script>
 
 <div class="main-container">
@@ -61,11 +64,63 @@
 	<!-- 	</div> -->
 	<!-- </div> -->
 	<div class="small-header anim" style="--delay: .3s">New Maps</div>
-	<Videos fetchParams={{ assetKind: 'Map' }} slice={4}></Videos>
+	<div class="videos">
+		{#each data.newMaps.slice(0, 4) as ugc (ugc.AssetId)}
+			<a
+				href="/{ugc.AssetKind == 2
+					? 'map'
+					: ugc.AssetKind == 6
+					  ? 'mode'
+					  : 'prefab'}?assetId={ugc.AssetId}"
+				style="color: inherit; text-decoration: none;"
+			>
+				<VideoCard {ugc} />
+			</a>
+		{/each}
+	</div>
 	<div class="small-header anim" style="--delay: .3s">Trending Maps</div>
-	<Videos fetchParams={{ sort: 'playsrecent', assetKind: 'Map' }} slice={4}></Videos>
+	<div class="videos">
+		{#each data.trendingMaps.slice(0, 4) as ugc (ugc.AssetId)}
+			<a
+				href="/{ugc.AssetKind == 2
+					? 'map'
+					: ugc.AssetKind == 6
+					  ? 'mode'
+					  : 'prefab'}?assetId={ugc.AssetId}"
+				style="color: inherit; text-decoration: none;"
+			>
+				<VideoCard {ugc} />
+			</a>
+		{/each}
+	</div>
 	<div class="small-header anim" style="--delay: .3s">New Modes</div>
-	<Videos fetchParams={{ assetKind: 'UgcGameVariant' }} slice={4}></Videos>
+	<div class="videos">
+		{#each data.newModes.slice(0, 4) as ugc (ugc.AssetId)}
+			<a
+				href="/{ugc.AssetKind == 2
+					? 'map'
+					: ugc.AssetKind == 6
+					  ? 'mode'
+					  : 'prefab'}?assetId={ugc.AssetId}"
+				style="color: inherit; text-decoration: none;"
+			>
+				<VideoCard {ugc} />
+			</a>
+		{/each}
+	</div>
 	<div class="small-header anim" style="--delay: .3s">Trending Modes</div>
-	<Videos fetchParams={{ sort: 'playsrecent', assetKind: 'UgcGameVariant' }} slice={4}></Videos>
+	<div class="videos">
+		{#each data.trendingModes.slice(0, 4) as ugc (ugc.AssetId)}
+			<a
+				href="/{ugc.AssetKind == 2
+					? 'map'
+					: ugc.AssetKind == 6
+					  ? 'mode'
+					  : 'prefab'}?assetId={ugc.AssetId}"
+				style="color: inherit; text-decoration: none;"
+			>
+				<VideoCard {ugc} />
+			</a>
+		{/each}
+	</div>
 </div>
