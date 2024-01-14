@@ -1,9 +1,11 @@
 import type { UgcBrowseResponse, UgcFetchData } from '$lib/api';
 import type { PageLoad } from './$types';
+import { PUBLIC_API_URL } from '$env/static/public';
 
 export const ssr = false;
 export const load: PageLoad = async ({ fetch, url }) => {
-	const endpoint = 'https://api.unggoy.xyz/'; //'http://localhost:3000/';
+	console.log(PUBLIC_API_URL);
+	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 	const fetchParams: UgcFetchData = {
 		page: url.searchParams.get('page') || '1'
 	};

@@ -45,8 +45,9 @@ export interface UgcData {
 	AverageRating: number; // float/double
 	NumberOfRatings: number;
 }
+import { PUBLIC_API_URL } from '$env/static/public';
 
-const endpoint = 'https://api.unggoy.xyz/'; //'http://localhost:3000/';
+const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 
 export async function fetchUgc(params?: UgcFetchData): Promise<UgcData[]> {
 	const ugcEndpoint = endpoint + 'ugc/browse?';
