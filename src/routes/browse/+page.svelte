@@ -5,7 +5,6 @@
 	import { page } from '$app/stores';
 
 	export let data: PageData;
-	console.log('ioearnst', data);
 	const changePage = (page: number) => {
 		if (page < 1) {
 			data.currentPage = 1;
