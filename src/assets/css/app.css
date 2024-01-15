@@ -1197,3 +1197,42 @@ li button {
 	border: none;
 	font: inherit;
 }
+
+li.text-only {
+	margin: 8px 0;
+}
+
+.browse-filter-container {
+	font-size: 14px;
+	font-weight: 500;
+	color: #fff;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-end;
+}
+
+.filter-container {
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+}
+.filter-text {
+	text-transform: uppercase;
+	color: #b4b4b4;
+	margin-right: 20px;
+	color: #fff;
+}
+.dropdown-el {
+	font-size: 14px;
+	padding: 7px;
+	position: relative;
+	display: inline-block;
+	margin-right: 1em;
+	text-align: left;
+	color: #808191;
+	border: 0.06em solid transparent;
+	border-radius: 8px;
+	background-color: $color;
+	background-color: var(--button-bg);
+}
