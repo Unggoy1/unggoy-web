@@ -1,21 +1,11 @@
 <script lang="ts">
 	/** @type {import('./$types').PageLoad} */
-	import { fetchMode } from '$lib/api';
-	import { page } from '$app/stores';
+	import type { PageData } from './$types';
 
-	const assetId: string = $page.url.searchParams.get('assetId');
-	let mapData;
-
-	async function loadMap() {
-		const result = await fetchMode(assetId);
-		return result;
-	}
+	export let data: PageData;
 </script>
 
 <div class="main-container show">
-	{#await loadMap()}
-		<!-- <p>Loading...</p> -->
-	{:then mapData}
 		<div class="stream-area">
 			<div class="video-stream">
 				<img
@@ -23,8 +13,8 @@
 					class="map-img anim"
 					width="640px"
 					height="267px"
-					src={mapData.Files.Prefix + 'images/screenshot1.jpg'}
-					alt={mapData.PublicName}
+					src={data.mode.Files.Prefix + data.mode.Files.FileRelativePaths[0]}
+					alt={data.mode.PublicName}
 				/>
 				<div class="video-detail">
 					<div class="video-content">
@@ -73,39 +63,17 @@
 						<!-- </div> -->
 
 						<div class="chat-vid__container">
+							{#each data.mode.Files.FileRelativePaths as imageUrl}
 							<div class="chat-vid anim" style="--delay: .4s">
 								<div class="chat-vid__wrapper">
-									<img class="chat-vid__img" src={mapData.Files.Prefix + 'images/thumbnail.jpg'} />
+									<img class="chat-vid__img" src={data.mode.Files.Prefix + imageUrl} />
 								</div>
 							</div>
-							<div class="chat-vid anim" style="--delay: .5s">
-								<div class="chat-vid__wrapper">
-									<img
-										class="chat-vid__img"
-										src={mapData.Files.Prefix + 'images/screenshot1.jpg'}
-									/>
-								</div>
-							</div>
-							<div class="chat-vid anim" style="--delay: .5s">
-								<div class="chat-vid__wrapper">
-									<img
-										class="chat-vid__img"
-										src={mapData.Files.Prefix + 'images/screenshot2.jpg'}
-									/>
-								</div>
-							</div>
-							<div class="chat-vid anim" style="--delay: .5s">
-								<div class="chat-vid__wrapper">
-									<img
-										class="chat-vid__img"
-										src={mapData.Files.Prefix + 'images/screenshot3.jpg'}
-									/>
-								</div>
-							</div>
+							{/each}
 						</div>
-						<div class="video-p-title anim" style="--delay: .2s">{mapData.PublicName}</div>
+						<div class="video-p-title anim" style="--delay: .2s">{data.mode.PublicName}</div>
 						<div class="video-p-subtitle anim" style="--delay: .3s">
-							{mapData.Description}
+							{data.mode.Description}
 						</div>
 					</div>
 				</div>
@@ -125,7 +93,7 @@
 							</div>
 							<div class="msg-wrapper">
 								<div class="msg__name video-p-name">
-									{mapData.AssetStats.PlaysAllTime} Total Plays
+									{data.mode.AssetStats.PlaysAllTime} Total Plays
 								</div>
 							</div>
 						</div>
@@ -140,7 +108,7 @@
 							</div>
 							<div class="msg-wrapper">
 								<div class="msg__name video-p-name">
-									{mapData.AssetStats.PlaysRecent} Recent Plays
+									{data.mode.AssetStats.PlaysRecent} Recent Plays
 								</div>
 							</div>
 						</div>
@@ -158,7 +126,7 @@
 								>
 							</div>
 							<div class="msg-wrapper">
-								<div class="msg__name video-p-name">{mapData.AssetStats.Favorites} Favorites</div>
+								<div class="msg__name video-p-name">{data.mode.AssetStats.Favorites} Favorites</div>
 							</div>
 						</div>
 						<div class="message anim" style="--delay: .1s">
@@ -175,7 +143,7 @@
 								>
 							</div>
 							<div class="msg-wrapper">
-								<div class="msg__name video-p-name">{mapData.PublishedDate.ISO8601Date}</div>
+								<div class="msg__name video-p-name">{data.mode.PublishedDate.ISO8601Date}</div>
 							</div>
 						</div>
 						<div class="message anim" style="--delay: .1s">
@@ -188,7 +156,7 @@
 								>
 							</div>
 							<div class="msg-wrapper">
-								<div class="msg__name video-p-name">Version {mapData.VersionNumber}</div>
+								<div class="msg__name video-p-name">Version {data.mode.VersionNumber}</div>
 							</div>
 						</div>
 						<div class="message anim" style="--delay: .1s">
@@ -206,7 +174,7 @@
 							</div>
 							<div class="msg-wrapper">
 								<div class="msg__name video-p-name">
-									{mapData.CustomData.NumOfObjectsOnMap} Objects
+									{data.mode.CustomData.NumOfObjectsOnMap} Objects
 								</div>
 							</div>
 						</div>
@@ -221,7 +189,7 @@
 							</div>
 							<div class="msg-wrapper">
 								<div class="msg__name video-p-name">
-									{mapData.CustomData.HasNodeGraph ? 'Scripting' : 'No Scripting'}
+									{data.mode.CustomData.HasNodeGraph ? 'Scripting' : 'No Scripting'}
 								</div>
 							</div>
 						</div>
@@ -239,14 +207,11 @@
 								>
 							</div>
 							<div class="msg-wrapper">
-								<div class="msg__name video-p-name">{mapData.Tags.join(', ')}</div>
+								<div class="msg__name video-p-name">{data.mode.Tags.join(', ')}</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	{:catch error}
-		<p>Error loading ugcs: {error.message}</p>
-	{/await}
 </div>
