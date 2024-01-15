@@ -1,3 +1,4 @@
+import { PUBLIC_API_URL } from '$env/static/public';
 export interface UgcFetchData {
 	assetKind?: string; //'Map' | ''UgcGameVariant'' | 'Prefab';
 	sort?: string; //'datepublishedutc';
@@ -44,4 +45,21 @@ export interface UgcData {
 	ParentAssetCount: number;
 	AverageRating: number; // float/double
 	NumberOfRatings: number;
+}
+
+const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
+export async function fetchMode(assetId: string) {
+	const mapsEndpoint = endpoint + 'ugc/modes/' + assetId;
+	try {
+		const response = await fetch(mapsEndpoint);
+
+		if (!response.ok) {
+			throw new Error(`failed to fetch data. Status: ${response.status}`);
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.error('Error fetching data:', error);
+		throw error;
+	}
 }
