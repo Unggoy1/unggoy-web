@@ -14,6 +14,16 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		fetchParams.assetKind = assetKind;
 	}
 
+	const sort = url.searchParams.get('sort');
+	if (sort) {
+		fetchParams.sort = sort;
+	}
+
+	const order = url.searchParams.get('order');
+	if (order) {
+		fetchParams.order = order;
+	}
+
 	const searchTerm = url.searchParams.get('searchTerm');
 	if (searchTerm) {
 		fetchParams.searchTerm = searchTerm;
@@ -23,12 +33,15 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	const response = await fetch(ugcEndpoint + new URLSearchParams(fetchParams));
 
 	const data: UgcBrowseResponse = await response.json();
-
+	console.log(order);
 	return {
 		ugc: data.results,
 		totalPages: data.totalPages,
 		pageSize: data.pageSize,
 		totalResults: data.totalResults,
-		currentPage: parseInt(fetchParams.page) || 1
+		currentPage: parseInt(fetchParams.page) || 1,
+		filter: assetKind || '',
+		sort: sort || 'datepublishedutc',
+		order: order || 'desc'
 	};
 };
