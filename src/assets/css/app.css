@@ -835,7 +835,6 @@ video {
 }
 .chat-vid__container {
 	margin-top: -40px;
-	padding-left: 25px;
 	display: flex;
 }
 .chat-vid__wrapper {
@@ -863,9 +862,15 @@ video {
 	object-position: right;
 	margin-right: 16px;
 	transition: 0.3s;
+	filter: brightness(0.5);
+	cursor: pointer;
 }
 .chat-vid__img:hover {
 	transform: scale(1.02);
+	filter: none;
+}
+.active-img {
+	filter: none;
 }
 .chat-vid__content {
 	max-width: 20ch;
@@ -1128,6 +1133,7 @@ button.vjs-play-control.vjs-control.vjs-button {
 	border-radius: 20px;
 	overflow: hidden;
 	min-height: 414px;
+	width: auto;
 }
 
 .map-details-icon {

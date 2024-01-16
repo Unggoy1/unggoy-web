@@ -3,6 +3,12 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	$: previewImage = data.map.Files.FileRelativePaths[0];
+
+	const updatePreview = (image) => {
+		console.log('ioearnstoiaresntioaresnt');
+		previewImage = image;
+	};
 </script>
 
 <div class="main-container show">
@@ -13,7 +19,7 @@
 				class="map-img anim"
 				width="640px"
 				height="267px"
-				src={data.map.Files.Prefix + data.map.Files.FileRelativePaths[0]}
+				src={data.map.Files.Prefix + previewImage}
 				alt={data.map.PublicName}
 			/>
 			<div class="video-detail">
@@ -63,9 +69,18 @@
 					<!-- </div> -->
 					<div class="chat-vid__container">
 						{#each data.map.Files.FileRelativePaths as imageUrl}
-							<div class="chat-vid anim" style="--delay: .4s">
+							<div
+								class="chat-vid anim"
+								style="--delay: .4s"
+								on:click={() => updatePreview(imageUrl)}
+							>
 								<div class="chat-vid__wrapper">
-									<img class="chat-vid__img" src={data.map.Files.Prefix + imageUrl} />
+									<img
+										class="chat-vid__img"
+										alt="preview 1"
+										src={data.map.Files.Prefix + imageUrl}
+										class:active-img={imageUrl === previewImage}
+									/>
 								</div>
 							</div>
 						{/each}

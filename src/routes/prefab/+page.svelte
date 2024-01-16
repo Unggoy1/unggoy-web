@@ -1,7 +1,14 @@
 <script lang="ts">
 	/** @type {import('./$types').PageLoad} */
 	import type { PageData } from './$types';
+
 	export let data: PageData;
+	$: previewImage = data.prefab.Files.FileRelativePaths[0];
+
+	const updatePreview = (image) => {
+		console.log('ioearnstoiaresntioaresnt');
+		previewImage = image;
+	};
 </script>
 
 <div class="main-container show">
@@ -12,7 +19,7 @@
 				class="map-img anim"
 				width="640px"
 				height="267px"
-				src={data.prefab.Files.Prefix + data.prefab.Files.FileRelativePaths[0]}
+				src={data.prefab.Files.Prefix + previewImage}
 				alt={data.prefab.PublicName}
 			/>
 			<div class="video-detail">
@@ -64,7 +71,12 @@
 						{#each data.prefab.Files.FileRelativePaths as imageUrl}
 							<div class="chat-vid anim" style="--delay: .4s">
 								<div class="chat-vid__wrapper">
-									<img class="chat-vid__img" src={data.prefab.Files.Prefix + imageUrl} />
+									<img
+										class="chat-vid__img"
+										src={data.prefab.Files.Prefix + imageUrl}
+										on:click={() => updatePreview(imageUrl)}
+										class:active-img={imageUrl === previewImage}
+									/>
 								</div>
 							</div>
 						{/each}
