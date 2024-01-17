@@ -32,28 +32,36 @@
 
 <div class="main-container">
 	<!-- <div class="main-header anim" style="--delay: 0s">Discover</div> -->
-	<div class="browse-filter-container anim" style="--delay: .3s">
+	<div class="browse-filter-container anim" style="">
 		<div class="filter-container">
-			<p class="filter-text">Filter By:</p>
-			<select bind:value={data.filter} on:change={updateUrl} class="dropdown-el">
-				<option value="" label="All"></option>
-				<option value="Map" label="Maps"></option>
-				<option value="UgcGameVariant" label="Modes"></option>
-				<option value="Prefab" label="Prefabs"></option>
-			</select>
-			<p class="filter-text">Sort By:</p>
-			<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
-				<option value="datepublishedutc" label="Date Published"></option>
-				<option value="name" label="Name"></option><option value="averagerating" label="Rating"
-				></option>
-				<option value="bookmarks" label="Bookmarks"></option>
-				<option value="playsrecent" label="Plays Recent"></option>
-				<option value="playsalltime" label="Plays"></option>
-			</select>
-			<select bind:value={data.order} on:change={updateUrl} class="dropdown-el">
-				<option value="desc" label="Descending"></option>
-				<option value="asc" label="Ascending"></option>
-			</select>
+			<div class="filter-group">
+				<p class="filter-text">Filter:</p>
+				<select bind:value={data.filter} on:change={updateUrl} class="dropdown-el">
+					<option value="" label="All"></option>
+					<option value="Map" label="Maps"></option>
+					<option value="UgcGameVariant" label="Modes"></option>
+					<option value="Prefab" label="Prefabs"></option>
+				</select>
+			</div>
+			<div class="filter-group-sort">
+				<div class="filter-group">
+					<p class="filter-text">Sort:</p>
+					<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
+						<option value="datepublishedutc" label="Date Published"></option>
+						<option value="name" label="Name"></option><option value="averagerating" label="Rating"
+						></option>
+						<option value="bookmarks" label="Bookmarks"></option>
+						<option value="playsrecent" label="Plays Recent"></option>
+						<option value="playsalltime" label="Plays"></option>
+					</select>
+				</div>
+				<div class="filter-group filter-group-last">
+					<select bind:value={data.order} on:change={updateUrl} class="dropdown-el">
+						<option value="desc" label="Descending"></option>
+						<option value="asc" label="Ascending"></option>
+					</select>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="videos">
