@@ -248,7 +248,7 @@ body:before {
 	flex-shrink: 0;
 }
 @media screen and (max-width: 575px) {
-	.user-settings svg {
+	.user-settings .arrow {
 		display: none;
 	}
 }
@@ -271,9 +271,44 @@ body:before {
 	top: -2px;
 }
 @media screen and (max-width: 575px) {
-	.user-settings .notify .notification {
+	.user-settings .notify .notification  {
 		display: none;
 	}
+}
+
+@media screen and (max-width: 575px) {
+	.xbox-signin-text {
+		display: none;
+	}
+}
+.user-signin {
+	padding: 0 16px 0 16px;
+	background-color: var(--button-bg);
+	border-radius: 8px;
+	font-family: var(--body-font);
+	font-size: 14px;
+	font-weight: 500;
+	height: 34px;
+	box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+	color: var(--body-color);
+	display:flex;
+	text-decoration: none;
+}
+
+.user-signin:hover {
+	color: #ffffff;
+	background-color: var(--border-color);
+}
+
+.xbox-signin {
+	height: 20px !important;
+	width: 20px !important;
+	margin: auto;
+}
+.xbox-signin-text {
+	font-size: 14px;
+	margin: auto;
+	padding-left:10px;
 }
 .user-img {
 	width: 30px;
