@@ -4,12 +4,33 @@
 
 	export let data: PageData;
 	$: previewImage = data.prefab.Files.FileRelativePaths[0];
-
+	const thumbnailPNG = data.prefab.Files.FileRelativePaths.find(
+		(item) => item === 'images/thumbnail.png'
+	);
+	const thumbnailJPG = data.prefab.Files.FileRelativePaths.find(
+		(item) => item === 'images/thumbnail.jpg'
+	);
+	const thumbnail = thumbnailJPG || thumbnailPNG;
 	const updatePreview = (image) => {
 		console.log('ioearnstoiaresntioaresnt');
 		previewImage = image;
 	};
 </script>
+
+<svelte:head>
+	<title>{data.prefab.PublicName}</title>
+	<meta name="description" content={data.prefab.Description} />
+	<meta property="og:title" content={data.prefab.PublicName} /><meta
+		name="twitter:card"
+		content="summary_large_image"
+	/><meta name="twitter:title" content={data.prefab.PublicName} /><meta
+		name="twitter:description"
+		content={data.prefab.Description}
+	/><meta property="og:image" content={data.prefab.Files.Prefix + 'images/thumbnail.jpg'} /><meta
+		property="og:image:alt"
+		content={'Thumbnail:' + data.prefab.PublicName}
+	/><meta name="twitter:img:src" content={data.prefab.Files.Prefix + thumbnail} />
+</svelte:head>
 
 <div class="main-container show">
 	<div class="stream-area">

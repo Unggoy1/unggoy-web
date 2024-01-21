@@ -2,7 +2,7 @@ import type { UgcBrowseResponse, UgcFetchData } from '$lib/api';
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
 
-export const ssr = false;
+export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
 	console.log(PUBLIC_API_URL);
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';

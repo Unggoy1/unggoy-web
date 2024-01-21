@@ -4,12 +4,33 @@
 
 	export let data: PageData;
 	$: previewImage = data.map.Files.FileRelativePaths[0];
+	const thumbnailPNG = data.map.Files.FileRelativePaths.find(
+		(item) => item === 'images/thumbnail.png'
+	);
+	const thumbnailJPG = data.map.Files.FileRelativePaths.find(
+		(item) => item === 'images/thumbnail.jpg'
+	);
 
+	const thumbnail = thumbnailJPG || thumbnailPNG;
 	const updatePreview = (image) => {
-		console.log('ioearnstoiaresntioaresnt');
 		previewImage = image;
 	};
 </script>
+
+<svelte:head>
+	<title>{data.map.PublicName}</title>
+	<meta name="description" content={data.map.Description} />
+	<meta property="og:title" content={data.map.PublicName} /><meta
+		name="twitter:card"
+		content="summary_large_image"
+	/><meta name="twitter:title" content={data.map.PublicName} /><meta
+		name="twitter:description"
+		content={data.map.Description}
+	/><meta property="og:image" content={data.map.Files.Prefix + 'images/thumbnail.jpg'} /><meta
+		property="og:image:alt"
+		content={'Thumbnail:' + data.map.PublicName}
+	/><meta name="twitter:img:src" content={data.map.Files.Prefix + thumbnail} />
+</svelte:head>
 
 <div class="main-container show">
 	<div class="stream-area">

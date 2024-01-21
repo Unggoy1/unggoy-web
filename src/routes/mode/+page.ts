@@ -9,8 +9,8 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
   const response = await fetch(mapsEndpoint);
   const data = await response.json();
-  data.Files.FileRelativePaths = data.Files.FileRelativePaths.filter((file) =>
-    file.endsWith('.jpg')
+  data.Files.FileRelativePaths = data.Files.FileRelativePaths.filter(
+    (file) => file.endsWith('.jpg') || file.endsWith('.png')
   );
 
   return {
