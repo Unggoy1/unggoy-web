@@ -3,11 +3,15 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import '../assets/css/app.css';
+	import { PUBLIC_API_URL } from '$env/static/public';
+	import type { LayoutData } from './$types';
 
+	export let data: LayoutData;
+	let signedIn = data.authenticated;
+	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 	let isSidebarCollapsed = false;
 	let activeLink = null;
 	let searchTerm = '';
-	let signedIn = false;
 
 	const handleClick = (event) => {
 		const clickedLink = event.currentTarget;
@@ -231,7 +235,7 @@
 						data-sveltekit-replacestate
 						class="user-signin"
 						class:is-active={$activeLink === null}
-						href="/"
+						href={endpoint + 'login/azure'}
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" class="xbox-signin" viewBox="0 0 512 512"
 							><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
