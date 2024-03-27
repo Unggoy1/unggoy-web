@@ -106,6 +106,7 @@
 							</div>
 						{/each}
 					</div>
+
 					<div class="video-p-title anim" style="--delay: .2s">{data.map.PublicName}</div>
 					<div class="video-p-subtitle anim" style="--delay: .3s">
 						{data.map.Description}

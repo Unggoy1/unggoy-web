@@ -8,6 +8,8 @@
 
 	export let data: LayoutData;
 	let signedIn = data.authenticated;
+	console.log(data);
+	console.log(signedIn);
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 	let isSidebarCollapsed = false;
 	let activeLink = null;
