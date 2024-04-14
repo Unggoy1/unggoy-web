@@ -704,9 +704,9 @@ video {
 	margin: 16px 0 20px;
 }
 .video-p-subtitle {
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 1.5em;
-	max-width: 60ch;
+	max-width: 80ch;
 }
 .video-p-subtitle + .video-p-subtitle {
 	margin-top: 16px;
@@ -885,9 +885,11 @@ video {
 	-webkit-box-orient: vertical;
 }
 .chat-vid__img {
-	width: 130px;
-	height: 80px;
+	/* width: 130px; */
+	/* height: 80px; */
 	min-width: 130px;
+	min-height: 80px;
+	max-height: 115px;
 	border-radius: 10px;
 	-o-object-fit: cover;
 	object-fit: cover;
@@ -1166,7 +1168,9 @@ button.vjs-play-control.vjs-control.vjs-button {
 	border-radius: 20px;
 	overflow: hidden;
 	min-height: 414px;
+	max-height: 70%;
 	width: auto;
+	height: auto;
 }
 
 .map-details-icon {
