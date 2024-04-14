@@ -646,7 +646,6 @@ video {
 }
 
 .video-stream {
-	width: 65%;
 	-o-object-fit: cover;
 	object-fit: cover;
 	transition: 0.3s;
@@ -805,7 +804,6 @@ video {
 }
 
 .chat-stream {
-	flex-grow: 1;
 	margin-left: 30px;
 }
 
