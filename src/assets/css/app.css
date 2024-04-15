@@ -887,9 +887,8 @@ video {
 .chat-vid__img {
 	/* width: 130px; */
 	/* height: 80px; */
-	min-width: 130px;
-	min-height: 80px;
-	max-height: 115px;
+	width: 130px;
+	height: 80px;
 	border-radius: 10px;
 	-o-object-fit: cover;
 	object-fit: cover;
