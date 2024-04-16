@@ -442,14 +442,20 @@ body:before {
 	bottom: 20px;
 }
 
+.author-wrapper {
+	margin-top: 30px;
+}
+
+.author {
+	background-color: #252836;
+	border-radius: 20px;
+	padding: 0 10px;
+	margin-top: 0px;
+}
 .author-img {
 	width: 52px;
 	height: 52px;
-	border: 1px solid rgba(255, 255, 255, 0.75);
 	padding: 4px;
-	border-radius: 50%;
-	-o-object-fit: cover;
-	object-fit: cover;
 }
 .author-img__wrapper {
 	position: relative;
@@ -467,14 +473,15 @@ body:before {
 	right: 0;
 }
 .author-name {
-	font-size: 15px;
+	font-size: 18px;
 	color: #fff;
-	font-weight: 500;
-	margin-bottom: 8px;
+	font-weight: 400;
+	margin-left: 15px;
 }
 .author-info {
-	font-size: 13px;
-	font-weight: 400;
+	font-size: 14px;
+	font-weight: 300;
+	margin-left: 15px;
 	color: #fff;
 }
 .author-detail {
