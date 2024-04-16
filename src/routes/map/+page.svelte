@@ -240,7 +240,7 @@
 							<img
 								class="author-img"
 								alt="emblem name here"
-								src="https://i.imgur.com/wNc479Z.png"
+								src="https://i.imgur.com/YWlNE2a.png"
 							/>
 							<div class="msg-wrapper">
 								<div class="author-name">Simply Emu</div>

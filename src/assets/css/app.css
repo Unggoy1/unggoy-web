@@ -812,6 +812,8 @@ video {
 
 .chat-stream {
 	margin-left: 30px;
+	max-width: 320px;
+	min-width: 300px;
 }
 
 .chat {
