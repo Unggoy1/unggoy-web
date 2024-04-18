@@ -441,15 +441,48 @@ body:before {
 	right: 20px;
 	bottom: 20px;
 }
+.tag-wrapper {
+	display: flex;
+	max-width: 320px;
+  flex-wrap: wrap;
 
+}
+
+.tag {
+	background-color: #252836;
+	border-radius: 10px;
+	padding: 0 10px;
+	max-width: -moz-fit-content;
+	max-width: fit-content;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.tag-info {
+	font-size: 14px;
+	font-weight: 300;
+	padding: 4px 0;
+	color: #fff;
+}
+
+.author-wrapper {
+	margin-top: 20px;
+}
+.details-p-title {
+	font-size: 20px;
+	color: #fff;
+	margin: 16px 0 20px;
+}
+.author {
+	background-color: #252836;
+	border-radius: 20px;
+	padding: 0 10px;
+	margin-top: 0px;
+}
 .author-img {
 	width: 52px;
 	height: 52px;
-	border: 1px solid rgba(255, 255, 255, 0.75);
 	padding: 4px;
-	border-radius: 50%;
-	-o-object-fit: cover;
-	object-fit: cover;
 }
 .author-img__wrapper {
 	position: relative;
@@ -467,14 +500,15 @@ body:before {
 	right: 0;
 }
 .author-name {
-	font-size: 15px;
+	font-size: 18px;
 	color: #fff;
-	font-weight: 500;
-	margin-bottom: 8px;
+	font-weight: 400;
+	margin-left: 15px;
 }
 .author-info {
-	font-size: 13px;
-	font-weight: 400;
+	font-size: 14px;
+	font-weight: 300;
+	margin-left: 15px;
 	color: #fff;
 }
 .author-detail {
@@ -646,7 +680,6 @@ video {
 }
 
 .video-stream {
-	width: 65%;
 	-o-object-fit: cover;
 	object-fit: cover;
 	transition: 0.3s;
@@ -705,9 +738,9 @@ video {
 	margin: 16px 0 20px;
 }
 .video-p-subtitle {
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 1.5em;
-	max-width: 60ch;
+	max-width: 80ch;
 }
 .video-p-subtitle + .video-p-subtitle {
 	margin-top: 16px;
@@ -805,8 +838,9 @@ video {
 }
 
 .chat-stream {
-	flex-grow: 1;
 	margin-left: 30px;
+	max-width: 320px;
+	min-width: 300px;
 }
 
 .chat {
@@ -887,9 +921,10 @@ video {
 	-webkit-box-orient: vertical;
 }
 .chat-vid__img {
+	/* width: 130px; */
+	/* height: 80px; */
 	width: 130px;
 	height: 80px;
-	min-width: 130px;
 	border-radius: 10px;
 	-o-object-fit: cover;
 	object-fit: cover;
@@ -1168,7 +1203,9 @@ button.vjs-play-control.vjs-control.vjs-button {
 	border-radius: 20px;
 	overflow: hidden;
 	min-height: 414px;
+	max-height: 70%;
 	width: auto;
+	height: auto;
 }
 
 .map-details-icon {

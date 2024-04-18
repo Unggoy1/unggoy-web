@@ -46,27 +46,27 @@
 			<div class="video-detail">
 				<div class="video-content">
 					<!-- <div class="video-p-wrapper anim" style="--delay: .1s"> -->
-					<!-- 	<div class="author-img__wrapper video-author video-p"> -->
-					<!-- 		<svg -->
-					<!-- 			viewBox="0 0 24 24" -->
-					<!-- 			fill="none" -->
-					<!-- 			stroke="currentColor" -->
-					<!-- 			stroke-width="3" -->
-					<!-- 			stroke-linecap="round" -->
-					<!-- 			stroke-linejoin="round" -->
-					<!-- 			class="feather feather-check" -->
-					<!-- 		> -->
-					<!-- 			<path d="M20 6L9 17l-5-5" /> -->
-					<!-- 		</svg> -->
-					<!-- 		<img -->
-					<!-- 			class="author-img" -->
-					<!-- 			src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" -->
-					<!-- 		/> -->
-					<!-- 	</div> -->
-					<!-- 	<div class="video-p-detail"> -->
-					<!-- 		<div class="video-p-name">Andy William</div> -->
-					<!-- 		<div class="video-p-sub">1,980,893 subscribers</div> -->
-					<!-- 	</div> -->
+					<!-- <div class="author-img__wrapper video-author video-p"> -->
+					<!-- 	<svg -->
+					<!-- 		viewBox="0 0 24 24" -->
+					<!-- 		fill="none" -->
+					<!-- 		stroke="currentColor" -->
+					<!-- 		stroke-width="3" -->
+					<!-- 		stroke-linecap="round" -->
+					<!-- 		stroke-linejoin="round" -->
+					<!-- 		class="feather feather-check" -->
+					<!-- 	> -->
+					<!-- 		<path d="M20 6L9 17l-5-5" /> -->
+					<!-- 	</svg> -->
+					<!-- 	<img -->
+					<!-- 		class="author-img" -->
+					<!-- 		src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" -->
+					<!-- 	/> -->
+					<!-- </div> -->
+					<!-- <div class="video-p-detail"> -->
+					<!-- 	<div class="video-p-name">Andy William</div> -->
+					<!-- 	<div class="video-p-sub">1,980,893 subscribers</div> -->
+					<!-- </div> -->
 					<!-- 	<div class="button-wrapper"> -->
 					<!-- 		<button class="like"> -->
 					<!-- 			<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> -->
@@ -88,6 +88,7 @@
 					<!-- 		</button> -->
 					<!-- 	</div> -->
 					<!-- </div> -->
+
 					<div class="chat-vid__container">
 						{#each data.map.Files.FileRelativePaths as imageUrl}
 							<div
@@ -106,6 +107,7 @@
 							</div>
 						{/each}
 					</div>
+
 					<div class="video-p-title anim" style="--delay: .2s">{data.map.PublicName}</div>
 					<div class="video-p-subtitle anim" style="--delay: .3s">
 						{data.map.Description}
@@ -216,21 +218,61 @@
 							</div>
 						</div>
 					</div>
-					<div class="message anim" style="--delay: .1s">
-						<div class="map-details-icon video-p">
-							<svg xmlns="http://www.w3.org/2000/svg" height="20" width="17.5" viewBox="0 0 448 512"
-								><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path
-									fill="#808191"
-									d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
-								/></svg
-							>
+				</div>
+			</div>
+
+			{#if data.map.Tags.length}
+				<div class="author-wrapper">
+					<div class="details-p-title anim" style="--delay: .2s;">Tags</div>
+					<div class="tag-wrapper">
+						{#each data.map.Tags as tag}
+							<div class="tag">
+								<div class="message-container">
+									<div class="anim" style="--delay: .1s">
+										<div class="tag-info">{tag}</div>
+									</div>
+								</div>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/if}
+
+			{#if false}
+				<div class="author-wrapper">
+					<div class="details-p-title anim" style="--delay: .2s;">Authors</div>
+					<div class="author">
+						<div class="message-container">
+							<div class="message anim" style="--delay: .1s">
+								<img
+									class="author-img"
+									alt="emblem name here"
+									src="https://grunt.api.dotapi.gg/games/halo-infinite/tooling/cms-images?hash=eyJpZGVudGlmaWVyIjoiaGkiLCJwYXRoIjoicHJvZ3Jlc3Npb24vSW52ZW50b3J5L0VtYmxlbXMvb2x5bXB1c19hbmdyeWtpdHR5X2VtYmxlbS5wbmciLCJvcHRpb25zIjp7ImJyYW5jaCI6IkltYWdlcyJ9fQ%3D%3D"
+								/>
+								<div class="msg-wrapper">
+									<div class="author-name">TostEZ28</div>
+									<div class="author-info">A7X</div>
+								</div>
+							</div>
 						</div>
-						<div class="msg-wrapper">
-							<div class="msg__name video-p-name">{data.map.Tags.join(', ')}</div>
+					</div>
+					<div class="author">
+						<div class="message-container">
+							<div class="message anim" style="--delay: .1s">
+								<img
+									class="author-img"
+									alt="emblem name here"
+									src="https://grunt.api.dotapi.gg/games/halo-infinite/tooling/cms-images?hash=eyJpZGVudGlmaWVyIjoiaGkiLCJwYXRoIjoicHJvZ3Jlc3Npb24vSW52ZW50b3J5L0VtYmxlbXMvb2x5bXB1c19hbmdyeWtpdHR5X2VtYmxlbS5wbmciLCJvcHRpb25zIjp7ImJyYW5jaCI6IkltYWdlcyJ9fQ%3D%3D"
+								/>
+								<div class="msg-wrapper">
+									<div class="author-name">ScornfulCar018</div>
+									<div class="author-info">TOBK</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 	</div>
 </div>
