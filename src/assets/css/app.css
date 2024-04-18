@@ -441,11 +441,36 @@ body:before {
 	right: 20px;
 	bottom: 20px;
 }
+.tag-wrapper {
+	display: flex;
+	max-width: 320px;
+  flex-wrap: wrap;
+
+}
+
+.tag {
+	background-color: #252836;
+	border-radius: 10px;
+	padding: 0 10px;
+	max-width: -moz-fit-content;
+	max-width: fit-content;
+	margin-right: 10px;
+}
+.tag-info {
+	font-size: 14px;
+	font-weight: 300;
+	padding: 4px 0;
+	color: #fff;
+}
 
 .author-wrapper {
 	margin-top: 30px;
 }
-
+.details-p-title {
+	font-size: 20px;
+	color: #fff;
+	margin: 16px 0 20px;
+}
 .author {
 	background-color: #252836;
 	border-radius: 20px;
