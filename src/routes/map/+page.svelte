@@ -237,39 +237,42 @@
 					</div>
 				</div>
 			{/if}
-			<div class="author-wrapper">
-				<div class="details-p-title anim" style="--delay: .2s;">Authors</div>
-				<div class="author">
-					<div class="message-container">
-						<div class="message anim" style="--delay: .1s">
-							<img
-								class="author-img"
-								alt="emblem name here"
-								src="https://i.imgur.com/Dk9GLjV.png"
-							/>
-							<div class="msg-wrapper">
-								<div class="author-name">TostEZ28</div>
-								<div class="author-info">A7X</div>
+
+			{#if false}
+				<div class="author-wrapper">
+					<div class="details-p-title anim" style="--delay: .2s;">Authors</div>
+					<div class="author">
+						<div class="message-container">
+							<div class="message anim" style="--delay: .1s">
+								<img
+									class="author-img"
+									alt="emblem name here"
+									src="https://grunt.api.dotapi.gg/games/halo-infinite/tooling/cms-images?hash=eyJpZGVudGlmaWVyIjoiaGkiLCJwYXRoIjoicHJvZ3Jlc3Npb24vSW52ZW50b3J5L0VtYmxlbXMvb2x5bXB1c19hbmdyeWtpdHR5X2VtYmxlbS5wbmciLCJvcHRpb25zIjp7ImJyYW5jaCI6IkltYWdlcyJ9fQ%3D%3D"
+								/>
+								<div class="msg-wrapper">
+									<div class="author-name">TostEZ28</div>
+									<div class="author-info">A7X</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="author">
+						<div class="message-container">
+							<div class="message anim" style="--delay: .1s">
+								<img
+									class="author-img"
+									alt="emblem name here"
+									src="https://grunt.api.dotapi.gg/games/halo-infinite/tooling/cms-images?hash=eyJpZGVudGlmaWVyIjoiaGkiLCJwYXRoIjoicHJvZ3Jlc3Npb24vSW52ZW50b3J5L0VtYmxlbXMvb2x5bXB1c19hbmdyeWtpdHR5X2VtYmxlbS5wbmciLCJvcHRpb25zIjp7ImJyYW5jaCI6IkltYWdlcyJ9fQ%3D%3D"
+								/>
+								<div class="msg-wrapper">
+									<div class="author-name">ScornfulCar018</div>
+									<div class="author-info">TOBK</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="author">
-					<div class="message-container">
-						<div class="message anim" style="--delay: .1s">
-							<img
-								class="author-img"
-								alt="emblem name here"
-								src="https://i.imgur.com/FYIe3fC.png"
-							/>
-							<div class="msg-wrapper">
-								<div class="author-name">ScornfulCar018</div>
-								<div class="author-info">TOBK</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			{/if}
 		</div>
 	</div>
 </div>
