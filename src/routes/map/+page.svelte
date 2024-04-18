@@ -218,36 +218,25 @@
 							</div>
 						</div>
 					</div>
-					<!-- <div class="message anim" style="--delay: .1s"> -->
-					<!-- 	<div class="map-details-icon video-p"> -->
-					<!-- 		<svg xmlns="http://www.w3.org/2000/svg" height="20" width="17.5" viewBox="0 0 448 512" -->
-					<!-- 			><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-><path -->
-					<!-- 				fill="#808191" -->
-					<!-- 				d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" -->
-					<!-- 			/></svg -->
-					<!-- 		> -->
-					<!-- 	</div> -->
-					<!-- 	<div class="msg-wrapper"> -->
-					<!-- 		<div class="msg__name video-p-name">{data.map.Tags.join(', ')}</div> -->
-					<!-- 	</div> -->
-					<!-- </div> -->
 				</div>
 			</div>
 
-			<div class="author-wrapper">
-				<div class="details-p-title anim" style="--delay: .2s;">Tags</div>
-				<div class="tag-wrapper">
-					{#each data.map.Tags as tag}
-						<div class="tag">
-							<div class="message-container">
-								<div class="message anim" style="--delay: .1s">
-									<div class="tag-info">{tag}</div>
+			{#if data.map.Tags.length}
+				<div class="author-wrapper">
+					<div class="details-p-title anim" style="--delay: .2s;">Tags</div>
+					<div class="tag-wrapper">
+						{#each data.map.Tags as tag}
+							<div class="tag">
+								<div class="message-container">
+									<div class="anim" style="--delay: .1s">
+										<div class="tag-info">{tag}</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					{/each}
+						{/each}
+					</div>
 				</div>
-			</div>
+			{/if}
 			<div class="author-wrapper">
 				<div class="details-p-title anim" style="--delay: .2s;">Authors</div>
 				<div class="author">
@@ -256,11 +245,11 @@
 							<img
 								class="author-img"
 								alt="emblem name here"
-								src="https://i.imgur.com/YWlNE2a.png"
+								src="https://i.imgur.com/Dk9GLjV.png"
 							/>
 							<div class="msg-wrapper">
-								<div class="author-name">Simply Emu</div>
-								<div class="author-info">EMU</div>
+								<div class="author-name">TostEZ28</div>
+								<div class="author-info">A7X</div>
 							</div>
 						</div>
 					</div>
@@ -271,11 +260,11 @@
 							<img
 								class="author-img"
 								alt="emblem name here"
-								src="https://i.imgur.com/eQR8LLA.png"
+								src="https://i.imgur.com/FYIe3fC.png"
 							/>
 							<div class="msg-wrapper">
-								<div class="author-name">Mostro119</div>
-								<div class="author-info">MTRO</div>
+								<div class="author-name">ScornfulCar018</div>
+								<div class="author-info">TOBK</div>
 							</div>
 						</div>
 					</div>
