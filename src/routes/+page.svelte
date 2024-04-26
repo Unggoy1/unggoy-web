@@ -68,10 +68,10 @@
 		{#each data.newMaps.slice(0, 4) as ugc (ugc.AssetId)}
 			<a
 				href="/{ugc.AssetKind == 2
-					? 'map'
+					? 'maps'
 					: ugc.AssetKind == 6
-					  ? 'mode'
-					  : 'prefab'}?assetId={ugc.AssetId}"
+					  ? 'modes'
+					  : 'prefabs'}/{ugc.AssetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
@@ -83,10 +83,10 @@
 		{#each data.trendingMaps.slice(0, 4) as ugc (ugc.AssetId)}
 			<a
 				href="/{ugc.AssetKind == 2
-					? 'map'
+					? 'maps'
 					: ugc.AssetKind == 6
-					  ? 'mode'
-					  : 'prefab'}?assetId={ugc.AssetId}"
+					  ? 'modes'
+					  : 'prefabs'}/{ugc.AssetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
@@ -98,10 +98,10 @@
 		{#each data.newModes.slice(0, 4) as ugc (ugc.AssetId)}
 			<a
 				href="/{ugc.AssetKind == 2
-					? 'map'
+					? 'maps'
 					: ugc.AssetKind == 6
-					  ? 'mode'
-					  : 'prefab'}?assetId={ugc.AssetId}"
+					  ? 'modes'
+					  : 'prefabs'}/{ugc.AssetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
@@ -113,10 +113,10 @@
 		{#each data.trendingModes.slice(0, 4) as ugc (ugc.AssetId)}
 			<a
 				href="/{ugc.AssetKind == 2
-					? 'map'
+					? 'maps'
 					: ugc.AssetKind == 6
-					  ? 'mode'
-					  : 'prefab'}?assetId={ugc.AssetId}"
+					  ? 'modes'
+					  : 'prefabs'}/{ugc.AssetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
