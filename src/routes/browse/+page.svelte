@@ -68,10 +68,10 @@
 		{#each data.ugc as ugc (ugc.AssetId)}
 			<a
 				href="/{ugc.AssetKind == 2
-					? 'map'
+					? 'maps'
 					: ugc.AssetKind == 6
-					  ? 'mode'
-					  : 'prefab'}?assetId={ugc.AssetId}"
+					  ? 'modes'
+					  : 'prefabs'}/{ugc.AssetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />

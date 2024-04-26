@@ -3,33 +3,33 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	$: previewImage = data.prefab.Files.FileRelativePaths[0];
-	const thumbnailPNG = data.prefab.Files.FileRelativePaths.find(
+	$: previewImage = data.map.files.fileRelativePaths[0];
+	const thumbnailPNG = data.map.files.fileRelativePaths.find(
 		(item) => item === 'images/thumbnail.png'
 	);
-	const thumbnailJPG = data.prefab.Files.FileRelativePaths.find(
+	const thumbnailJPG = data.map.files.fileRelativePaths.find(
 		(item) => item === 'images/thumbnail.jpg'
 	);
+
 	const thumbnail = thumbnailJPG || thumbnailPNG;
 	const updatePreview = (image) => {
-		console.log('ioearnstoiaresntioaresnt');
 		previewImage = image;
 	};
 </script>
 
 <svelte:head>
-	<title>{data.prefab.PublicName}</title>
-	<meta name="description" content={data.prefab.Description} />
-	<meta property="og:title" content={data.prefab.PublicName} /><meta
+	<title>{data.map.name}</title>
+	<meta name="description" content={data.map.description} />
+	<meta property="og:title" content={data.map.name} /><meta
 		name="twitter:card"
 		content="summary_large_image"
-	/><meta name="twitter:title" content={data.prefab.PublicName} /><meta
+	/><meta name="twitter:title" content={data.map.name} /><meta
 		name="twitter:description"
-		content={data.prefab.Description}
-	/><meta property="og:image" content={data.prefab.Files.Prefix + 'images/thumbnail.jpg'} /><meta
+		content={data.map.Description}
+	/><meta property="og:image" content={data.map.thumbnailUrl} /><meta
 		property="og:image:alt"
-		content={'Thumbnail:' + data.prefab.PublicName}
-	/><meta name="twitter:img:src" content={data.prefab.Files.Prefix + thumbnail} />
+		content={'Thumbnail:' + data.map.name}
+	/><meta name="twitter:img:src" content={data.map.thumbnailUrl} />
 </svelte:head>
 
 <div class="main-container show">
@@ -40,33 +40,33 @@
 				class="map-img anim"
 				width="640px"
 				height="267px"
-				src={data.prefab.Files.Prefix + previewImage}
-				alt={data.prefab.PublicName}
+				src={data.map.files.prefix + previewImage}
+				alt={data.map.name}
 			/>
 			<div class="video-detail">
 				<div class="video-content">
 					<!-- <div class="video-p-wrapper anim" style="--delay: .1s"> -->
-					<!-- 	<div class="author-img__wrapper video-author video-p"> -->
-					<!-- 		<svg -->
-					<!-- 			viewBox="0 0 24 24" -->
-					<!-- 			fill="none" -->
-					<!-- 			stroke="currentColor" -->
-					<!-- 			stroke-width="3" -->
-					<!-- 			stroke-linecap="round" -->
-					<!-- 			stroke-linejoin="round" -->
-					<!-- 			class="feather feather-check" -->
-					<!-- 		> -->
-					<!-- 			<path d="M20 6L9 17l-5-5" /> -->
-					<!-- 		</svg> -->
-					<!-- 		<img -->
-					<!-- 			class="author-img" -->
-					<!-- 			src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" -->
-					<!-- 		/> -->
-					<!-- 	</div> -->
-					<!-- 	<div class="video-p-detail"> -->
-					<!-- 		<div class="video-p-name">Andy William</div> -->
-					<!-- 		<div class="video-p-sub">1,980,893 subscribers</div> -->
-					<!-- 	</div> -->
+					<!-- <div class="author-img__wrapper video-author video-p"> -->
+					<!-- 	<svg -->
+					<!-- 		viewBox="0 0 24 24" -->
+					<!-- 		fill="none" -->
+					<!-- 		stroke="currentColor" -->
+					<!-- 		stroke-width="3" -->
+					<!-- 		stroke-linecap="round" -->
+					<!-- 		stroke-linejoin="round" -->
+					<!-- 		class="feather feather-check" -->
+					<!-- 	> -->
+					<!-- 		<path d="M20 6L9 17l-5-5" /> -->
+					<!-- 	</svg> -->
+					<!-- 	<img -->
+					<!-- 		class="author-img" -->
+					<!-- 		src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" -->
+					<!-- 	/> -->
+					<!-- </div> -->
+					<!-- <div class="video-p-detail"> -->
+					<!-- 	<div class="video-p-name">Andy William</div> -->
+					<!-- 	<div class="video-p-sub">1,980,893 subscribers</div> -->
+					<!-- </div> -->
 					<!-- 	<div class="button-wrapper"> -->
 					<!-- 		<button class="like"> -->
 					<!-- 			<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> -->
@@ -88,23 +88,29 @@
 					<!-- 		</button> -->
 					<!-- 	</div> -->
 					<!-- </div> -->
+
 					<div class="chat-vid__container">
-						{#each data.prefab.Files.FileRelativePaths as imageUrl}
-							<div class="chat-vid anim" style="--delay: .4s">
+						{#each data.map.files.fileRelativePaths as imageUrl}
+							<div
+								class="chat-vid anim"
+								style="--delay: .4s"
+								on:click={() => updatePreview(imageUrl)}
+							>
 								<div class="chat-vid__wrapper">
 									<img
 										class="chat-vid__img"
-										src={data.prefab.Files.Prefix + imageUrl}
-										on:click={() => updatePreview(imageUrl)}
+										alt="preview 1"
+										src={data.map.files.prefix + imageUrl}
 										class:active-img={imageUrl === previewImage}
 									/>
 								</div>
 							</div>
 						{/each}
 					</div>
-					<div class="video-p-title anim" style="--delay: .2s">{data.prefab.PublicName}</div>
+
+					<div class="video-p-title anim" style="--delay: .2s">{data.map.name}</div>
 					<div class="video-p-subtitle anim" style="--delay: .3s">
-						{data.prefab.Description}
+						{data.map.description}
 					</div>
 				</div>
 			</div>
@@ -124,7 +130,7 @@
 						</div>
 						<div class="msg-wrapper">
 							<div class="msg__name video-p-name">
-								{data.prefab.AssetStats.PlaysAllTime} Total Plays
+								{data.map.playsAllTime} Total Plays
 							</div>
 						</div>
 					</div>
@@ -139,7 +145,7 @@
 						</div>
 						<div class="msg-wrapper">
 							<div class="msg__name video-p-name">
-								{data.prefab.AssetStats.PlaysRecent} Recent Plays
+								{data.map.playsRecent} Recent Plays
 							</div>
 						</div>
 					</div>
@@ -153,9 +159,7 @@
 							>
 						</div>
 						<div class="msg-wrapper">
-							<div class="msg__name video-p-name">
-								{data.prefab.AssetStats.Favorites} Favorites
-							</div>
+							<div class="msg__name video-p-name">{data.map.favorites} Favorites</div>
 						</div>
 					</div>
 					<div class="message anim" style="--delay: .1s">
@@ -168,7 +172,7 @@
 							>
 						</div>
 						<div class="msg-wrapper">
-							<div class="msg__name video-p-name">{data.prefab.PublishedDate.ISO8601Date}</div>
+							<div class="msg__name video-p-name">{data.map.publishedAt}</div>
 						</div>
 					</div>
 					<div class="message anim" style="--delay: .1s">
@@ -181,7 +185,7 @@
 							>
 						</div>
 						<div class="msg-wrapper">
-							<div class="msg__name video-p-name">Version {data.prefab.VersionNumber}</div>
+							<div class="msg__name video-p-name">Version {data.map.version}</div>
 						</div>
 					</div>
 					<div class="message anim" style="--delay: .1s">
@@ -195,7 +199,7 @@
 						</div>
 						<div class="msg-wrapper">
 							<div class="msg__name video-p-name">
-								{data.prefab.CustomData.NumOfObjectsOnMap} Objects
+								{data.map.numberOfObjects} Objects
 							</div>
 						</div>
 					</div>
@@ -210,24 +214,49 @@
 						</div>
 						<div class="msg-wrapper">
 							<div class="msg__name video-p-name">
-								{data.prefab.CustomData.HasNodeGraph ? 'Scripting' : 'No Scripting'}
+								{data.map.hasNodeGraph ? 'Scripting' : 'No Scripting'}
 							</div>
 						</div>
 					</div>
-					<div class="message anim" style="--delay: .1s">
-						<div class="map-details-icon video-p">
-							<svg xmlns="http://www.w3.org/2000/svg" height="20" width="17.5" viewBox="0 0 448 512"
-								><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path
-									fill="#808191"
-									d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
-								/></svg
-							>
-						</div>
-						<div class="msg-wrapper">
-							<div class="msg__name video-p-name">{data.prefab.Tags.join(', ')}</div>
-						</div>
+				</div>
+			</div>
+
+			{#if data.map.tags.length}
+				<div class="author-wrapper">
+					<div class="details-p-title anim" style="--delay: .2s;">Tags</div>
+					<div class="tag-wrapper">
+						{#each data.map.tags as tag}
+							<div class="tag">
+								<div class="message-container">
+									<div class="anim" style="--delay: .1s">
+										<div class="tag-info">{tag}</div>
+									</div>
+								</div>
+							</div>
+						{/each}
 					</div>
 				</div>
+			{/if}
+
+			<div class="author-wrapper">
+				<div class="details-p-title anim" style="--delay: .2s;">Authors</div>
+				{#each data.map.contributors as contributor}
+					<div class="author">
+						<div class="message-container">
+							<div class="message anim" style="--delay: .1s">
+								<img
+									class="author-img"
+									alt="emblem name here"
+									src="https://grunt.api.dotapi.gg/games/halo-infinite/tooling/cms-images?hash=eyJpZGVudGlmaWVyIjoiaGkiLCJwYXRoIjoicHJvZ3Jlc3Npb24vSW52ZW50b3J5L0VtYmxlbXMvb2x5bXB1c19hbmdyeWtpdHR5X2VtYmxlbS5wbmciLCJvcHRpb25zIjp7ImJyYW5jaCI6IkltYWdlcyJ9fQ%3D%3D"
+								/>
+								<div class="msg-wrapper">
+									<div class="author-name">{contributor.gamertag}</div>
+									<div class="author-info">{contributor.serviceTag}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{/each}
 			</div>
 		</div>
 	</div>
