@@ -72,7 +72,7 @@
 					: ugc.assetKind == 6
 					  ? 'modes'
 					  : 'prefabs'}/{ugc.assetId}"
-				style="color: inherit; text-decoration: none;"
+				style="color: inherit; text-decoration: none; max-width: 560px"
 			>
 				<VideoCard {ugc} />
 			</a>

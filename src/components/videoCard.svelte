@@ -15,5 +15,5 @@
 		/>
 	</div>
 	<div class="video-name">{ugc.name}</div>
-	<div class="video-view"></div>
+	<!-- <div class="video-view"></div> -->
 </div>

@@ -65,13 +65,13 @@
 	<!-- </div> -->
 	<div class="small-header anim" style="--delay: .3s">New Maps</div>
 	<div class="videos">
-		{#each data.newMaps.slice(0, 4) as ugc (ugc.AssetId)}
+		{#each data.newMaps as ugc (ugc.assetId)}
 			<a
 				href="/{ugc.AssetKind == 2
 					? 'maps'
 					: ugc.AssetKind == 6
 					  ? 'modes'
-					  : 'prefabs'}/{ugc.AssetId}"
+					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
@@ -80,13 +80,13 @@
 	</div>
 	<div class="small-header anim" style="--delay: .3s">Trending Maps</div>
 	<div class="videos">
-		{#each data.trendingMaps.slice(0, 4) as ugc (ugc.AssetId)}
+		{#each data.trendingMaps as ugc (ugc.assetId)}
 			<a
 				href="/{ugc.AssetKind == 2
 					? 'maps'
 					: ugc.AssetKind == 6
 					  ? 'modes'
-					  : 'prefabs'}/{ugc.AssetId}"
+					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
@@ -95,13 +95,13 @@
 	</div>
 	<div class="small-header anim" style="--delay: .3s">New Modes</div>
 	<div class="videos">
-		{#each data.newModes.slice(0, 4) as ugc (ugc.AssetId)}
+		{#each data.newModes as ugc (ugc.assetId)}
 			<a
 				href="/{ugc.AssetKind == 2
 					? 'maps'
 					: ugc.AssetKind == 6
 					  ? 'modes'
-					  : 'prefabs'}/{ugc.AssetId}"
+					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
@@ -110,13 +110,13 @@
 	</div>
 	<div class="small-header anim" style="--delay: .3s">Trending Modes</div>
 	<div class="videos">
-		{#each data.trendingModes.slice(0, 4) as ugc (ugc.AssetId)}
+		{#each data.trendingModes as ugc (ugc.assetId)}
 			<a
 				href="/{ugc.AssetKind == 2
 					? 'maps'
 					: ugc.AssetKind == 6
 					  ? 'modes'
-					  : 'prefabs'}/{ugc.AssetId}"
+					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />

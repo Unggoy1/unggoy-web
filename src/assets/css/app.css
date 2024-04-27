@@ -528,13 +528,35 @@ body:before {
 	background-color: var(--body-color);
 }
 
+/* .videos { */
+/* 	display: grid; */
+/* 	width: 100%; */
+/* 	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); */
+/* 	grid-column-gap: 20px; */
+/* 	grid-row-gap: 20px; */
+/* } */
+
 .videos {
-	display: grid;
-	width: 100%;
-	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+  /**
+   * User input values.
+   */
+  --grid-layout-gap: 20px;
+  --grid-column-count: 5; /* This gets overridden by an inline style. */
+  --grid-item--min-width: 320px; /* This gets overridden by an inline style. */
+  
+  /**
+   * Calculated values.
+   */
+  --gap-count: calc(var(--grid-column-count) - 1);
+  --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+  --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+  grid-gap: var(--grid-layout-gap);
+  max-width: 2700px;
 }
+
 /* @media screen and (max-width: 980px) { */
 /* 	.videos { */
 /* 		grid-template-columns: repeat(2, 1fr); */
@@ -557,7 +579,7 @@ body:before {
 	color: #fff;
 	font-size: 13px;
 	line-height: 1.4em;
-	padding: 12px 20px 0;
+	padding: 12px 20px 20px;
 	overflow: hidden;
 	background-color: var(--video-bg);
 	z-index: 9;
