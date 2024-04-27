@@ -8,7 +8,7 @@
 	<!-- <div class="video-time">{ugc.likes}</div> -->
 	<div class="video-wrapper">
 		<img
-			class="test"
+			class="video-image"
 			src={ugc.thumbnailUrl ||
 				'https://wpassets.halowaypoint.com/wp-content/2022/08/CU-August-Header.jpg'}
 			alt="thumbnail"

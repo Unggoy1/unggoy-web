@@ -574,6 +574,12 @@ body:before {
 }
 .video-wrapper {
 	position: relative;
+	aspect-ratio: 560 / 320;
+	background-color: #2ec3e545;
+}
+.video-image {
+	aspect-ratio: 560 / 320;
+	max-height: 100%;
 }
 .video-name {
 	color: #fff;
