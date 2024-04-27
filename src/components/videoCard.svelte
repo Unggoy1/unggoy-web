@@ -9,11 +9,11 @@
 	<div class="video-wrapper">
 		<img
 			class="test"
-			src={ugc.ThumbnailUrl ||
+			src={ugc.thumbnailUrl ||
 				'https://wpassets.halowaypoint.com/wp-content/2022/08/CU-August-Header.jpg'}
 			alt="thumbnail"
 		/>
 	</div>
-	<div class="video-name">{ugc.Name}</div>
+	<div class="video-name">{ugc.name}</div>
 	<div class="video-view"></div>
 </div>

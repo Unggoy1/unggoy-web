@@ -47,12 +47,12 @@
 				<div class="filter-group">
 					<p class="filter-text">Sort:</p>
 					<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
-						<option value="datepublishedutc" label="Date Published"></option>
+						<option value="publishedAt" label="Date Published"></option>
 						<option value="name" label="Name"></option><option value="averagerating" label="Rating"
 						></option>
 						<option value="bookmarks" label="Bookmarks"></option>
-						<option value="playsrecent" label="Plays Recent"></option>
-						<option value="playsalltime" label="Plays"></option>
+						<option value="playsRecent" label="Plays Recent"></option>
+						<option value="playsAllTime" label="Plays"></option>
 					</select>
 				</div>
 				<div class="filter-group filter-group-last">
@@ -65,13 +65,13 @@
 		</div>
 	</div>
 	<div class="videos">
-		{#each data.ugc as ugc (ugc.AssetId)}
+		{#each data.ugc as ugc (ugc.assetId)}
 			<a
-				href="/{ugc.AssetKind == 2
+				href="/{ugc.assetKind == 2
 					? 'maps'
-					: ugc.AssetKind == 6
+					: ugc.assetKind == 6
 					  ? 'modes'
-					  : 'prefabs'}/{ugc.AssetId}"
+					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"
 			>
 				<VideoCard {ugc} />
