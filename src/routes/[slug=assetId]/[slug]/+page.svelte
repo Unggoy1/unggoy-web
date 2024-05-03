@@ -239,7 +239,7 @@
 			{/if}
 
 			<div class="author-wrapper">
-				<div class="details-p-title anim" style="--delay: .2s;">Authors</div>
+				<div class="details-p-title anim" style="--delay: .2s;">Contributors</div>
 				{#each data.map.contributors as contributor}
 					<div class="author">
 						<div class="message-container">
