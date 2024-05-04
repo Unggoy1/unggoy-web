@@ -37,6 +37,12 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		fetchParams.searchTerm = searchTerm;
 	}
 
+	const tagArray = url.searchParams.get('tags');
+	if (tagArray) {
+		const tags = tagArray.split(',');
+		fetchParams.tags = tags;
+	}
+
 	const ugcEndpoint = endpoint + 'ugc/browse';
 	const response = await fetch(ugcEndpoint, {
 		method: 'POST',

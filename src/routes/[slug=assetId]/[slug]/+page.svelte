@@ -227,11 +227,13 @@
 					<div class="tag-wrapper">
 						{#each data.map.tags as tag}
 							<div class="tag">
-								<div class="message-container">
-									<div class="anim" style="--delay: .1s">
-										<div class="tag-info">{tag}</div>
+								<a href="/browse?tags={tag}">
+									<div class="message-container">
+										<div class="anim" style="--delay: .1s">
+											<div class="tag-info">{tag}</div>
+										</div>
 									</div>
-								</div>
+								</a>
 							</div>
 						{/each}
 					</div>
