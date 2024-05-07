@@ -67,9 +67,9 @@
 	<div class="videos">
 		{#each data.newMaps as ugc (ugc.assetId)}
 			<a
-				href="/{ugc.AssetKind == 2
+				href="/{ugc.assetKind == 2
 					? 'maps'
-					: ugc.AssetKind == 6
+					: ugc.assetKind == 6
 					  ? 'modes'
 					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"
@@ -82,9 +82,9 @@
 	<div class="videos">
 		{#each data.trendingMaps as ugc (ugc.assetId)}
 			<a
-				href="/{ugc.AssetKind == 2
+				href="/{ugc.assetKind == 2
 					? 'maps'
-					: ugc.AssetKind == 6
+					: ugc.assetKind == 6
 					  ? 'modes'
 					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"
@@ -97,9 +97,9 @@
 	<div class="videos">
 		{#each data.newModes as ugc (ugc.assetId)}
 			<a
-				href="/{ugc.AssetKind == 2
+				href="/{ugc.assetKind == 2
 					? 'maps'
-					: ugc.AssetKind == 6
+					: ugc.assetKind == 6
 					  ? 'modes'
 					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"
@@ -112,9 +112,9 @@
 	<div class="videos">
 		{#each data.trendingModes as ugc (ugc.assetId)}
 			<a
-				href="/{ugc.AssetKind == 2
+				href="/{ugc.assetKind == 2
 					? 'maps'
-					: ugc.AssetKind == 6
+					: ugc.assetKind == 6
 					  ? 'modes'
 					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none;"

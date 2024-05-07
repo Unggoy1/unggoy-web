@@ -17,8 +17,9 @@ export const load: PageLoad = async ({ fetch }) => {
 		body: JSON.stringify(fetchParams),
 		headers: new Headers({ 'content-type': 'application/json' })
 	});
-	const newMaps: UgcBrowseResponse = await response.json();
 
+	const newMaps: UgcBrowseResponse = await response.json();
+	console.log(newMaps);
 	fetchParams.assetKind = 6;
 	const newModeResponse = await fetch(ugcEndpoint, {
 		method: 'POST',
