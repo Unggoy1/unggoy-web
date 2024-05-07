@@ -246,14 +246,12 @@
 					<div class="author">
 						<div class="message-container">
 							<div class="message anim" style="--delay: .1s">
-								<img
-									class="author-img"
-									alt="emblem name here"
-									src="https://grunt.api.dotapi.gg/games/halo-infinite/tooling/cms-images?hash=eyJpZGVudGlmaWVyIjoiaGkiLCJwYXRoIjoicHJvZ3Jlc3Npb24vSW52ZW50b3J5L0VtYmxlbXMvb2x5bXB1c19hbmdyeWtpdHR5X2VtYmxlbS5wbmciLCJvcHRpb25zIjp7ImJyYW5jaCI6IkltYWdlcyJ9fQ%3D%3D"
-								/>
+								<img class="author-img" alt="emblem name here" src={contributor.emblemPath} />
 								<div class="msg-wrapper">
-									<div class="author-name">{contributor.gamertag}</div>
-									<div class="author-info">{contributor.serviceTag}</div>
+									<a href="/browse?gamertag={contributor.gamertag}">
+										<div class="author-name">{contributor.gamertag}</div>
+										<div class="author-info">{contributor.serviceTag}</div>
+									</a>
 								</div>
 							</div>
 						</div>
