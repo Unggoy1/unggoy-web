@@ -47,32 +47,33 @@
 				<div class="filter-group">
 					<p class="filter-text">Sort:</p>
 					<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
-						<option value="datepublishedutc" label="Date Published"></option>
+						<option value="publishedAt" label="Date Published"></option>
 						<option value="name" label="Name"></option><option value="averagerating" label="Rating"
 						></option>
 						<option value="bookmarks" label="Bookmarks"></option>
-						<option value="playsrecent" label="Plays Recent"></option>
-						<option value="playsalltime" label="Plays"></option>
+						<option value="playsRecent" label="Plays Recent"></option>
+						<option value="playsAllTime" label="Plays"></option>
 					</select>
 				</div>
-				<div class="filter-group filter-group-last">
-					<select bind:value={data.order} on:change={updateUrl} class="dropdown-el">
-						<option value="desc" label="Descending"></option>
-						<option value="asc" label="Ascending"></option>
-					</select>
+			</div>
+
+			<div class="filter-group">
+				<p class="filter-text">Author</p>
+				<div class="search-bar">
+					<input type="text" placeholder="gamertag" />
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="videos">
-		{#each data.ugc as ugc (ugc.AssetId)}
+		{#each data.ugc as ugc (ugc.assetId)}
 			<a
-				href="/{ugc.AssetKind == 2
-					? 'map'
-					: ugc.AssetKind == 6
-					  ? 'mode'
-					  : 'prefab'}?assetId={ugc.AssetId}"
-				style="color: inherit; text-decoration: none;"
+				href="/{ugc.assetKind == 2
+					? 'maps'
+					: ugc.assetKind == 6
+					  ? 'modes'
+					  : 'prefabs'}/{ugc.assetId}"
+				style="color: inherit; text-decoration: none; max-width: 560px"
 			>
 				<VideoCard {ugc} />
 			</a>

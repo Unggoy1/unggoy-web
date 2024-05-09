@@ -4,32 +4,50 @@ import { PUBLIC_API_URL } from '$env/static/public';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch }) => {
-  const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
+	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 
-  const fetchParams: UgcFetchData = {
-    assetKind: 'Map'
-  };
+	const fetchParams: UgcFetchData = {
+		assetKind: 2,
+		count: 4
+	};
 
-  const ugcEndpoint = endpoint + 'ugc/browse?';
-  const response = await fetch(ugcEndpoint + new URLSearchParams(fetchParams));
-  const newMaps: UgcBrowseResponse = await response.json();
+	const ugcEndpoint = endpoint + 'ugc/browse';
+	const response = await fetch(ugcEndpoint, {
+		method: 'POST',
+		body: JSON.stringify(fetchParams),
+		headers: new Headers({ 'content-type': 'application/json' })
+	});
 
-  fetchParams.assetKind = 'UgcGameVariant';
-  const newModeResponse = await fetch(ugcEndpoint + new URLSearchParams(fetchParams));
-  const newModes: UgcBrowseResponse = await newModeResponse.json();
+	const newMaps: UgcBrowseResponse = await response.json();
+	fetchParams.assetKind = 6;
+	const newModeResponse = await fetch(ugcEndpoint, {
+		method: 'POST',
+		body: JSON.stringify(fetchParams),
+		headers: new Headers({ 'content-type': 'application/json' })
+	});
+	const newModes: UgcBrowseResponse = await newModeResponse.json();
 
-  fetchParams.sort = 'playsrecent';
-  const trendingModeResponse = await fetch(ugcEndpoint + new URLSearchParams(fetchParams));
-  const trendingModes: UgcBrowseResponse = await trendingModeResponse.json();
+	fetchParams.sort = 'playsRecent';
+	const trendingModeResponse = await fetch(ugcEndpoint, {
+		method: 'POST',
+		body: JSON.stringify(fetchParams),
+		headers: new Headers({ 'content-type': 'application/json' })
+	});
+	const trendingModes: UgcBrowseResponse = await trendingModeResponse.json();
 
-  fetchParams.assetKind = 'Map';
-  const trendingMapResponse = await fetch(ugcEndpoint + new URLSearchParams(fetchParams));
-  const trendingMaps: UgcBrowseResponse = await trendingMapResponse.json();
+	fetchParams.assetKind = 2;
+	const trendingMapResponse = await fetch(ugcEndpoint, {
+		method: 'POST',
+		body: JSON.stringify(fetchParams),
+		headers: new Headers({ 'content-type': 'application/json' })
+	});
 
-  return {
-    newMaps: newMaps.results,
-    trendingMaps: trendingMaps.results,
-    newModes: newModes.results,
-    trendingModes: trendingModes.results
-  };
+	const trendingMaps: UgcBrowseResponse = await trendingMapResponse.json();
+
+	return {
+		newMaps: newMaps.assets,
+		trendingMaps: trendingMaps.assets,
+		newModes: newModes.assets,
+		trendingModes: trendingModes.assets
+	};
 };
