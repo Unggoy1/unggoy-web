@@ -55,11 +55,12 @@
 						<option value="playsAllTime" label="Plays"></option>
 					</select>
 				</div>
-				<div class="filter-group filter-group-last">
-					<select bind:value={data.order} on:change={updateUrl} class="dropdown-el">
-						<option value="desc" label="Descending"></option>
-						<option value="asc" label="Ascending"></option>
-					</select>
+			</div>
+
+			<div class="filter-group">
+				<p class="filter-text">Author</p>
+				<div class="search-bar">
+					<input type="text" placeholder="gamertag" />
 				</div>
 			</div>
 		</div>
