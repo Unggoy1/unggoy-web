@@ -97,8 +97,12 @@ body {
 	color: var(--button-color);
 	background-color: var(--button-bg);
 	font-weight: 700;
+	fill: #ff0000;
 }
-
+.sidebar-link:hover svg,
+.sidebar-link.is-active svg {
+	fill: var(--button-color);
+}
 .sidebar.collapse {
 	width: 90px;
 	border-right: 1px solid var(--border-color);
