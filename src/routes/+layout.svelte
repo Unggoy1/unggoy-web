@@ -2,7 +2,8 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import '../assets/css/app.css';
+	//	import '../assets/css/app.css';
+	import '../assets/css/styles.css';
 	import { PUBLIC_API_URL } from '$env/static/public';
 	// import type { LayoutData } from './$types';
 
@@ -72,9 +73,8 @@
 <div class="container">
 	<div class="sidebar" class:collapse={isSidebarCollapsed}>
 		<span class="logo">S</span>
-		<a class="logo-expand" href="/">unggoy</a>
+		<a class="logo-expand" href="/">Unggoy</a>
 		<div class="side-wrapper">
-			<div class="side-title">MENU</div>
 			<div class="side-menu">
 				<a
 					data-sveltekit-replacestate

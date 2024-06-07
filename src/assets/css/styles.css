@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+* {
+	outline: none;
+	box-sizing: border-box;
+}
+
+html {
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+}
+
+img {
+	max-width: 100%;
+}
+
+:root {
+	--body-font: 'Inter', sans-serif;
+	--theme-bg: #171d1e;
+	--body-color: #dee3e5;
+	--sidebar-bg: #d9d9d903;
+	--sidebar-color: #bfc8cb;
+	--button-bg: #334a50;
+	--button-color: #cee7ee;
+	--container-bg: #252b2d;
+	--container-color: #dee3e5;
+	--delay: 0s;
+}
+
+body {
+	font-family: var(--body-font);
+	color: var(--body-color);
+	background-color: var(--theme-bg);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	/* padding: 1em 2em; */
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.container {
+	background-color: var(--theme-bg);
+	/* max-width: 1240px; */
+	/* max-height: 900px; */
+	height: 100vh;
+	display: flex;
+	overflow: hidden;
+	width: 100%;
+	border-radius: 20px;
+	font-size: 16px;
+	font-weight: 500;
+	/* box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); */
+	position: relative;
+}
+
+/* SIDEBAR CSS */
+.sidebar {
+	width: 220px;
+	height: 100%;
+	padding: 16px;
+	padding-top: 24px;
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	transition-duration: 0.2s;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: var(--sidebar-bg);
+	color: var(--sidebar-color) !important;
+}
+.sidebar .logo {
+	display: none;
+	width: 30px;
+	height: 30px;
+	background-color: #22b07d;
+	flex-shrink: 0;
+	color: #fff;
+	align-items: center;
+	border-radius: 50%;
+	justify-content: center;
+}
+.sidebar .logo-expand {
+	text-decoration: none;
+	color: var(--body-color);
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 34px;
+	position: sticky;
+	top: 0;
+	padding-left: 16px;
+}
+.sidebar-link:hover,
+.sidebar-link.is-active {
+	color: var(--button-color);
+	background-color: var(--button-bg);
+	font-weight: 700;
+}
+
+.sidebar.collapse {
+	width: 90px;
+	border-right: 1px solid var(--border-color);
+}
+.sidebar.collapse .logo-expand,
+.sidebar.collapse .side-title {
+	display: none;
+}
+.sidebar.collapse .logo {
+	display: flex;
+}
+.sidebar.collapse .side-wrapper {
+	width: 30px;
+}
+.sidebar.collapse .side-menu svg {
+	margin-right: 30px;
+}
+
+@-webkit-keyframes bottom {
+	0% {
+		transform: translateY(100px);
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes bottom {
+	0% {
+		transform: translateY(100px);
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.side-menu {
+	display: flex;
+	flex-direction: column;
+	width: 188px;
+}
+.side-menu a {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	line-height: 20px;
+	color: var(--body-color);
+	height: 56px;
+	border-radius: 12px;
+	padding-left: 16px;
+	margin-bottom: 20px;
+}
+.side-menu svg {
+	width: 24px;
+	height: 24px;
+	margin-right: 16px;
+	fill: var(--sidebar-color);
+}
+
+.side-menu svg:hover {
+	color: var(button-bg);
+}
+
+.side-title {
+	font-size: 12px;
+	letter-spacing: 0.07em;
+	margin-bottom: 24px;
+}
+
+.side-wrapper {
+	border-bottom: 1px solid var(--border-color);
+	padding: 36px 0;
+	width: 145px;
+}
+.side-wrapper + .side-wrapper {
+	border-bottom: none;
+}
+/* .sidebar .logo-expand:before { */
+/* 	content: ''; */
+/* 	position: absolute; */
+/* 	top: -30px; */
+/* 	left: 0; */
+/* 	width: 200px; */
+/* 	height: 70px; */
+/* 	z-index: -1; */
+/* } */
+
+/* HEADER CSS */
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	padding: 24px;
+}
+
+.search-bar {
+	height: 48px;
+	display: flex;
+	width: 100%;
+	max-width: 530px;
+}
+
+.search-bar input {
+	width: 100%;
+	height: 100%;
+	border: none;
+	background-color: var(--container-bg);
+	border-radius: 8px;
+	font-family: var(--body-font);
+	font-size: 16px;
+	font-weight: 400;
+	padding: 0 40px 0 16px;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56.966 56.966' fill='%23bfc8cb'%3e%3cpath d='M55.146 51.887L41.588 37.786A22.926 22.926 0 0046.984 23c0-12.682-10.318-23-23-23s-23 10.318-23 23 10.318 23 23 23c4.761 0 9.298-1.436 13.177-4.162l13.661 14.208c.571.593 1.339.92 2.162.92.779 0 1.518-.297 2.079-.837a3.004 3.004 0 00.083-4.242zM23.984 6c9.374 0 17 7.626 17 17s-7.626 17-17 17-17-7.626-17-17 7.626-17 17-17z'/%3e%3c/svg%3e");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position: 96%;
+	color: var(--container-color);
+}
+
+.search-bar input::placeholder {
+	color: #dee3e5bf;
+}
+
+/* TODO: LOGIN BUTTON AND USER SIGNED IN STUFF WILL GO HERE */
+
+.main-container {
+	display: flex;
+	flex-direction: column;
+	padding: 0 24px 24px;
+	flex-grow: 1;
+	overflow: auto;
+}
