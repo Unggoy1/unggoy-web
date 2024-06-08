@@ -1,40 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
 	import AssetCard from '../components/assetCard.svelte';
 	export let data: PageData;
-
-	let assets;
-	onMount(() => {
-		let items = assets.querySelectorAll('a'); // Assuming your cards are divs
-		let itemCount = items.length;
-		let gridColumnCount = parseInt(
-			getComputedStyle(document.documentElement).getPropertyValue('--grid-column-count')
-		);
-
-		if (itemCount <= 4) {
-			// If there are 4 or fewer items, do not remove any
-			return;
-		}
-
-		let rows = Math.ceil(itemCount / gridColumnCount);
-		if (rows > 1) {
-			// Remove excess items
-			for (let i = itemCount - (rows - 1) * gridColumnCount; i < itemCount; i++) {
-				items[i].remove();
-			}
-		}
-	});
-	// // Function to update gridColumnCount based on window size
-	// function updateGridColumnCount() {
-	//   let newCount = Math.min(window.innerWidth / parseInt(getComputedStyle(document.documentElement).getPropertyValue('--grid-item--min-width')), 8);
-	//   document.documentElement.style.setProperty('--grid-column-count', newCount);
-	//   onMount(() => {
-	//     // Repeat the removal logic here
-	//   });
-	// }
-	//
-	// window.addEventListener('resize', updateGridColumnCount);
 </script>
 
 <div class="main-container">
@@ -44,22 +11,20 @@
 				class="main-blog-bg"
 				src="https://wpassets.halowaypoint.com/wp-content/2024/06/Tenrai_IV.jpg"
 			/>
-			<!-- <div class="main-blog-title">Launch of Unggoy to celebrate Tenrai IV</div> -->
-			<!-- <div class="main-blog-author"> -->
-			<!-- 	<div class="author-detail"> -->
-			<!-- 		<div class="author-name"> -->
-			<!-- 			Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an -->
-			<!-- 			unknown printer took a galley of type and scrambled it to make a type specimen book. It -->
-			<!-- 			has survived not only five centuries, but also the leap into electronic typesetting, -->
-			<!-- 			remaining essentially unchanged. -->
-			<!-- 		</div> -->
-			<!-- 	</div> -->
-			<!-- </div> -->
+			<div class="main-blog-text">
+				<div class="main-blog-title">Launch of Unggoy to celebrate Tenrai IV</div>
+				<div class="main-blog-desc">
+					Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+					unknown printer took a galley of type and scrambled it to make a type specimen book. It
+					has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining essentially unchanged.
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="assets-container">
 		<div class="small-header">New Maps</div>
-		<div bind:this={assets} class="assets">
+		<div class="assets">
 			{#each data.newMaps as ugc (ugc.assetId)}
 				<a
 					href="/{ugc.assetKind == 2

@@ -72,6 +72,8 @@ body {
 	background-color: var(--sidebar-bg);
 	color: var(--sidebar-color) !important;
 }
+
+/* TODO: FIX COLLAPSED SIDEBAR BECAUSE ITS BROKEN*/
 .sidebar .logo {
 	display: none;
 	width: 30px;
@@ -245,6 +247,7 @@ body {
 	padding: 0 24px 24px;
 	flex-grow: 1;
 	overflow: auto;
+	scrollbar-width: none;
 }
 
 .main-blogs {
@@ -281,8 +284,24 @@ body {
 /* 		background-position-x: center; */
 /* 		background-blend-mode: overlay; */
 /* 	} */
-/* } */
 
+.main-blog-text {
+	position: absolute;
+	bottom: 0;
+	padding: 30px;
+}
+.main-blog-title {
+	line-height: 140%;
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 16px;
+}
+
+.main-blog-desc {
+	font-size: 14px;
+	max-width: 40%;
+	line-height: 180%;
+}
 /* TODO: Fix text not appearing on top of image */
 
 /* HOMEPAGE MAP CONTAINERS*/
@@ -314,15 +333,33 @@ body {
 		minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr)
 	);
 	grid-gap: var(--grid-layout-gap);
-	/* max-width: 2700px; */
+	/* max-width: 2700px;   1963*/
 	padding-bottom: 16px;
 }
 
-/* @media screen and (max-width: 980px) { */
-/* 	.videos { */
-/* 		grid-template-columns: repeat(2, 1fr); */
-/* 	} */
-/* } */
+/* TODO: Figure out if there is a better way to go about doing this*/
+@media screen and (max-width: 1963px) {
+	.assets a:nth-child(n + 5) {
+		display: none;
+	}
+}
+@media screen and (max-width: 2299px) {
+	.assets a:nth-child(n + 6) {
+		display: none;
+	}
+}
+@media screen and (max-width: 2635px) {
+	.assets a:nth-child(n + 7) {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 2971px) {
+	.assets a:nth-child(n + 8) {
+		display: none;
+	}
+}
+
 .small-header {
 	font-size: 24px;
 	font-weight: 500;
@@ -366,15 +403,4 @@ body {
 	bottom: 0;
 	border-radius: 0 0 20px 20px;
 	aspect-ratio: 560 / 40;
-}
-.asset-time {
-	position: absolute;
-	background: rgba(21, 13, 13, 0.44);
-	color: rgba(255, 255, 255, 0.85);
-	padding: 3px 8px;
-	font-size: 12px;
-	border-radius: 6px;
-	top: 10px;
-	z-index: 1;
-	right: 8px;
 }
