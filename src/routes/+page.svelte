@@ -1,125 +1,128 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-
-	import VideoCard from '../components/videoCard.svelte';
+	import { onMount } from 'svelte';
+	import AssetCard from '../components/assetCard.svelte';
 	export let data: PageData;
+
+	let assets;
+	onMount(() => {
+		let items = assets.querySelectorAll('a'); // Assuming your cards are divs
+		let itemCount = items.length;
+		let gridColumnCount = parseInt(
+			getComputedStyle(document.documentElement).getPropertyValue('--grid-column-count')
+		);
+
+		if (itemCount <= 4) {
+			// If there are 4 or fewer items, do not remove any
+			return;
+		}
+
+		let rows = Math.ceil(itemCount / gridColumnCount);
+		if (rows > 1) {
+			// Remove excess items
+			for (let i = itemCount - (rows - 1) * gridColumnCount; i < itemCount; i++) {
+				items[i].remove();
+			}
+		}
+	});
+	// // Function to update gridColumnCount based on window size
+	// function updateGridColumnCount() {
+	//   let newCount = Math.min(window.innerWidth / parseInt(getComputedStyle(document.documentElement).getPropertyValue('--grid-item--min-width')), 8);
+	//   document.documentElement.style.setProperty('--grid-column-count', newCount);
+	//   onMount(() => {
+	//     // Repeat the removal logic here
+	//   });
+	// }
+	//
+	// window.addEventListener('resize', updateGridColumnCount);
 </script>
 
 <div class="main-container">
-	<div class="small-header anim" style="--delay: .3s">New Maps</div>
-	<div class="videos">
-		{#each data.newMaps as ugc (ugc.assetId)}
-			<a
-				href="/{ugc.assetKind == 2
-					? 'maps'
-					: ugc.assetKind == 6
-					  ? 'modes'
-					  : 'prefabs'}/{ugc.assetId}"
-				style="color: inherit; text-decoration: none;"
-			>
-				<VideoCard {ugc} />
-			</a>
-		{/each}
-	</div>
-	<div class="small-header anim" style="--delay: .3s">Trending Maps</div>
-	<div class="videos">
-		{#each data.trendingMaps as ugc (ugc.assetId)}
-			<a
-				href="/{ugc.assetKind == 2
-					? 'maps'
-					: ugc.assetKind == 6
-					  ? 'modes'
-					  : 'prefabs'}/{ugc.assetId}"
-				style="color: inherit; text-decoration: none;"
-			>
-				<VideoCard {ugc} />
-			</a>
-		{/each}
-	</div>
 	<div class="main-blogs">
-		<div class="main-blog anim" style="--delay: .1s">
-			<div class="main-blog__title">How to do Basic Jumping and how to landing safely</div>
-			<div class="main-blog__author">
-				<div class="author-img__wrapper">
-					<svg
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="3"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="feather feather-check"
-					>
-						<path d="M20 6L9 17l-5-5" />
-					</svg>
-					<img
-						class="author-img"
-						src="https://images.unsplash.com/photo-1560941001-d4b52ad00ecc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80"
-					/>
-				</div>
-				<div class="author-detail">
-					<div class="author-name">Thomas Hope</div>
-					<div class="author-info">53K views <span class="seperate"></span>2 weeks ago</div>
-				</div>
-			</div>
-			<div class="main-blog__time">7 min</div>
-		</div>
-		<div class="main-blog anim" style="--delay: .2s">
-			<div class="main-blog__title">Skateboard Tips You need to know</div>
-			<div class="main-blog__author tips">
-				<div class="main-blog__time">7 min</div>
-				<div class="author-img__wrapper">
-					<svg
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="3"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						class="feather feather-check"
-					>
-						<path d="M20 6L9 17l-5-5" />
-					</svg>
-					<img
-						class="author-img"
-						src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mzl8fG1lbnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-					/>
-				</div>
-				<div class="author-detail">
-					<div class="author-name">Tony Andrew</div>
-					<div class="author-info">53K views <span></span>2 weeks ago</div>
-				</div>
-			</div>
+		<div class="main-blog">
+			<img
+				class="main-blog-bg"
+				src="https://wpassets.halowaypoint.com/wp-content/2024/06/Tenrai_IV.jpg"
+			/>
+			<!-- <div class="main-blog-title">Launch of Unggoy to celebrate Tenrai IV</div> -->
+			<!-- <div class="main-blog-author"> -->
+			<!-- 	<div class="author-detail"> -->
+			<!-- 		<div class="author-name"> -->
+			<!-- 			Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an -->
+			<!-- 			unknown printer took a galley of type and scrambled it to make a type specimen book. It -->
+			<!-- 			has survived not only five centuries, but also the leap into electronic typesetting, -->
+			<!-- 			remaining essentially unchanged. -->
+			<!-- 		</div> -->
+			<!-- 	</div> -->
+			<!-- </div> -->
 		</div>
 	</div>
-	<div class="small-header anim" style="--delay: .3s">New Modes</div>
-	<div class="videos">
-		{#each data.newModes as ugc (ugc.assetId)}
-			<a
-				href="/{ugc.assetKind == 2
-					? 'maps'
-					: ugc.assetKind == 6
-					  ? 'modes'
-					  : 'prefabs'}/{ugc.assetId}"
-				style="color: inherit; text-decoration: none;"
-			>
-				<VideoCard {ugc} />
-			</a>
-		{/each}
+	<div class="assets-container">
+		<div class="small-header">New Maps</div>
+		<div bind:this={assets} class="assets">
+			{#each data.newMaps as ugc (ugc.assetId)}
+				<a
+					href="/{ugc.assetKind == 2
+						? 'maps'
+						: ugc.assetKind == 6
+						  ? 'modes'
+						  : 'prefabs'}/{ugc.assetId}"
+					style="color: inherit; text-decoration: none;"
+				>
+					<AssetCard {ugc} />
+				</a>
+			{/each}
+		</div>
 	</div>
-	<div class="small-header anim" style="--delay: .3s">Trending Modes</div>
-	<div class="videos">
-		{#each data.trendingModes as ugc (ugc.assetId)}
-			<a
-				href="/{ugc.assetKind == 2
-					? 'maps'
-					: ugc.assetKind == 6
-					  ? 'modes'
-					  : 'prefabs'}/{ugc.assetId}"
-				style="color: inherit; text-decoration: none;"
-			>
-				<VideoCard {ugc} />
-			</a>
-		{/each}
+	<div class="assets-container">
+		<div class="small-header">Trending Maps</div>
+		<div class="assets">
+			{#each data.trendingMaps as ugc (ugc.assetId)}
+				<a
+					href="/{ugc.assetKind == 2
+						? 'maps'
+						: ugc.assetKind == 6
+						  ? 'modes'
+						  : 'prefabs'}/{ugc.assetId}"
+					style="color: inherit; text-decoration: none;"
+				>
+					<AssetCard {ugc} />
+				</a>
+			{/each}
+		</div>
+	</div>
+	<div class="assets-container">
+		<div class="small-header">New Modes</div>
+		<div class="assets">
+			{#each data.newModes as ugc (ugc.assetId)}
+				<a
+					href="/{ugc.assetKind == 2
+						? 'maps'
+						: ugc.assetKind == 6
+						  ? 'modes'
+						  : 'prefabs'}/{ugc.assetId}"
+					style="color: inherit; text-decoration: none;"
+				>
+					<AssetCard {ugc} />
+				</a>
+			{/each}
+		</div>
+	</div>
+	<div class="assets-container">
+		<div class="small-header">Trending Modes</div>
+		<div class="assets">
+			{#each data.trendingModes as ugc (ugc.assetId)}
+				<a
+					href="/{ugc.assetKind == 2
+						? 'maps'
+						: ugc.assetKind == 6
+						  ? 'modes'
+						  : 'prefabs'}/{ugc.assetId}"
+					style="color: inherit; text-decoration: none;"
+				>
+					<AssetCard {ugc} />
+				</a>
+			{/each}
+		</div>
 	</div>
 </div>

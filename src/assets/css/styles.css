@@ -24,6 +24,7 @@ img {
 	--button-color: #cee7ee;
 	--container-bg: #252b2d;
 	--container-color: #dee3e5;
+	--asset-card-bg: #334a50d9;
 	--delay: 0s;
 }
 
@@ -97,7 +98,6 @@ body {
 	color: var(--button-color);
 	background-color: var(--button-bg);
 	font-weight: 700;
-	fill: #ff0000;
 }
 .sidebar-link:hover svg,
 .sidebar-link.is-active svg {
@@ -245,4 +245,136 @@ body {
 	padding: 0 24px 24px;
 	flex-grow: 1;
 	overflow: auto;
+}
+
+.main-blogs {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.main-blog {
+	background-size: 80%;
+	background-position-x: 150px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 390px;
+	border-radius: 20px;
+	align-self: stretch;
+	overflow: hidden;
+	position: relative;
+	transition: background 0.3s;
+}
+.main-blog-bg {
+	filter: brightness(0.5);
+}
+/* @media screen and (max-width: 905px) { */
+/* 	.main-blog, */
+/* 	.main-blog + .main-blog { */
+/* 		width: 50%; */
+/* 		padding: 30px; */
+/* 	} */
+/* 	.main-blog { */
+/* 		background-size: cover; */
+/* 		background-position-x: center; */
+/* 		background-blend-mode: overlay; */
+/* 	} */
+/* } */
+
+/* TODO: Fix text not appearing on top of image */
+
+/* HOMEPAGE MAP CONTAINERS*/
+
+.assets-container {
+	background-color: #252b2d;
+	border-radius: 20px;
+	padding: 0 16px;
+	margin-bottom: 16px;
+}
+.assets {
+	/**
+   * User input values.
+   */
+	--grid-layout-gap: 16px;
+	--grid-column-count: 8; /* This gets overridden by an inline style. */
+	--grid-item--min-width: 320px; /* This gets overridden by an inline style. */
+
+	/**
+   * Calculated values.
+   */
+	--gap-count: calc(var(--grid-column-count) - 1);
+	--total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+	--grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
+
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fill,
+		minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr)
+	);
+	grid-gap: var(--grid-layout-gap);
+	/* max-width: 2700px; */
+	padding-bottom: 16px;
+}
+
+/* @media screen and (max-width: 980px) { */
+/* 	.videos { */
+/* 		grid-template-columns: repeat(2, 1fr); */
+/* 	} */
+/* } */
+.small-header {
+	font-size: 24px;
+	font-weight: 500;
+	margin: 24px 0;
+}
+
+/* ASSET CARDS*/
+
+.asset {
+	position: relative;
+	background-color: var(--video-bg);
+	border-radius: 20px;
+	/* max-height: 200px; */
+	min-height: 200px;
+	overflow: hidden;
+}
+.asset-wrapper {
+	position: relative;
+	aspect-ratio: 560 / 320;
+	border-radius: 20px;
+}
+.asset-image-wrapper {
+	aspect-ratio: 560 / 320;
+}
+.asset-image {
+	aspect-ratio: 560 / 320;
+	max-height: 100%;
+	border-radius: 20px;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+}
+.asset-name {
+	position: absolute;
+	line-height: 1.4em;
+	height: 40px;
+	width: 100%;
+	background-color: var(--asset-card-bg);
+	padding: 10px 20px 20px;
+	z-index: 9;
+	bottom: 0;
+	border-radius: 0 0 20px 20px;
+	aspect-ratio: 560 / 40;
+}
+.asset-time {
+	position: absolute;
+	background: rgba(21, 13, 13, 0.44);
+	color: rgba(255, 255, 255, 0.85);
+	padding: 3px 8px;
+	font-size: 12px;
+	border-radius: 6px;
+	top: 10px;
+	z-index: 1;
+	right: 8px;
 }

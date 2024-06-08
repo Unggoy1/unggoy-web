@@ -8,7 +8,7 @@ export const load: PageLoad = async ({ fetch }) => {
 
 	const fetchParams: UgcFetchData = {
 		assetKind: 2,
-		count: 4
+		count: 8
 	};
 
 	const ugcEndpoint = endpoint + 'ugc/browse';

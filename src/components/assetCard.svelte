@@ -4,16 +4,15 @@
 	let originalAuthor = 'Simply Emu';
 </script>
 
-<div class="video anim" style="--delay: .4s">
+<div class="asset">
 	<!-- <div class="video-time">{ugc.likes}</div> -->
-	<div class="video-wrapper">
+	<div class="asset-image-wrapper">
 		<img
-			class="video-image"
+			class="asset-image"
 			src={ugc.thumbnailUrl ||
 				'https://wpassets.halowaypoint.com/wp-content/2022/08/CU-August-Header.jpg'}
 			alt="thumbnail"
 		/>
 	</div>
-	<div class="video-name">{ugc.name}</div>
-	<!-- <div class="video-view"></div> -->
+	<div class="asset-name">{ugc.name}</div>
 </div>

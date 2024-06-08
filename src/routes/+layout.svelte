@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	//	import '../assets/css/app.css';
 	import '../assets/css/styles.css';
 	import { PUBLIC_API_URL } from '$env/static/public';
 	// import type { LayoutData } from './$types';

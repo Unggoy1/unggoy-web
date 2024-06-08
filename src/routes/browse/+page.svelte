@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import VideoCard from '../../components/videoCard.svelte';
+	import AssetCard from '../../components/assetCard.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
@@ -65,7 +65,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="videos">
+	<div class="assets">
 		{#each data.ugc as ugc (ugc.assetId)}
 			<a
 				href="/{ugc.assetKind == 2
@@ -75,7 +75,7 @@
 					  : 'prefabs'}/{ugc.assetId}"
 				style="color: inherit; text-decoration: none; max-width: 560px"
 			>
-				<VideoCard {ugc} />
+				<AssetCard {ugc} />
 			</a>
 		{/each}
 	</div>
