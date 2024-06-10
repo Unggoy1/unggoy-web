@@ -91,3 +91,28 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	/* TODO: Figure out if there is a better way to go about doing this*/
+	@media screen and (max-width: 1963px) {
+		.assets a:nth-child(n + 5) {
+			display: none;
+		}
+	}
+	@media screen and (max-width: 2299px) {
+		.assets a:nth-child(n + 6) {
+			display: none;
+		}
+	}
+	@media screen and (max-width: 2635px) {
+		.assets a:nth-child(n + 7) {
+			display: none;
+		}
+	}
+
+	@media screen and (max-width: 2971px) {
+		.assets a:nth-child(n + 8) {
+			display: none;
+		}
+	}
+</style>

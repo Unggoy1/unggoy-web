@@ -32,54 +32,59 @@
 
 <div class="main-container">
 	<!-- <div class="main-header anim" style="--delay: 0s">Discover</div> -->
-	<div class="browse-filter-container anim" style="">
-		<div class="filter-container">
-			<div class="filter-group">
-				<p class="filter-text">Filter:</p>
-				<select bind:value={data.filter} on:change={updateUrl} class="dropdown-el">
-					<option value="" label="All"></option>
-					<option value="Map" label="Maps"></option>
-					<option value="UgcGameVariant" label="Modes"></option>
-					<option value="Prefab" label="Prefabs"></option>
-				</select>
-			</div>
-			<div class="filter-group-sort">
+	<div class="assets-container">
+		<div class="browse-filter-container">
+			<div class="filter-container">
 				<div class="filter-group">
-					<p class="filter-text">Sort:</p>
-					<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
-						<option value="publishedAt" label="Date Published"></option>
-						<option value="name" label="Name"></option><option value="averagerating" label="Rating"
-						></option>
-						<option value="bookmarks" label="Bookmarks"></option>
-						<option value="playsRecent" label="Plays Recent"></option>
-						<option value="playsAllTime" label="Plays"></option>
+					<p class="filter-text">Filter:</p>
+					<select bind:value={data.filter} on:change={updateUrl} class="dropdown-el">
+						<option value="" label="All"></option>
+						<option value="Map" label="Maps"></option>
+						<option value="UgcGameVariant" label="Modes"></option>
+						<option value="Prefab" label="Prefabs"></option>
 					</select>
 				</div>
-			</div>
+				<div class="filter-group-sort">
+					<div class="filter-group">
+						<p class="filter-text">Sort:</p>
+						<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
+							<option value="publishedAt" label="Date Published"></option>
+							<option value="name" label="Name"></option><option
+								value="averagerating"
+								label="Rating"
+							></option>
+							<option value="bookmarks" label="Bookmarks"></option>
+							<option value="playsRecent" label="Plays Recent"></option>
+							<option value="playsAllTime" label="Plays"></option>
+						</select>
+					</div>
+				</div>
 
-			<div class="filter-group">
-				<p class="filter-text">Author</p>
-				<div class="search-bar">
-					<input type="text" placeholder="gamertag" />
+				<div class="filter-group">
+					<p class="filter-text">Author</p>
+					<div class="search-bar">
+						<input type="text" placeholder="gamertag" />
+					</div>
 				</div>
 			</div>
 		</div>
+
+		<div class="assets">
+			{#each data.ugc as ugc (ugc.assetId)}
+				<a
+					href="/{ugc.assetKind == 2
+						? 'maps'
+						: ugc.assetKind == 6
+						  ? 'modes'
+						  : 'prefabs'}/{ugc.assetId}"
+					style="color: inherit; text-decoration: none; max-width: 560px"
+				>
+					<AssetCard {ugc} />
+				</a>
+			{/each}
+		</div>
 	</div>
-	<div class="assets">
-		{#each data.ugc as ugc (ugc.assetId)}
-			<a
-				href="/{ugc.assetKind == 2
-					? 'maps'
-					: ugc.assetKind == 6
-					  ? 'modes'
-					  : 'prefabs'}/{ugc.assetId}"
-				style="color: inherit; text-decoration: none; max-width: 560px"
-			>
-				<AssetCard {ugc} />
-			</a>
-		{/each}
-	</div>
-	<div class="pagination-container anim" style="--delay: .5s">
+	<div class="pagination-container">
 		<div class="pagination">
 			<ul>
 				{#if data.currentPage > 1}
