@@ -39,24 +39,37 @@
 				class="asset-img-lg"
 				width="640px"
 				height="267px"
-				src={data.map.files.prefix + previewImage}
+				src={previewImage ? data.map.files.prefix + previewImage : '/unknown.webp'}
 				alt={data.map.name}
 			/>
 			<div class="asset-detail">
 				<div class="asset-content">
 					<div class="preview-img-container">
-						{#each data.map.files.fileRelativePaths as imageUrl}
-							<div class="asset-preview" on:click={() => updatePreview(imageUrl)}>
+						{#if data.map.files.fileRelativePaths.length > 0}
+							{#each data.map.files.fileRelativePaths as imageUrl}
+								<div class="asset-preview" on:click={() => updatePreview(imageUrl)}>
+									<div class="asset-preview-wrapper">
+										<img
+											class="asset-preview-img"
+											alt="preview 1"
+											src={data.map.files.prefix + imageUrl}
+											class:active-img={imageUrl === previewImage}
+										/>
+									</div>
+								</div>
+							{/each}
+						{:else}
+							<div class="asset-preview">
 								<div class="asset-preview-wrapper">
 									<img
 										class="asset-preview-img"
 										alt="preview 1"
-										src={data.map.files.prefix + imageUrl}
-										class:active-img={imageUrl === previewImage}
+										src={'/unknown.webp'}
+										class:active-img={true}
 									/>
 								</div>
 							</div>
-						{/each}
+						{/if}
 					</div>
 
 					<div class="asset-title">{data.map.name}</div>
