@@ -7,12 +7,7 @@
 <div class="asset">
 	<!-- <div class="video-time">{ugc.likes}</div> -->
 	<div class="asset-image-wrapper">
-		<img
-			class="asset-image"
-			src={ugc.thumbnailUrl ||
-				'https://wpassets.halowaypoint.com/wp-content/2022/08/CU-August-Header.jpg'}
-			alt="thumbnail"
-		/>
+		<img class="asset-image" src={ugc.thumbnailUrl || '/placeholder.webp'} alt="thumbnail" />
 	</div>
 	<div class="asset-name">
 		{ugc.name}

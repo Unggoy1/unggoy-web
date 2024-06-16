@@ -23,7 +23,9 @@
 		</div>
 	</div>
 	<div class="assets-container">
+		<!-- <a href="/browse?assetKind=Map"> -->
 		<div class="small-header">New Maps</div>
+		<!-- </a> -->
 		<div class="assets">
 			{#each data.newMaps as ugc (ugc.assetId)}
 				<a

@@ -339,6 +339,14 @@ body {
 	padding-bottom: 16px;
 }
 
+.browse {
+	/**
+   * User input values.
+   */
+	--grid-column-count: 5; /* This gets overridden by an inline style. */
+	max-width: 2900px;
+}
+
 .small-header {
 	font-size: 24px;
 	font-weight: 500;
@@ -611,7 +619,6 @@ color: #808191;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	align-items: flex-end;
 }
 @media only screen and (max-width: 645px) {
 	.browse-filter-container {
@@ -692,7 +699,6 @@ color: #808191;
 	border: solid transparent;
 	border-radius: 8px;
 	background-color: var(--container-bg);
-	margin-bottom: 5px;
 }
 
 .search-bar-filter {
@@ -788,4 +794,44 @@ li button {
 
 li.text-only {
 	margin: 8px 0;
+}
+
+/* PLAYLIST VIEW PAGE */
+
+.playlist-container {
+	padding: 16px 0px 30px 16px;
+	display: flex;
+	justify-content: space-between;
+}
+.playlist-title {
+	font-size: 48px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	padding-bottom: 16px;
+}
+.playlist-description {
+	font-size: 24px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 140%; /* 33.6px */
+}
+
+.favorite {
+	width: 64px;
+	height: 64px;
+	float: right;
+	background-color: var(--body-color);
+	border-radius: 100px;
+	margin-right: 16px;
+	text-align: center;
+}
+.more {
+	background-color: var(--button-bg);
+}
+.favorite svg {
+	width: 32px;
+	height: 64px;
+	align-self: center;
+	flex-shrink: 0;
 }
