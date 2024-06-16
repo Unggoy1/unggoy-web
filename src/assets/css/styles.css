@@ -25,6 +25,7 @@ img {
 	--container-bg: #252b2d;
 	--container-color: #dee3e5;
 	--asset-card-bg: #334a50d9;
+	--top-container-bg: #303637;
 	--delay: 0s;
 }
 
@@ -421,7 +422,7 @@ body {
 .show .videos {
 	display: none;
 }
-	color: #808191;
+color: #808191;
 
 .asset-container {
 	-o-object-fit: cover;
@@ -637,37 +638,78 @@ body {
 .filter-container {
 	display: flex;
 	align-items: center;
-	margin-bottom: 20px;
+	padding: 22px 14px;
 }
-.filter-group, .filter-group-sort {
+.filter-group,
+.filter-group-sort {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-} {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
 }
+
+.filter-group {
+	display: flex;
+	height: 48px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	padding-right: 20px;
+}
+
 .filter-text {
-	text-transform: uppercase;
-	color: #b4b4b4;
-	margin-right: 20px;
-	color: #fff;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 160%; /* 22.4px */
 }
 .dropdown-el {
 	font-size: 14px;
-	padding: 7px;
-	position: relative;
-	display: inline-block;
-	margin-right: 1em;
-	text-align: left;
-	color: #808191;
-	border: 0.06em solid transparent;
+	width: 180px;
+	height: 48px;
+	flex-shrink: 0;
+	color: var(--container-color);
 	border-radius: 8px;
-	background-color: $color;
-	background-color: var(--button-bg);
+	border: 0px solid rgba(255, 255, 255, 0.08);
+	background: var(--top-container-bg);
+	backdrop-filter: blur(15px);
+	padding: 14px 40px 14px 14px;
+}
+
+.dropdown-asset {
+	font-size: 24px;
+	line-height: 20;
+	font-weight: 500;
+	text-align: left;
+	color: var(--container-color);
+	border: solid transparent;
+	border-radius: 8px;
+	background-color: var(--container-bg);
+}
+
+.search-bar-filter {
+	height: 48px;
+	display: flex;
+	max-width: 180px;
+}
+
+.search-bar-filter input {
+	width: 100%;
+	height: 100%;
+	font-family: var(--body-font);
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: 140%; /* 19.6px */
+	padding: 14px 40px 14px 14px;
+	background: var(--top-container-bg);
+	backdrop-filter: blur(15px); /* color: var(--container-color); */
+	border-radius: 8px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	color: var(--container-color);
+}
+
+.search-bar-filter input::placeholder {
+	color: #dee3e5bf;
 }
 
 /* PAGINATION */
@@ -705,7 +747,7 @@ li.active a {
 
 li a {
 	background: var();
-	border-radius: 10px;
+	border-radius: 8px;
 	color: var(--button-color);
 	text-decoration: none;
 	text-transform: uppercase;
@@ -738,4 +780,3 @@ li button {
 li.text-only {
 	margin: 8px 0;
 }
-

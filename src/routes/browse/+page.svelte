@@ -35,36 +35,36 @@
 	<div class="assets-container">
 		<div class="browse-filter-container">
 			<div class="filter-container">
+				<select bind:value={data.filter} on:change={updateUrl} class="dropdown-asset">
+					<option value="" label="Game Type"></option>
+					<option value="Map" label="Maps"></option>
+					<option value="UgcGameVariant" label="Modes"></option>
+					<option value="Prefab" label="Prefabs"></option>
+				</select>
+			</div>
+			<div class="filter-container">
 				<div class="filter-group">
-					<p class="filter-text">Filter:</p>
-					<select bind:value={data.filter} on:change={updateUrl} class="dropdown-el">
-						<option value="" label="All"></option>
-						<option value="Map" label="Maps"></option>
-						<option value="UgcGameVariant" label="Modes"></option>
-						<option value="Prefab" label="Prefabs"></option>
-					</select>
-				</div>
-				<div class="filter-group-sort">
-					<div class="filter-group">
-						<p class="filter-text">Sort:</p>
-						<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
-							<option value="publishedAt" label="Date Published"></option>
-							<option value="name" label="Name"></option><option
-								value="averagerating"
-								label="Rating"
-							></option>
-							<option value="bookmarks" label="Bookmarks"></option>
-							<option value="playsRecent" label="Plays Recent"></option>
-							<option value="playsAllTime" label="Plays"></option>
-						</select>
-					</div>
-				</div>
-
-				<div class="filter-group">
-					<p class="filter-text">Author</p>
-					<div class="search-bar">
+					<p class="filter-text">Author:</p>
+					<div class="search-bar-filter">
 						<input type="text" placeholder="gamertag" />
 					</div>
+				</div>
+				<div class="filter-group">
+					<p class="filter-text">Tags:</p>
+					<div class="search-bar-filter">
+						<input type="text" placeholder="tag" />
+					</div>
+				</div>
+				<div class="filter-group">
+					<p class="filter-text">Sort:</p>
+					<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
+						<option value="publishedAt" label="Date Published"></option>
+						<option value="name" label="Name"></option><option value="averagerating" label="Rating"
+						></option>
+						<option value="bookmarks" label="Bookmarks"></option>
+						<option value="playsRecent" label="Plays Recent"></option>
+						<option value="playsAllTime" label="Plays"></option>
+					</select>
 				</div>
 			</div>
 		</div>
