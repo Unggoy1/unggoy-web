@@ -383,6 +383,14 @@ body {
 	border-radius: 0 0 20px 20px;
 	aspect-ratio: 560 / 40;
 }
+.elipsis svg {
+	width: 24px;
+	height: 40px;
+	position: absolute;
+	right: 14px;
+	bottom: 0;
+	z-index: 9;
+}
 
 /* ASSET VIEW PAGE*/
 
@@ -684,6 +692,7 @@ color: #808191;
 	border: solid transparent;
 	border-radius: 8px;
 	background-color: var(--container-bg);
+	margin-bottom: 5px;
 }
 
 .search-bar-filter {
