@@ -1,6 +1,10 @@
 <script lang="ts">
 	/** @type {import('./$types').PageLoad} */
 	import type { PageData } from './$types';
+	import MapSvg from '../../../components/mapSvg.svelte';
+	import PrefabSvg from '../../../components/prefabSvg.svelte';
+	import ModeSvg from '../../../components/modeSvg.svelte';
+	import AssetKind from '../../../components/assetKind.svelte';
 
 	export let data: PageData;
 	$: previewImage = data.map.files.fileRelativePaths[0];
@@ -35,34 +39,32 @@
 <div class="main-container show">
 	<div class="asset-area">
 		<div class="asset-container">
-			<img
-				class="asset-img-lg"
-				width="640px"
-				height="267px"
-				src={previewImage ? data.map.files.prefix + previewImage : '/unknown.webp'}
-				alt={data.map.name}
-			/>
-			<div class="asset-type lg">
-				{#if data.map.assetKind === 2}
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
-						><path
-							d="M384 476.1L192 421.2V35.9L384 90.8V476.1zm32-1.2V88.4L543.1 37.5c15.8-6.3 32.9 5.3 32.9 22.3V394.6c0 9.8-6 18.6-15.1 22.3L416 474.8zM15.1 95.1L160 37.2V423.6L32.9 474.5C17.1 480.8 0 469.2 0 452.2V117.4c0-9.8 6-18.6 15.1-22.3z"
-						></path>
+			<div class="asset-container">
+				<img
+					class="asset-img-lg"
+					width="640px"
+					height="267px"
+					src={previewImage ? data.map.files.prefix + previewImage : '/unknown.webp'}
+					alt={data.map.name}
+				/>
+				<button class="playlist-button">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="32"
+						height="32"
+						viewBox="0 0 32 32"
+						fill="none"
+					>
+						<path
+							d="M13.9999 26.6667C13.9999 27.1971 14.2106 27.7058 14.5857 28.0809C14.9608 28.456 15.4695 28.6667 15.9999 28.6667C16.5304 28.6667 17.0391 28.456 17.4141 28.0809C17.7892 27.7058 17.9999 27.1971 17.9999 26.6667V18H26.6666C27.197 18 27.7057 17.7893 28.0808 17.4143C28.4559 17.0392 28.6666 16.5305 28.6666 16C28.6666 15.4696 28.4559 14.9609 28.0808 14.5858C27.7057 14.2108 27.197 14 26.6666 14H17.9999V5.33337C17.9999 4.80294 17.7892 4.29423 17.4141 3.91916C17.0391 3.54409 16.5304 3.33337 15.9999 3.33337C15.4695 3.33337 14.9608 3.54409 14.5857 3.91916C14.2106 4.29423 13.9999 4.80294 13.9999 5.33337V14H5.33325C4.80282 14 4.29411 14.2108 3.91904 14.5858C3.54397 14.9609 3.33325 15.4696 3.33325 16C3.33325 16.5305 3.54397 17.0392 3.91904 17.4143C4.29411 17.7893 4.80282 18 5.33325 18H13.9999V26.6667Z"
+							fill="#CEE7EE"
+						/>
 					</svg>
-				{:else if data.map.assetKind === 4}
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
-						><path
-							d="M413.5 237.5c-28.2 4.8-58.2-3.6-80-25.4l-38.1-38.1C280.4 159 272 138.8 272 117.6V105.5L192.3 62c-5.3-2.9-8.6-8.6-8.3-14.7s3.9-11.5 9.5-14l47.2-21C259.1 4.2 279 0 299.2 0h18.1c36.7 0 72 14 98.7 39.1l44.6 42c24.2 22.8 33.2 55.7 26.6 86L503 183l8-8c9.4-9.4 24.6-9.4 33.9 0l24 24c9.4 9.4 9.4 24.6 0 33.9l-88 88c-9.4 9.4-24.6 9.4-33.9 0l-24-24c-9.4-9.4-9.4-24.6 0-33.9l8-8-17.5-17.5zM27.4 377.1L260.9 182.6c3.5 4.9 7.5 9.6 11.8 14l38.1 38.1c6 6 12.4 11.2 19.2 15.7L134.9 484.6c-14.5 17.4-36 27.4-58.6 27.4C34.1 512 0 477.8 0 435.7c0-22.6 10.1-44.1 27.4-58.6z"
-						></path>
-					</svg>
-				{:else if data.map.assetKind === 6}
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
-						><path
-							d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0zM168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z"
-						></path>
-					</svg>
-				{/if}
+				</button>
+				<AssetKind assetKind={data.map.assetKind} lg={true} featured={data.map.featured}
+				></AssetKind>
 			</div>
+
 			<div class="asset-detail">
 				<div class="asset-content">
 					<div class="preview-img-container">

@@ -387,16 +387,38 @@ body {
 	background-color: var(--button-bg);
 	border-radius: 100px;
 	text-align: center;
-	top: 8px;
+	top: 10px;
 	left: 8px;
 	fill: var(--button-color);
 }
 
 .asset-type svg {
 	width: 16px;
-	height: 32px;
-	align-self: center;
-	flex-shrink: 0;
+	height: 16px;
+	margin-top: 8px;
+}
+
+.playlist-button {
+	position: absolute;
+	width: 64px;
+	height: 64px;
+	bottom: 16px;
+	right: 16px;
+	background-color: var(--button-bg);
+	border-radius: 100px;
+	text-align: center;
+	fill: var(--button-color);
+	border: none;
+	padding: 0;
+	cursor: pointer;
+}
+.playlist-button svg {
+	width: 32px;
+	height: 64px;
+}
+
+.featured svg {
+	width: 20px;
 }
 
 .lg {
@@ -407,9 +429,14 @@ body {
 }
 
 .lg svg {
-	width: 32px !important;
-	height: 64px !important;
+	width: 32px;
+	height: 32px;
+	margin-top: 16px;
 }
+.lg.featured svg {
+	width: 42px;
+}
+
 .asset-name {
 	position: absolute;
 	line-height: 1.4em;
@@ -738,7 +765,7 @@ body {
 
 .dropdown-asset {
 	font-size: 24px;
-	line-height: 20;
+	line-height: 20px;
 	font-weight: 500;
 	text-align: left;
 	color: var(--container-color);
@@ -871,6 +898,7 @@ li.text-only {
 	border-radius: 100px;
 	margin-right: 16px;
 	text-align: center;
+	border: none;
 }
 .more {
 	background-color: var(--button-bg);
