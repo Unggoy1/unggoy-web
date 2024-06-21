@@ -122,7 +122,7 @@ Make sure disabled buttons don't get the pointer cursor.
 	z-index: 20;
 }
 .mr-2 {
-	margin-right: 0.5rem;
+	margin-right: 10px;
 }
 .mt-2 {
 	margin-top: 0.5rem;
@@ -140,10 +140,10 @@ Make sure disabled buttons don't get the pointer cursor.
 	display: contents;
 }
 .h-5 {
-	height: 1.25rem;
+	height: 16px;
 }
 .w-5 {
-	width: 1.25rem;
+	width: 16px;
 }
 .w-56 {
 	width: 14rem;
@@ -276,4 +276,12 @@ Make sure disabled buttons don't get the pointer cursor.
 }
 .focus-visible\:ring-opacity-75:focus-visible {
 	--tw-ring-opacity: 0.75;
+}
+.menu-item-active {
+	background-color: var(--button-bg);
+	color: var(--button-color);
+}
+
+.menu-item-inactive {
+	color: var(--container-color);
 }

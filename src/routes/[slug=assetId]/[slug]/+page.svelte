@@ -19,6 +19,8 @@
 	const updatePreview = (image) => {
 		previewImage = image;
 	};
+
+	const groups = [[{ text: `Edit` }], [{ text: `Private` }], [{ text: `Delete` }]];
 </script>
 
 <svelte:head>

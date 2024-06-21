@@ -7,6 +7,11 @@
 	import Edit from './Edit.svelte';
 	import Move from './Move.svelte';
 	import MapSvg from './mapSvg.svelte';
+	import IconOne from './IconOne.svelte';
+	import IconThree from './IconThree.svelte';
+	import Selector from './Selector.svelte';
+	import Check from './Check.svelte';
+	import Private from './Private.svelte';
 
 	const menu = createMenu({ label: 'Actions' });
 
@@ -15,13 +20,7 @@
 	}
 
 	// prettier-ignore
-	const groups = [
-		[
-			{ icon: Edit, text: `Edit` },
-			{ icon: Archive, text: `Archive` },
-			{ icon: Delete, text: `Delete` },
-		]
-	]
+	export let groups;
 </script>
 
 <div class="menu">
@@ -48,14 +47,14 @@
 					class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
 				>
 					{#each groups as group}
-						<div class="px-1 py-1">
+						<div class="tt px-1 py-1">
 							{#each group as option}
 								{@const active = $menu.active === option.text}
 								<button
 									use:menu.item
-									class="menu-item flex w-full items-center rounded-md px-2 py-2 text-sm {active
-										? 'bg-violet-500 text-white'
-										: 'text-gray-900'}"
+									class="menu-item flex w-full items-center rounded-md {active
+										? 'menu-item-active'
+										: 'menu-item-inactive'}"
 								>
 									<svelte:component this={option.icon} class="mr-2 h-5 w-5" {active} />
 									{option.text}
@@ -92,6 +91,10 @@
 	}
 
 	.menu-item {
-		color: var(--container-color);
+		padding: 8px;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: 140%; /* 22.4px */
 	}
 </style>

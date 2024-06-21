@@ -4,6 +4,9 @@
 	import Dropdown from '../../../components/dropdown.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import Edit from '../../../components/Edit.svelte';
+	import Private from '../../../components/Private.svelte';
+	import Delete from '../../../components/Delete.svelte';
 
 	export let data: PageData;
 	const changePage = (page: number) => {
@@ -29,6 +32,12 @@
 		query.set('order', data.order);
 		goto(`?${query.toString()}`);
 	};
+
+	const groups = [
+		[{ icon: Edit, text: `Edit` }],
+		[{ icon: Private, text: `Private` }],
+		[{ icon: Delete, text: `Delete` }]
+	];
 </script>
 
 <div class="main-container">
@@ -40,7 +49,7 @@
 			</div>
 		</div>
 		<div>
-			<Dropdown></Dropdown>
+			<Dropdown {groups}></Dropdown>
 			<button class="favorite">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
