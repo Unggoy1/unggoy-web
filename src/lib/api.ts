@@ -15,6 +15,29 @@ export interface UgcBrowseResponse {
 	pageSize: number;
 }
 
+export interface PlaylistFetchData {
+	sort?: string; //'datepublishedutc';
+	order?: string; //'desc' | 'asc';
+	offset?: number; //number
+	count?: number;
+	searchTerm?: string;
+}
+
+export interface PlaylistBrowseResponse {
+	assets: PlaylistData[];
+	totalCount: number;
+	pageSize: number;
+}
+
+export interface PlaylistData {
+	id: string;
+	name: string;
+	description: string;
+	thumbnail: string;
+	private: boolean;
+	userId: string;
+}
+
 export interface Contributor {
 	xuid: string;
 	gamertag: string;
@@ -42,4 +65,5 @@ export interface UgcData {
 	contributors: Contributor[];
 	authorId: string; //xuid(12345612645614)
 	tags?: string[];
+	featured?: boolean;
 }

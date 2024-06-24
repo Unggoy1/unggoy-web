@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import '../assets/css/styles.css';
 	import '../assets/css/app.css';
 	import { PUBLIC_API_URL } from '$env/static/public';
 	// import type { LayoutData } from './$types';
@@ -72,9 +73,8 @@
 <div class="container">
 	<div class="sidebar" class:collapse={isSidebarCollapsed}>
 		<span class="logo">S</span>
-		<a class="logo-expand" href="/">unggoy</a>
+		<a class="logo-expand" href="/">Unggoy</a>
 		<div class="side-wrapper">
-			<div class="side-title">MENU</div>
 			<div class="side-menu">
 				<a
 					data-sveltekit-replacestate
@@ -97,13 +97,11 @@
 					class:is-active={$activeLink === null}
 					href="/browse?assetKind=Map"
 				>
-					<svg viewBox="0 0 24 24" fill="currentColor">
-						<path
-							fill-rule="evenodd"
-							clip-rule="evenodd"
-							d="M10.835 12.007l.002.354c.012 1.404.096 2.657.242 3.451 0 .015.16.802.261 1.064.16.38.447.701.809.905a2 2 0 00.91.219c.249-.012.66-.137.954-.242l.244-.094c1.617-.642 4.707-2.74 5.891-4.024l.087-.09.39-.42c.245-.322.375-.715.375-1.138 0-.379-.116-.758-.347-1.064-.07-.099-.18-.226-.28-.334l-.379-.397c-1.305-1.321-4.129-3.175-5.593-3.79 0-.013-.91-.393-1.343-.407h-.057c-.665 0-1.286.379-1.603.991-.087.168-.17.496-.233.784l-.114.544c-.13.874-.216 2.216-.216 3.688zm-6.332-1.525C3.673 10.482 3 11.162 3 12a1.51 1.51 0 001.503 1.518l3.7-.328c.65 0 1.179-.532 1.179-1.19 0-.658-.528-1.191-1.18-1.191l-3.699-.327z"
-						/>
-					</svg>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
+						><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
+							d="M384 476.1L192 421.2V35.9L384 90.8V476.1zm32-1.2V88.4L543.1 37.5c15.8-6.3 32.9 5.3 32.9 22.3V394.6c0 9.8-6 18.6-15.1 22.3L416 474.8zM15.1 95.1L160 37.2V423.6L32.9 474.5C17.1 480.8 0 469.2 0 452.2V117.4c0-9.8 6-18.6 15.1-22.3z"
+						/></svg
+					>
 					Maps
 				</a>
 				<a
@@ -113,11 +111,11 @@
 					class:is-active={$activeLink === null}
 					href="/browse?assetKind=UgcGameVariant"
 				>
-					<svg viewBox="0 0 24 24" fill="currentColor">
-						<path
-							d="M11.23 7.29V3.283c0-.427.34-.782.77-.782.385 0 .711.298.763.677l.007.104v4.01h4.78c2.38 0 4.335 1.949 4.445 4.38l.005.215v5.04c0 2.447-1.887 4.456-4.232 4.569l-.208.005H6.44c-2.38 0-4.326-1.94-4.435-4.379L2 16.905v-5.03c0-2.447 1.878-4.466 4.222-4.58l.208-.004h4.8v6.402l-1.6-1.652a.755.755 0 00-1.09 0 .81.81 0 00-.22.568c0 .157.045.32.14.459l.08.099 2.91 3.015c.14.155.34.237.55.237a.735.735 0 00.465-.166l.075-.071 2.91-3.015c.3-.31.3-.816 0-1.126a.755.755 0 00-1.004-.077l-.086.077-1.59 1.652V7.291h-1.54z"
-						/>
-					</svg>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
+						><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
+							d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0zM168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z"
+						/></svg
+					>
 					Gamemodes
 				</a>
 				<a
@@ -127,14 +125,34 @@
 					class:is-active={$activeLink === null}
 					href="/browse?assetKind=Prefab"
 				>
-					<svg viewBox="0 0 24 24" fill="currentColor">
-						<path
-							fill-rule="evenodd"
-							clip-rule="evenodd"
-							d="M12.1535 16.64L14.995 13.77C15.2822 13.47 15.2822 13 14.9851 12.71C14.698 12.42 14.2327 12.42 13.9455 12.71L12.3713 14.31V9.49C12.3713 9.07 12.0446 8.74 11.6386 8.74C11.2327 8.74 10.896 9.07 10.896 9.49V14.31L9.32178 12.71C9.03465 12.42 8.56931 12.42 8.28218 12.71C7.99505 13 7.99505 13.47 8.28218 13.77L11.1139 16.64C11.1832 16.71 11.2624 16.76 11.3515 16.8C11.4406 16.84 11.5396 16.86 11.6386 16.86C11.7376 16.86 11.8267 16.84 11.9158 16.8C12.005 16.76 12.0842 16.71 12.1535 16.64ZM19.3282 9.02561C19.5609 9.02292 19.8143 9.02 20.0446 9.02C20.302 9.02 20.5 9.22 20.5 9.47V17.51C20.5 19.99 18.5 22 16.0446 22H8.17327C5.58911 22 3.5 19.89 3.5 17.29V6.51C3.5 4.03 5.4901 2 7.96535 2H13.2525C13.5 2 13.7079 2.21 13.7079 2.46V5.68C13.7079 7.51 15.1931 9.01 17.0149 9.02C17.4333 9.02 17.8077 9.02318 18.1346 9.02595C18.3878 9.02809 18.6125 9.03 18.8069 9.03C18.9479 9.03 19.1306 9.02789 19.3282 9.02561ZM19.6045 7.5661C18.7916 7.5691 17.8322 7.5661 17.1421 7.5591C16.047 7.5591 15.145 6.6481 15.145 5.5421V2.9061C15.145 2.4751 15.6629 2.2611 15.9579 2.5721C16.7203 3.37199 17.8873 4.5978 18.8738 5.63395C19.2735 6.05379 19.6436 6.44249 19.945 6.7591C20.2342 7.0621 20.0223 7.5651 19.6045 7.5661Z"
-						/>
-					</svg>
-					Prefabs
+					<svg
+						width="33"
+						height="33"
+						viewBox="0 0 33 33"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						><g clip-path="url(#a)"
+							><path
+								d="M21.173 26.992c-.44-.88-1.65-2.6-4.37-2.6-2.86 0-4.11 1.72-4.55 2.6h-3.93v-3.18c.88-.16 3.51-1.56 4.62-2.53l.25-.22v-1c0-1.61-1.12-2.96-2.49-3.01h-.04c-7.23-.49-8.56-5.41-8.74-6.33h8.85v-1.73h21.15v2.4c-4.28.02-6.93 1.95-8.29 3.25-1.68 1.61-3.05 4.6-3.05 6.36v.19l.31.21c1.07.74 3.45 2.16 4.2 2.35v3.23h-3.93z"
+								fill="#fff"
+							/></g
+						><defs><clipPath id="a"><path fill="#fff" d="M.923.992h32v32h-32z" /></clipPath></defs
+						></svg
+					> Prefabs
+				</a>
+				<a
+					data-sveltekit-replacestate
+					on:click={handleClick}
+					class="sidebar-link"
+					class:is-active={$activeLink === null}
+					href="/browse/playlist"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
+						><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
+							d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
+						/></svg
+					>
+					Playlists
 				</a>
 				<a
 					data-sveltekit-replacestate
@@ -143,14 +161,12 @@
 					class:is-active={$activeLink === null}
 					href="/browse"
 				>
-					<svg viewBox="0 0 24 24" fill="currentColor">
-						<path
-							fill-rule="evenodd"
-							clip-rule="evenodd"
-							d="M17.769 8.382H22C22 4.985 19.964 3 16.516 3H7.484C4.036 3 2 4.985 2 8.338v7.324C2 19.015 4.036 21 7.484 21h9.032C19.964 21 22 19.015 22 15.662v-.313h-4.231c-1.964 0-3.556-1.552-3.556-3.466 0-1.915 1.592-3.467 3.556-3.467v-.034zm0 1.49h3.484c.413 0 .747.326.747.728v2.531a.746.746 0 01-.747.728H17.85c-.994.013-1.864-.65-2.089-1.595a1.982 1.982 0 01.433-1.652 2.091 2.091 0 011.576-.74zm.151 2.661h.329a.755.755 0 00.764-.745.755.755 0 00-.764-.746h-.329a.766.766 0 00-.54.213.727.727 0 00-.224.524c0 .413.34.75.764.754zM6.738 8.382h5.644a.755.755 0 00.765-.746.755.755 0 00-.765-.745H6.738a.755.755 0 00-.765.737c0 .413.341.75.765.754z"
-						/>
-					</svg>
-					Playlists
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+						><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
+							d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
+						/></svg
+					>
+					Browse
 				</a>
 			</div>
 		</div>

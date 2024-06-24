@@ -36,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"video.js": "^5.20.1"
+		"svelte-headlessui": "^0.0.38",
+		"svelte-transition": "^0.0.17"
 	}
 }

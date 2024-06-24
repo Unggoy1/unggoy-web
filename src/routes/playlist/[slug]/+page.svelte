@@ -1,8 +1,12 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import AssetCard from '../../components/assetCard.svelte';
+	import AssetCard from '../../../components/assetCard.svelte';
+	import Dropdown from '../../../components/dropdown.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import Edit from '../../../components/Edit.svelte';
+	import Private from '../../../components/Private.svelte';
+	import Delete from '../../../components/Delete.svelte';
 
 	export let data: PageData;
 	const changePage = (page: number) => {
@@ -28,10 +32,52 @@
 		query.set('order', data.order);
 		goto(`?${query.toString()}`);
 	};
+
+	const groups = [
+		[{ icon: Edit, text: `Edit` }],
+		[{ icon: Private, text: `Private` }],
+		[{ icon: Delete, text: `Delete` }]
+	];
 </script>
 
 <div class="main-container">
-	<!-- <div class="main-header anim" style="--delay: 0s">Discover</div> -->
+	<div class="playlist-container">
+		<div>
+			<div class="playlist-title">Firefight PvE Night</div>
+			<div class="playlist-description">
+				A playlist full of firefight and other PvE gamemodes for a uber fun night.
+			</div>
+		</div>
+		<div>
+			<Dropdown {groups}></Dropdown>
+			<button class="favorite">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="34"
+					height="32"
+					viewBox="0 0 34 32"
+					fill="none"
+				>
+					<path
+						d="M16.9243 23.0266L22.6917 26.3733C23.7479 26.9866 25.0404 26.08 24.7624 24.9333L23.2337 18.64L28.334 14.4C29.2651 13.6266 28.7648 12.16 27.5419 12.0666L20.8295 11.52L18.2029 5.57331C17.7304 4.49331 16.1183 4.49331 15.6458 5.57331L13.0192 11.5066L6.30679 12.0533C5.08383 12.1466 4.58353 13.6133 5.51465 14.3866L10.615 18.6266L9.08626 24.92C8.80831 26.0666 10.1008 26.9733 11.157 26.36L16.9243 23.0266Z"
+						fill="#212121"
+					/>
+				</svg>
+				<!-- <svg -->
+				<!-- 	xmlns="http://www.w3.org/2000/svg" -->
+				<!-- 	width="68" -->
+				<!-- 	height="64" -->
+				<!-- 	viewBox="0 0 68 64" -->
+				<!-- 	fill="none" -->
+				<!-- > -->
+				<!-- 	<path -->
+				<!-- 		d="M66.7779 32C66.7779 49.3776 52.0886 63.5 33.9243 63.5C15.7601 63.5 1.0708 49.3776 1.0708 32C1.0708 14.6224 15.7601 0.5 33.9243 0.5C52.0886 0.5 66.7779 14.6224 66.7779 32Z" -->
+				<!-- 		fill="#dee3e5" -->
+				<!-- 	/> -->
+				<!-- </svg> -->
+			</button>
+		</div>
+	</div>
 	<div class="assets-container browse">
 		<div class="browse-filter-container">
 			<div class="filter-container">

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import AssetCard from '../../components/assetCard.svelte';
+	import AssetCard from '../../../components/assetCard.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
@@ -19,11 +19,6 @@
 	const updateUrl = () => {
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('page', String(data.currentPage));
-		if (data.filter !== '') {
-			query.set('assetKind', data.filter);
-		} else {
-			query.delete('assetKind');
-		}
 		query.set('sort', data.sort);
 		query.set('order', data.order);
 		goto(`?${query.toString()}`);
@@ -35,24 +30,13 @@
 	<div class="assets-container browse">
 		<div class="browse-filter-container">
 			<div class="filter-container">
-				<select bind:value={data.filter} on:change={updateUrl} class="dropdown-asset">
-					<option value="" label="Game Type"></option>
-					<option value="Map" label="Maps"></option>
-					<option value="UgcGameVariant" label="Modes"></option>
-					<option value="Prefab" label="Prefabs"></option>
-				</select>
+				<div class="dropdown-asset">Playlists</div>
 			</div>
 			<div class="filter-container">
 				<div class="filter-group">
 					<p class="filter-text">Author:</p>
 					<div class="search-bar-filter">
 						<input type="text" placeholder="gamertag" />
-					</div>
-				</div>
-				<div class="filter-group">
-					<p class="filter-text">Tags:</p>
-					<div class="search-bar-filter">
-						<input type="text" placeholder="tag" />
 					</div>
 				</div>
 				<div class="filter-group">
@@ -70,16 +54,12 @@
 		</div>
 
 		<div class="assets browse">
-			{#each data.ugc as ugc (ugc.assetId)}
+			{#each data.ugc as playlist (playlist.id)}
 				<a
-					href="/{ugc.assetKind == 2
-						? 'maps'
-						: ugc.assetKind == 6
-						  ? 'modes'
-						  : 'prefabs'}/{ugc.assetId}"
+					href="/playlist/{playlist.id}"
 					style="color: inherit; text-decoration: none; max-width: 560px"
 				>
-					<AssetCard {ugc} />
+					<AssetCard {playlist} />
 				</a>
 			{/each}
 		</div>

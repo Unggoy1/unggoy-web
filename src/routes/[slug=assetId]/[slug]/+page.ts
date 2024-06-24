@@ -10,7 +10,15 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 
 	const response = await fetch(mapsEndpoint);
 	const data = await response.json();
+	const images: string[] = data.files.fileRelativePaths;
+	const jpgFiles = images.filter((image) => image.endsWith('.jpg'));
+	const pngFiles = images.filter((image) => image.endsWith('.png'));
+	let filteredImages = jpgFiles.length > 0 ? jpgFiles : pngFiles;
+	if (filteredImages.length > 1) {
+		filteredImages = filteredImages.filter((image) => !image.startsWith('images/thumbnail.'));
+	}
 
+	data.files.fileRelativePaths = filteredImages;
 	return {
 		map: data
 	};
