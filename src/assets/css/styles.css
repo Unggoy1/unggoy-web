@@ -450,11 +450,20 @@ body {
 	aspect-ratio: 560 / 40;
 }
 
-.elipsis svg {
+.elipsis {
 	width: 24px;
 	height: 40px;
 	position: absolute;
 	right: 14px;
+	bottom: 0;
+	z-index: 11;
+}
+
+.elipsis svg {
+	width: 24px;
+	height: 40px;
+	position: absolute;
+	right: 0px;
 	bottom: 0;
 	z-index: 9;
 }

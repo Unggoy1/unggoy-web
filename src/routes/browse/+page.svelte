@@ -71,16 +71,16 @@
 
 		<div class="assets browse">
 			{#each data.ugc as ugc (ugc.assetId)}
-				<a
-					href="/{ugc.assetKind == 2
-						? 'maps'
-						: ugc.assetKind == 6
-						  ? 'modes'
-						  : 'prefabs'}/{ugc.assetId}"
-					style="color: inherit; text-decoration: none; max-width: 560px"
-				>
-					<AssetCard {ugc} />
-				</a>
+				<div style="color: inherit; text-decoration: none; max-width: 560px">
+					<AssetCard
+						{ugc}
+						assetUrl="/{ugc.assetKind == 2
+							? 'maps'
+							: ugc.assetKind == 6
+							  ? 'modes'
+							  : 'prefabs'}/{ugc.assetId}"
+					/>
+				</div>
 			{/each}
 		</div>
 	</div>

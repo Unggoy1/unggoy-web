@@ -7,7 +7,8 @@
 	import Edit from '../../../components/Edit.svelte';
 	import Private from '../../../components/Private.svelte';
 	import Delete from '../../../components/Delete.svelte';
-
+	import PlaylistDialog from '../../../components/playlistDialog.svelte';
+	import Combobox from '../../../components/combobox.svelte';
 	export let data: PageData;
 	const changePage = (page: number) => {
 		if (page < 1) {
@@ -33,10 +34,21 @@
 		goto(`?${query.toString()}`);
 	};
 
+	// const groups = [
+	// 	[{ icon: Edit, text: `Edit` }],
+	// 	[{ icon: Private, text: `Private` }],
+	// 	[{ icon: Delete, text: `Delete` }]
+	// ];
 	const groups = [
-		[{ icon: Edit, text: `Edit` }],
-		[{ icon: Private, text: `Private` }],
-		[{ icon: Delete, text: `Delete` }]
+		[{ icon: Edit, text: `New playlist` }],
+		[
+			{ text: `Playlist1` },
+			{ text: `playlist2` },
+			{ text: `Playlist3` },
+			{ text: `playlist4` },
+			{ text: `Playlist5` },
+			{ text: `playlist6` }
+		]
 	];
 </script>
 
@@ -49,7 +61,9 @@
 			</div>
 		</div>
 		<div>
-			<Dropdown {groups}></Dropdown>
+			<!-- <Combobox></Combobox> -->
+			<PlaylistDialog></PlaylistDialog>
+			<!-- <Dropdown {groups}></Dropdown> -->
 			<button class="favorite">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
