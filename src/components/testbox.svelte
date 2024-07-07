@@ -17,8 +17,7 @@
 	const combobox = createCombobox({ label: 'Actions', selected: people[2] });
 
 	function onChange(e: Event) {
-		console.log('IEARNSIOTENOIARENTIO');
-		console.log('select', (e as CustomEvent).detail.selected.name);
+		console.log('select', e as CustomEvent);
 	}
 
 	$: filtered = people.filter((person) =>
@@ -30,10 +29,10 @@
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
-	<div class=" top-16 w-72">
+	<div class="fixed top-16 w-72">
 		<div class="relative mt-1">
 			<div
-				class="relative z-10 w-full cursor-default overflow-hidden rounded-lg bg-white text-left text-sm shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300"
+				class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left text-sm shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300"
 			>
 				<input
 					use:combobox.input
@@ -47,13 +46,14 @@
 					class="absolute inset-y-0 right-0 flex items-center pr-2"
 					type="button"
 				>
+					<Selector class="h-5 w-5 text-gray-400" />
 				</button>
 			</div>
 
 			<Transition show={$combobox.expanded} on:after-leave={() => combobox.reset()}>
 				<ul
 					use:combobox.items
-					class="mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+					class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 				>
 					{#each filtered as value}
 						{@const active = $combobox.active === value}
@@ -67,6 +67,15 @@
 							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}"
 								>{value.name}</span
 							>
+							{#if selected}
+								<span
+									class="absolute inset-y-0 left-0 flex items-center pl-3 {active
+										? 'text-white'
+										: 'text-teal-600'}"
+								>
+									<Check class="h-5 w-5" />
+								</span>
+							{/if}
 						</li>
 					{:else}
 						<li class="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">

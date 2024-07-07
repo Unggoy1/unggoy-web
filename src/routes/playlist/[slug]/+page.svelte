@@ -9,6 +9,7 @@
 	import Delete from '../../../components/Delete.svelte';
 	import PlaylistDialog from '../../../components/playlistDialog.svelte';
 	import Combobox from '../../../components/combobox.svelte';
+	import Testbox from '../../../components/testbox.svelte';
 	export let data: PageData;
 	const changePage = (page: number) => {
 		if (page < 1) {
@@ -62,8 +63,9 @@
 		</div>
 		<div>
 			<!-- <Combobox></Combobox> -->
-			<PlaylistDialog></PlaylistDialog>
-			<!-- <Dropdown {groups}></Dropdown> -->
+			<!-- <Testbox></Testbox> -->
+			<!-- <PlaylistDialog></PlaylistDialog> -->
+			<Dropdown {groups}></Dropdown>
 			<button class="favorite">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

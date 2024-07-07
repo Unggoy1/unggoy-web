@@ -241,6 +241,83 @@ body {
 }
 
 /* TODO: LOGIN BUTTON AND USER SIGNED IN STUFF WILL GO HERE */
+.user-signin {
+	padding: 8px 20px;
+	background-color: var(--button-bg);
+	border-radius: 8px;
+	font-family: var(--body-font);
+	font-size: 14px;
+	font-weight: 500;
+	height: 34px;
+	box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+	color: var(--body-color);
+	display: flex;
+	text-decoration: none;
+}
+
+.user-signin:hover {
+	color: #ffffff;
+	background-color: var(--border-color);
+}
+
+.xbox-signin {
+	height: 20px !important;
+	width: 20px !important;
+	margin: auto;
+}
+.xbox-signin-text {
+	font-size: 14px;
+	margin: auto;
+	font-weight: 700;
+}
+
+.user-settings {
+	display: flex;
+	align-items: center;
+	padding-left: 20px;
+	flex-shrink: 0;
+	margin-left: auto;
+}
+.user-settings svg {
+	width: 10px;
+	flex-shrink: 0;
+}
+@media screen and (max-width: 575px) {
+	.user-settings .arrow {
+		display: none;
+	}
+}
+.user-settings .notify {
+	position: relative;
+}
+.user-settings .notify svg {
+	width: 20px;
+	margin-left: 24px;
+	flex-shrink: 0;
+}
+.user-settings .notify .notification {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #ec5252;
+	position: absolute;
+	right: 1px;
+	border: 1px solid var(--theme-bg);
+	top: -2px;
+}
+@media screen and (max-width: 575px) {
+	.user-settings .notify .notification {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 575px) {
+	.xbox-signin-text {
+		display: none;
+	}
+}
+
+/*TODO: remove UNUSED LOGIN CSS  */
 
 .main-container {
 	display: flex;

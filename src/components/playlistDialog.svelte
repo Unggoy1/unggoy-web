@@ -20,16 +20,16 @@
 
 	const combobox = createCombobox({ label: 'Actions', selected: people[2] });
 
-	function onChange(e: Event) {
-		console.log('select', (e as CustomEvent).detail.selected);
-	}
-
-	$: filtered = people.filter((person) =>
-		person.name
-			.toLowerCase()
-			.replace(/\s+/g, '')
-			.includes($combobox.filter.toLowerCase().replace(/\s+/g, ''))
-	);
+	// function onChange(e: Event) {
+	// 	console.log('select', (e as CustomEvent).detail.selected);
+	// }
+	//
+	// $: filtered = people.filter((person) =>
+	// 	person.name
+	// 		.toLowerCase()
+	// 		.replace(/\s+/g, '')
+	// 		.includes($combobox.filter.toLowerCase().replace(/\s+/g, ''))
+	// );
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
@@ -56,16 +56,9 @@
 							class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
 							use:dialog.modal
 						>
-							<h3 class="text-lg font-medium leading-6 text-gray-900">Payment successful</h3>
+							<h3 class="text-lg font-medium leading-6 text-gray-900">Add asset to...</h3>
 
 							<Combobox></Combobox>
-
-							<div class="mt-2">
-								<p class="text-sm text-gray-500">
-									Your payment has been successfully submitted. We’ve sent you an email with all of
-									the details of your order.
-								</p>
-							</div>
 
 							<div class="mt-4">
 								<button

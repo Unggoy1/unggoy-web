@@ -5,7 +5,7 @@ import { PUBLIC_API_URL } from '$env/static/public';
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
 	console.log(PUBLIC_API_URL);
-	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
+	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
 	const fetchParams: UgcFetchData = {};
 
 	const page = url.searchParams.get('page');
