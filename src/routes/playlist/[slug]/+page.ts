@@ -3,9 +3,10 @@ import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
 
 export const ssr = true;
-export const load: PageLoad = async ({ fetch, url }) => {
+export const load: PageLoad = async ({ fetch, url, params }) => {
 	console.log(PUBLIC_API_URL);
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
+	const playlistId: string = params.slug;
 	const fetchParams: UgcFetchData = {};
 
 	const page = url.searchParams.get('page');
@@ -43,16 +44,22 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		fetchParams.tags = tags;
 	}
 
-	const ugcEndpoint = endpoint + 'ugc/browse';
+	const formatedFetchParams = new URLSearchParams(fetchParams);
+	console.log(formatedFetchParams);
+	const ugcEndpoint = endpoint + 'playlist/' + playlistId + '?' + formatedFetchParams.toString();
+	console.log(ugcEndpoint);
 	const response = await fetch(ugcEndpoint, {
-		method: 'POST',
-		body: JSON.stringify(fetchParams),
+		method: 'GET',
+		// body: JSON.stringify(fetchParams),
 		headers: new Headers({ 'content-type': 'application/json' })
 	});
+	console.log(response.status);
 
-	const data: UgcBrowseResponse = await response.json();
+	const data = await response.json();
+	console.log(data);
 
 	return {
+		playlist: data.playlist,
 		ugc: data.assets,
 		totalPages: data.totalCount / data.pageSize + 1,
 		pageSize: data.pageSize,

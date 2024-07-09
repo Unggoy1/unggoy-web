@@ -8,11 +8,29 @@
 	import { PUBLIC_API_URL } from '$env/static/public';
 	import type { LayoutData } from './$types';
 	import { user } from '../stores/user';
+	import ChevronDown from '../components/ChevronDown.svelte';
+	import Play from '../components/Play.svelte';
+	import Star from '../components/Star.svelte';
+	import LogOut from '../components/LogOut.svelte';
+	import DropdownA from '../components/dropdownA.svelte';
 
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);
 
-	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
+	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
+
+	const groups = [
+		[
+			{ icon: Play, text: `My Playlists`, href: '' },
+			{ icon: Star, text: `Liked Playlists`, href: '' },
+			{
+				icon: LogOut,
+				text: `Log Out`,
+				href: `${endpoint}logout?redirectUrl=${escape($page.url.href)}`
+			}
+		]
+	];
+
 	let isSidebarCollapsed = false;
 	let activeLink = null;
 	let searchTerm = '';
@@ -224,19 +242,12 @@
 				<input bind:value={searchTerm} on:keydown={updateUrl} type="text" placeholder="Search" />
 			</div>
 			{#if $user}
-				<div class="user-settings">
-					<!-- <img -->
-					<!-- 	class="user-img" -->
-					<!-- 	src="https://images.unsplash.com/photo-1587918842454-870dbd18261a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=943&q=80" -->
-					<!-- 	alt="" -->
-					<!-- /> -->
-					<div class="user-name">{$user.username}</div>
-					<svg class="arrow" viewBox="0 0 492 492" fill="currentColor">
-						<path
-							d="M484.13 124.99l-16.11-16.23a26.72 26.72 0 00-19.04-7.86c-7.2 0-13.96 2.79-19.03 7.86L246.1 292.6 62.06 108.55c-5.07-5.06-11.82-7.85-19.03-7.85s-13.97 2.79-19.04 7.85L7.87 124.68a26.94 26.94 0 000 38.06l219.14 219.93c5.06 5.06 11.81 8.63 19.08 8.63h.09c7.2 0 13.96-3.57 19.02-8.63l218.93-219.33A27.18 27.18 0 00492 144.1c0-7.2-2.8-14.06-7.87-19.12z"
-						></path>
-					</svg>
-				</div>
+				<!-- <div class="user-settings"> -->
+				<!-- 	<img class="user-img" src="/emblems/popculture_dealerschoice_bigfoot_emblem.png" alt="" /> -->
+				<!-- 	<div class="user-name">{$user.username}</div> -->
+				<!-- 	<ChevronDown></ChevronDown> -->
+				<!-- </div> -->
+				<DropdownA {groups}></DropdownA>
 			{:else}
 				<div class="user-settings">
 					<a

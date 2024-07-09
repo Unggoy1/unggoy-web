@@ -270,7 +270,11 @@ body {
 	margin: auto;
 	font-weight: 700;
 }
-
+.user-img {
+	width: 36px;
+	height: 36px;
+	margin-right: 12px;
+}
 .user-settings {
 	display: flex;
 	align-items: center;
@@ -279,7 +283,7 @@ body {
 	margin-left: auto;
 }
 .user-settings svg {
-	width: 10px;
+	width: 15px;
 	flex-shrink: 0;
 }
 @media screen and (max-width: 575px) {

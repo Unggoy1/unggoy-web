@@ -2,11 +2,13 @@
 	import type { PageData } from './$types';
 	import AssetCard from '../../../components/assetCard.svelte';
 	import Dropdown from '../../../components/dropdown.svelte';
+	import DropdownA from '../../../components/dropdownA.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Edit from '../../../components/Edit.svelte';
-	import Private from '../../../components/Private.svelte';
-	import Delete from '../../../components/Delete.svelte';
+	import LogOut from '../../../components/LogOut.svelte';
+	import Star from '../../../components/Star.svelte';
+	import Play from '../../../components/Play.svelte';
 	import PlaylistDialog from '../../../components/playlistDialog.svelte';
 	import Combobox from '../../../components/combobox.svelte';
 	import Testbox from '../../../components/testbox.svelte';
@@ -41,14 +43,11 @@
 	// 	[{ icon: Delete, text: `Delete` }]
 	// ];
 	const groups = [
-		[{ icon: Edit, text: `New playlist` }],
 		[
-			{ text: `Playlist1` },
-			{ text: `playlist2` },
-			{ text: `Playlist3` },
-			{ text: `playlist4` },
-			{ text: `Playlist5` },
-			{ text: `playlist6` }
+			{ icon: Edit, text: `New playlist` },
+			{ icon: Play, text: `My Playlists`, href: '' },
+			{ icon: Star, text: `Liked Playlists` },
+			{ icon: LogOut, text: `Log Out` }
 		]
 	];
 </script>
@@ -56,9 +55,9 @@
 <div class="main-container">
 	<div class="playlist-container">
 		<div>
-			<div class="playlist-title">Firefight PvE Night</div>
+			<div class="playlist-title">{data.playlist.name}</div>
 			<div class="playlist-description">
-				A playlist full of firefight and other PvE gamemodes for a uber fun night.
+				{data.playlist.description}
 			</div>
 		</div>
 		<div>
@@ -133,16 +132,16 @@
 
 		<div class="assets browse">
 			{#each data.ugc as ugc (ugc.assetId)}
-				<a
-					href="/{ugc.assetKind == 2
-						? 'maps'
-						: ugc.assetKind == 6
-						  ? 'modes'
-						  : 'prefabs'}/{ugc.assetId}"
-					style="color: inherit; text-decoration: none; max-width: 560px"
-				>
-					<AssetCard {ugc} />
-				</a>
+				<div style="color: inherit; text-decoration: none; max-width: 560px">
+					<AssetCard
+						{ugc}
+						assetUrl="/{ugc.assetKind == 2
+							? 'maps'
+							: ugc.assetKind == 6
+							  ? 'modes'
+							  : 'prefabs'}/{ugc.assetId}"
+					/>
+				</div>
 			{/each}
 		</div>
 	</div>

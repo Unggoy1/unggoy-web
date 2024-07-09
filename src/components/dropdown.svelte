@@ -63,14 +63,6 @@
 					use:menu.items
 					class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
 				>
-					<div class="search-bar px-1 py-1">
-						<input
-							bind:value={searchInput}
-							on:input={onInput}
-							type="text"
-							placeholder="Find a Playlist"
-						/>
-					</div>
 					{#each groups as group}
 						<div class="px-1 py-1">
 							{#each group as option}
