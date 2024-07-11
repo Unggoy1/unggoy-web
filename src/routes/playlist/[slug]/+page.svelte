@@ -63,8 +63,7 @@
 		<div>
 			<!-- <Combobox></Combobox> -->
 			<!-- <Testbox></Testbox> -->
-			<!-- <PlaylistDialog></PlaylistDialog> -->
-			<Dropdown {groups}></Dropdown>
+			<PlaylistDialog></PlaylistDialog>
 			<button class="favorite">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

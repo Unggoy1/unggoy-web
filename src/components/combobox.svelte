@@ -6,19 +6,26 @@
 
 	// prettier-ignore
 	const people = [
-		{ name: 'Wade Cooper' },
-		{ name: 'Arlene Mccoy' },
-		{ name: 'Devon Webb' },
-		{ name: 'Tom Cook' },
-		{ name: 'Tanya Fox' },
-		{ name: 'Hellen Schmidt' },
+		{ name: 'Firefight Fridays' },
+		{ name: 'Social Slayer Wacky' },
+		{ name: 'Competitive 4v4' },
+		{ name: 'Big Team Madness' },
+		{ name: 'Action Sack' },
+		{ name: 'Emus Minigames' },
+		{name: 'High Charity Tuesday Night Halo'},
+		{name: 'Vs Gungame Maps'},
+		{name: 'TSG modes v3'},
+		{name: 'Campaign/Firefight maps'},
+		{name: 'Halo Remake Maps'},
+		{name: 'HFT Husky Raid Competition'},
+
 	]
 
-	const combobox = createCombobox({ label: 'Actions', selected: people[2] });
+	const combobox = createCombobox({ label: 'Actions', selected: people[0] });
 
 	function onChange(e: Event) {
-		console.log('IEARNSIOTENOIARENTIO');
 		console.log('select', (e as CustomEvent).detail.selected.name);
+		// combobox.reset();
 	}
 
 	$: filtered = people.filter((person) =>
@@ -30,61 +37,67 @@
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
-	<div class=" top-16 w-72">
-		<div class="relative mt-1">
-			<div
-				class="relative z-10 w-full cursor-default overflow-hidden rounded-lg bg-white text-left text-sm shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300"
-			>
-				<input
-					use:combobox.input
-					on:change={onChange}
-					class="w-full border-none py-2 pl-3 pr-10 leading-5 text-gray-900 focus:ring-0"
-					value={$combobox.selected.name}
-				/>
-				<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
-				<button
-					use:combobox.button
-					class="absolute inset-y-0 right-0 flex items-center pr-2"
-					type="button"
-				>
-				</button>
-			</div>
+	<div class="input-container">
+		<div class="z-10 cursor-default input">
+			<input
+				use:combobox.input
+				on:select={onChange}
+				class="py-2 pl-3 pr-10 leading-5 input"
+				value={$combobox.selected.name}
+			/>
+			<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
+		</div>
 
-			<Transition show={$combobox.expanded} on:after-leave={() => combobox.reset()}>
-				<ul
-					use:combobox.items
-					class="mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-				>
-					{#each filtered as value}
-						{@const active = $combobox.active === value}
-						{@const selected = $combobox.selected === value}
-						<li
-							class="relative cursor-default select-none py-2 pl-10 pr-4 {active
-								? 'bg-teal-600 text-white'
-								: 'text-gray-900'}"
-							use:combobox.item={{ value }}
+		<div>
+			<ul use:combobox.items class="mt-1 max-h-60 w-full overflow-auto py-1">
+				{#each filtered as value}
+					{@const active = $combobox.active === value}
+					{@const selected = $combobox.selected === value}
+					<li
+						class="relative cursor-default select-none py-2 pr-4 {active
+							? 'bg-teal-600 text-white'
+							: 'text-container'}"
+						use:combobox.item={{ value }}
+					>
+						<span class="block truncate {selected ? 'font-medium' : 'font-normal'}"
+							>{value.name}</span
 						>
-							<span class="block truncate {selected ? 'font-medium' : 'font-normal'}"
-								>{value.name}</span
-							>
-						</li>
-					{:else}
-						<li class="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900">
-							<span class="block truncate font-normal">Nothing found</span>
-						</li>
-					{/each}
-				</ul>
-			</Transition>
+					</li>
+				{:else}
+					<li class=" cursor-default select-none py-2 pl-10 pr-4 nothing">
+						<span>Nothing found</span>
+					</li>
+				{/each}
+			</ul>
 		</div>
 	</div>
 </div>
 
 <style>
+	ul {
+		padding-left: 0px;
+		scrollbar-color: var(--button-bg) var(--container-bg);
+	}
+	li {
+		padding-left: 8px;
+		border-radius: 8px;
+	}
+	.nothing {
+		color: var(--container-color);
+	}
 	.absolute {
 		position: absolute;
 	}
-	.relative {
-		position: relative;
+	.input-container {
+		width: 100%;
+	}
+
+	.input {
+		background-color: #303637;
+		outline: #3f484b solid 2px !important;
+		color: var(--container-color);
+		border-radius: 8px;
+		width: 100%;
 	}
 	.inset-y-0 {
 		top: 0px;
@@ -148,13 +161,10 @@
 		border-style: none;
 	}
 	.bg-teal-600 {
-		--tw-bg-opacity: 1;
-		background-color: rgb(13 148 136 / var(--tw-bg-opacity));
+		background-color: var(--button-bg);
+		color: var(--button-color);
 	}
-	.bg-white {
-		--tw-bg-opacity: 1;
-		background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-	}
+
 	.py-1 {
 		padding-top: 0.25rem;
 		padding-bottom: 0.25rem;
@@ -190,87 +200,5 @@
 	}
 	.leading-5 {
 		line-height: 1.25rem;
-	}
-	.text-gray-400 {
-		--tw-text-opacity: 1;
-		color: rgb(156 163 175 / var(--tw-text-opacity));
-	}
-	.text-gray-900 {
-		--tw-text-opacity: 1;
-		color: rgb(17 24 39 / var(--tw-text-opacity));
-	}
-	.text-white {
-		--tw-text-opacity: 1;
-		color: rgb(255 255 255 / var(--tw-text-opacity));
-	}
-	.shadow-lg {
-		--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-		--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
-			0 4px 6px -4px var(--tw-shadow-color);
-		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-			var(--tw-shadow);
-	}
-	.shadow-md {
-		--tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-		--tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color),
-			0 2px 4px -2px var(--tw-shadow-color);
-		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-			var(--tw-shadow);
-	}
-	.outline-none {
-		outline: 2px solid transparent;
-		outline-offset: 2px;
-	}
-	.ring-0 {
-		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
-			var(--tw-ring-offset-color);
-		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width))
-			var(--tw-ring-color);
-		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-	}
-	.ring-1 {
-		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
-			var(--tw-ring-offset-color);
-		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width))
-			var(--tw-ring-color);
-		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-	}
-	.ring-black {
-		--tw-ring-opacity: 1;
-		--tw-ring-color: rgb(0 0 0 / var(--tw-ring-opacity));
-	}
-	.ring-opacity-5 {
-		--tw-ring-opacity: 0.05;
-	}
-	.focus\:outline-none:focus {
-		outline: 2px solid transparent;
-		outline-offset: 2px;
-	}
-	.focus\:ring-0:focus {
-		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
-			var(--tw-ring-offset-color);
-		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width))
-			var(--tw-ring-color);
-		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-	}
-	.focus-visible\:ring-2:focus-visible {
-		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
-			var(--tw-ring-offset-color);
-		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width))
-			var(--tw-ring-color);
-		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-	}
-	.focus-visible\:ring-white:focus-visible {
-		--tw-ring-opacity: 1;
-		--tw-ring-color: rgb(255 255 255 / var(--tw-ring-opacity));
-	}
-	.focus-visible\:ring-opacity-75:focus-visible {
-		--tw-ring-opacity: 0.75;
-	}
-	.focus-visible\:ring-offset-2:focus-visible {
-		--tw-ring-offset-width: 2px;
-	}
-	.focus-visible\:ring-offset-teal-300:focus-visible {
-		--tw-ring-offset-color: #5eead4;
 	}
 </style>
