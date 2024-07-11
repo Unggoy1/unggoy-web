@@ -61,6 +61,7 @@
 	.dialog-container {
 		background-color: var(--container-bg);
 		color: var(--container-color);
+		height: 500px;
 	}
 	.dialog-background {
 		background-color: #00000040;

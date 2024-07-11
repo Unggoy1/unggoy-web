@@ -122,7 +122,7 @@
 		height: 1.25rem;
 	}
 	.max-h-60 {
-		max-height: 15rem;
+		max-height: 360px;
 	}
 	.w-5 {
 		width: 1.25rem;
