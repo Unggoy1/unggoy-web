@@ -1,9 +1,18 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { createDialog } from 'svelte-headlessui';
 	import Transition from 'svelte-transition';
 	import Combobox from './combobox.svelte';
 
-	export const dialog = createDialog({ label: 'Payment Success' });
+	interface Props {
+		children: Snippet;
+		commands: Snippet;
+		onclose: () => void;
+	}
+
+	let { children, commands, onclose }: Props = $props();
+
+	const dialog = createDialog();
 
 	function onChange(e: Event) {
 		//TODO: Figure out how to set the selected playlist to null on start

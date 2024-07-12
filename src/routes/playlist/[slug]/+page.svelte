@@ -37,12 +37,6 @@
 		query.set('order', data.order);
 		goto(`?${query.toString()}`);
 	};
-
-	// const groups = [
-	// 	[{ icon: Edit, text: `Edit` }],
-	// 	[{ icon: Private, text: `Private` }],
-	// 	[{ icon: Delete, text: `Delete` }]
-	// ];
 	const groups = [
 		[
 			{ icon: Edit, text: `New playlist` },
@@ -51,6 +45,7 @@
 			{ icon: LogOut, text: `Log Out` }
 		]
 	];
+	let dialog;
 </script>
 
 <div class="main-container">
@@ -64,9 +59,9 @@
 		<div>
 			<!-- <Combobox></Combobox> -->
 			<!-- <Testbox></Testbox> -->
-			<PlaylistDialog></PlaylistDialog>
+			<PlaylistDialog bind:this={dialog}></PlaylistDialog>
 			<!-- <CreatePlaylistDialog></CreatePlaylistDialog> -->
-			<button class="favorite">
+			<button class="favorite" on:click={dialog.dialog.open}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="34"

@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { PlaylistData, UgcData } from '$lib/api';
 	import AssetKind from './assetKind.svelte';
+	import PlaylistDialog from './playlistDialog.svelte';
 	export let ugc: UgcData = undefined;
 	export let playlist: PlaylistData = undefined;
 	export let assetUrl: string;
+	let dialog;
 </script>
 
 <div class="asset">

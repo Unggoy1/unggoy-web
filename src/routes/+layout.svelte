@@ -13,17 +13,22 @@
 	import Star from '../components/Star.svelte';
 	import LogOut from '../components/LogOut.svelte';
 	import DropdownA from '../components/dropdownA.svelte';
+	import { DropdownType } from '$lib/enums';
 
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);
 
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
-
+	function test() {
+		console.log('lololol');
+	}
 	const groups = [
 		[
-			{ icon: Play, text: `My Playlists`, href: '' },
-			{ icon: Star, text: `Liked Playlists`, href: '' },
+			{ type: DropdownType.Button, icon: Play, text: `Create New Playlist`, function: test },
+			{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '' },
+			{ type: DropdownType.A, icon: Star, text: `Liked Playlists`, href: '' },
 			{
+				type: DropdownType.A,
 				icon: LogOut,
 				text: `Log Out`,
 				href: `${endpoint}logout?redirectUrl=${escape($page.url.href)}`

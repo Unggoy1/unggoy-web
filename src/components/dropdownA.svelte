@@ -3,6 +3,7 @@
 	import Transition from 'svelte-transition';
 	import ChevronDown from './ChevronDown.svelte';
 	import { user } from '../stores/user';
+	import { DropdownType } from '$lib/enums';
 
 	const menu = createMenu({ label: 'Actions' });
 
@@ -32,16 +33,32 @@
 						<div class="tt px-1 py-1">
 							{#each group as option}
 								{@const active = $menu.active === option.text}
-								<a
-									use:menu.item
-									href={option.href}
-									class="menu-item flex w-full items-center rounded-md {active
-										? 'menu-item-active'
-										: 'menu-item-inactive'}"
-								>
-									<svelte:component this={option.icon} class="mr-2 h-5 w-5" {active} />
-									{option.text}
-								</a>
+								{#if option.type === DropdownType.A}
+									<a
+										use:menu.item
+										href={option.href}
+										class="menu-item flex w-full items-center rounded-md {active
+											? 'menu-item-active'
+											: 'menu-item-inactive'}"
+									>
+										<svelte:component this={option.icon} class="mr-2 h-5 w-5" {active} />
+										{option.text}
+									</a>
+								{:else if option.type === DropdownType.Button}
+									<button
+										use:menu.item
+										on:click={() => {
+											option.function();
+											menu.close();
+										}}
+										class="menu-item flex w-full items-center rounded-md {active
+											? 'menu-item-active'
+											: 'menu-item-inactive'}"
+									>
+										<svelte:component this={option.icon} class="mr-2 h-5 w-5" {active} />
+										{option.text}
+									</button>
+								{/if}
 							{/each}
 						</div>
 					{/each}
