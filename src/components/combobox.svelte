@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { createCombobox } from 'svelte-headlessui';
-	import Transition from 'svelte-transition';
-	import Selector from './Selector.svelte';
-	import Check from './Check.svelte';
+	import { createEventDispatcher } from 'svelte';
+	const dispatcher = createEventDispatcher();
 
 	// prettier-ignore
 	const people = [
@@ -25,6 +24,7 @@
 
 	function onChange(e: Event) {
 		console.log('select', (e as CustomEvent).detail.selected.name);
+		dispatcher('select', { playlist: (e as CustomEvent).detail.selected.name });
 		// combobox.reset();
 	}
 

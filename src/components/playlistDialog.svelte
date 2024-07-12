@@ -1,25 +1,18 @@
 <script lang="ts">
-	import { createCombobox } from 'svelte-headlessui';
 	import { createDialog } from 'svelte-headlessui';
 	import Transition from 'svelte-transition';
-	import Selector from './Selector.svelte';
-	import Check from './Check.svelte';
 	import Combobox from './combobox.svelte';
 
 	const dialog = createDialog({ label: 'Payment Success' });
 
-	// prettier-ignore
-
-	// function onChange(e: Event) {
-	// 	console.log('select', (e as CustomEvent).detail.selected);
-	// }
-	//
-	// $: filtered = people.filter((person) =>
-	// 	person.name
-	// 		.toLowerCase()
-	// 		.replace(/\s+/g, '')
-	// 		.includes($combobox.filter.toLowerCase().replace(/\s+/g, ''))
-	// );
+	function onChange(e: Event) {
+		//TODO: Figure out how to set the selected playlist to null on start
+		console.log('testttttt');
+		dialog.close();
+		// console.log('select', (e as CustomEvent).detail.selected.name);
+		// dispatcher('select', { playlist: (e as CustomEvent).detail.selected.name });
+		// combobox.reset();
+	}
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
@@ -48,7 +41,7 @@
 						>
 							<h3 class="text-lg font-medium leading-6">Add to playlist...</h3>
 
-							<Combobox></Combobox>
+							<Combobox on:select={onChange}></Combobox>
 						</div>
 					</Transition>
 				</div>
