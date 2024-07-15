@@ -13,6 +13,7 @@
 	import Combobox from '../../../components/combobox.svelte';
 	import Testbox from '../../../components/testbox.svelte';
 	import CreatePlaylistDialog from '../../../components/createPlaylistDialog.svelte';
+	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	export let data: PageData;
 	const changePage = (page: number) => {
 		if (page < 1) {
@@ -45,8 +46,23 @@
 			{ icon: LogOut, text: `Log Out` }
 		]
 	];
-	let dialog;
+	let dialog: PlaylistModal;
+	export function open() {
+		dialog.create();
+	}
+	function onChange(e: Event) {
+		//TODO: Figure out how to set the selected playlist to null on start
+		console.log(e as CustomEvent);
+		// dialog.close();
+		// console.log('select', (e as CustomEvent).detail.selected.name);
+		// dispatcher('select', { playlist: (e as CustomEvent).detail.selected.name });
+		// combobox.reset();
+	}
 </script>
+
+<svelte:head>
+	<title>{data.playlist.name}</title>
+</svelte:head>
 
 <div class="main-container">
 	<div class="playlist-container">
@@ -59,9 +75,10 @@
 		<div>
 			<!-- <Combobox></Combobox> -->
 			<!-- <Testbox></Testbox> -->
-			<PlaylistDialog bind:this={dialog}></PlaylistDialog>
+			<!-- <PlaylistDialog bind:this={dialog}></PlaylistDialog> -->
 			<!-- <CreatePlaylistDialog></CreatePlaylistDialog> -->
-			<button class="favorite" on:click={dialog.dialog.open}>
+			<PlaylistModal bind:this={dialog}></PlaylistModal>
+			<button class="favorite" on:click={open}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="34"

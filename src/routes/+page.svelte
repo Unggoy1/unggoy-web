@@ -28,16 +28,16 @@
 		<!-- </a> -->
 		<div class="assets">
 			{#each data.newMaps as ugc (ugc.assetId)}
-				<a
-					href="/{ugc.assetKind == 2
-						? 'maps'
-						: ugc.assetKind == 6
-						  ? 'modes'
-						  : 'prefabs'}/{ugc.assetId}"
-					style="color: inherit; text-decoration: none;"
-				>
-					<AssetCard {ugc} />
-				</a>
+				<div style="color: inherit; text-decoration: none;">
+					<AssetCard
+						{ugc}
+						assetUrl="/{ugc.assetKind == 2
+							? 'maps'
+							: ugc.assetKind == 6
+							  ? 'modes'
+							  : 'prefabs'}/{ugc.assetId}"
+					/>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -45,16 +45,16 @@
 		<div class="small-header">Trending Maps</div>
 		<div class="assets">
 			{#each data.trendingMaps as ugc (ugc.assetId)}
-				<a
-					href="/{ugc.assetKind == 2
-						? 'maps'
-						: ugc.assetKind == 6
-						  ? 'modes'
-						  : 'prefabs'}/{ugc.assetId}"
-					style="color: inherit; text-decoration: none;"
-				>
-					<AssetCard {ugc} />
-				</a>
+				<div style="color: inherit; text-decoration: none;">
+					<AssetCard
+						{ugc}
+						assetUrl="/{ugc.assetKind == 2
+							? 'maps'
+							: ugc.assetKind == 6
+							  ? 'modes'
+							  : 'prefabs'}/{ugc.assetId}"
+					/>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -62,16 +62,16 @@
 		<div class="small-header">New Modes</div>
 		<div class="assets">
 			{#each data.newModes as ugc (ugc.assetId)}
-				<a
-					href="/{ugc.assetKind == 2
-						? 'maps'
-						: ugc.assetKind == 6
-						  ? 'modes'
-						  : 'prefabs'}/{ugc.assetId}"
-					style="color: inherit; text-decoration: none;"
-				>
-					<AssetCard {ugc} />
-				</a>
+				<div style="color: inherit; text-decoration: none;">
+					<AssetCard
+						{ugc}
+						assetUrl="/{ugc.assetKind == 2
+							? 'maps'
+							: ugc.assetKind == 6
+							  ? 'modes'
+							  : 'prefabs'}/{ugc.assetId}"
+					/>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -79,16 +79,16 @@
 		<div class="small-header">Trending Modes</div>
 		<div class="assets">
 			{#each data.trendingModes as ugc (ugc.assetId)}
-				<a
-					href="/{ugc.assetKind == 2
-						? 'maps'
-						: ugc.assetKind == 6
-						  ? 'modes'
-						  : 'prefabs'}/{ugc.assetId}"
-					style="color: inherit; text-decoration: none;"
-				>
-					<AssetCard {ugc} />
-				</a>
+				<div style="color: inherit; text-decoration: none;">
+					<AssetCard
+						{ugc}
+						assetUrl="/{ugc.assetKind == 2
+							? 'maps'
+							: ugc.assetKind == 6
+							  ? 'modes'
+							  : 'prefabs'}/{ugc.assetId}"
+					/>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -97,23 +97,23 @@
 <style>
 	/* TODO: Figure out if there is a better way to go about doing this*/
 	@media screen and (max-width: 1963px) {
-		.assets a:nth-child(n + 5) {
+		.assets div:nth-child(n + 5) {
 			display: none;
 		}
 	}
 	@media screen and (max-width: 2299px) {
-		.assets a:nth-child(n + 6) {
+		.assets div:nth-child(n + 6) {
 			display: none;
 		}
 	}
 	@media screen and (max-width: 2635px) {
-		.assets a:nth-child(n + 7) {
+		.assets div:nth-child(n + 7) {
 			display: none;
 		}
 	}
 
 	@media screen and (max-width: 2971px) {
-		.assets a:nth-child(n + 8) {
+		.assets div:nth-child(n + 8) {
 			display: none;
 		}
 	}

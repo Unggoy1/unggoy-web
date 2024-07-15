@@ -5,7 +5,6 @@
 	export let ugc: UgcData = undefined;
 	export let playlist: PlaylistData = undefined;
 	export let assetUrl: string;
-	let dialog;
 </script>
 
 <div class="asset">

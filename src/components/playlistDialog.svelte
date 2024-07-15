@@ -3,7 +3,10 @@
 	import Transition from 'svelte-transition';
 	import Combobox from './combobox.svelte';
 
-	export const dialog = createDialog({ label: 'Payment Success' });
+	 const dialog = createDialog({ label: 'Payment Success' });
+	export function open() {
+		dialog.open();
+	}
 
 	function onChange(e: Event) {
 		//TODO: Figure out how to set the selected playlist to null on start
