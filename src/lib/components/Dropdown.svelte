@@ -2,35 +2,48 @@
 	import { createMenu } from 'svelte-headlessui';
 	import Transition from 'svelte-transition';
 	import ChevronDown from './ChevronDown.svelte';
-	import { user } from '../stores/user';
+	import { user } from '../../stores/user';
 	import { DropdownType } from '$lib/enums';
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		children: Snippet;
+		groups: any;
+	}
+
+	let { children, groups }: Props = $props();
 
 	const menu = createMenu({ label: 'Actions' });
+
+	export function button(node: HTMLElement) {
+		menu.button(node);
+	}
+
+	export function open() {
+		menu.open();
+	}
 
 	function onSelect(e: Event) {
 		console.log('select', (e as CustomEvent).detail);
 	}
+	function click(fn) {
+		fn();
+		menu.close();
+	}
 
 	// prettier-ignore
-	export let groups;
 </script>
-
-<div class="elipsis">
+<div class="menu">
+<div use:menu.button>{@render children()}</div>
 	<div class=" text-right">
 		<div class="relative inline-block text-left">
-			<div use:menu.button on:select={onSelect} class="user-settings">
-				<img class="user-img" src="/emblems/popculture_dealerschoice_bigfoot_emblem.png" alt="" />
-				<div class="user-name">{$user.username}</div>
-				<ChevronDown></ChevronDown>
-			</div>
-
-			<Transition show={$menu.expanded}>
+			<Transition show={$menu.expanded} unmount>
 				<div
 					use:menu.items
 					class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
 				>
 					{#each groups as group}
-						<div class="tt px-1 py-1">
+						<div class="px-1 py-1">
 							{#each group as option}
 								{@const active = $menu.active === option.text}
 								{#if option.type === DropdownType.A}
@@ -47,7 +60,7 @@
 								{:else if option.type === DropdownType.Button}
 									<button
 										use:menu.item
-										on:click={() => {
+										onclick={() => {
 											option.function();
 											menu.close();
 										}}
@@ -66,17 +79,15 @@
 			</Transition>
 		</div>
 	</div>
-</div>
+	</div>
 
 <style>
 	.menu {
-		width: 64px;
-		height: 64px;
-		float: right;
-		background-color: var(--button-bg);
-		border-radius: 100px;
-		margin-right: 16px;
-		text-align: center;
+	display: flex;
+	align-items: center;
+	padding-left: 20px;
+	flex-shrink: 0;
+	margin-left: auto;
 	}
 	.menu-button {
 		width: 64px;
@@ -96,5 +107,8 @@
 		font-style: normal;
 		font-weight: 500;
 		line-height: 140%; /* 22.4px */
+	}
+	.mt-2 {
+		margin-top: 20px;
 	}
 </style>

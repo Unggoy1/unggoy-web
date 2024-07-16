@@ -40,7 +40,7 @@
 	);
 </script>
 
-<div class="menu">
+<div class="elipsis">
 	<div class=" text-right">
 		<div class="relative inline-block text-left">
 			<button use:menu.button on:select={onSelect} class="menu-button">

@@ -9,9 +9,7 @@
 	import LogOut from '../../../components/LogOut.svelte';
 	import Star from '../../../components/Star.svelte';
 	import Play from '../../../components/Play.svelte';
-	import PlaylistDialog from '../../../components/playlistDialog.svelte';
 	import Combobox from '../../../components/combobox.svelte';
-	import Testbox from '../../../components/testbox.svelte';
 	import CreatePlaylistDialog from '../../../components/createPlaylistDialog.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	export let data: PageData;
@@ -74,7 +72,6 @@
 		</div>
 		<div>
 			<!-- <Combobox></Combobox> -->
-			<!-- <Testbox></Testbox> -->
 			<!-- <PlaylistDialog bind:this={dialog}></PlaylistDialog> -->
 			<!-- <CreatePlaylistDialog></CreatePlaylistDialog> -->
 			<PlaylistModal bind:this={dialog}></PlaylistModal>

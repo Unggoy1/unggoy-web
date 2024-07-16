@@ -1,30 +1,34 @@
 <script lang="ts">
 	import { createCombobox } from 'svelte-headlessui';
 	import { createEventDispatcher } from 'svelte';
+	import { user } from '../../stores/user';
 	const dispatcher = createEventDispatcher();
 
 	// prettier-ignore
-	const people = [
-		{ name: 'Firefight Fridays' },
-		{ name: 'Social Slayer Wacky' },
-		{ name: 'Competitive 4v4' },
-		{ name: 'Big Team Madness' },
-		{ name: 'Action Sack' },
-		{ name: 'Emus Minigames' },
-		{name: 'High Charity Tuesday Night Halo'},
-		{name: 'Vs Gungame Maps'},
-		{name: 'TSG modes v3'},
-		{name: 'Campaign/Firefight maps'},
-		{name: 'Halo Remake Maps'},
-		{name: 'HFT Husky Raid Competition'},
+	// const people = [
+	// 	{ name: 'Firefight Fridays' },
+	// 	{ name: 'Social Slayer Wacky' },
+	// 	{ name: 'Competitive 4v4' },
+	// 	{ name: 'Big Team Madness' },
+	// 	{ name: 'Action Sack' },
+	// 	{ name: 'Emus Minigames' },
+	// 	{name: 'High Charity Tuesday Night Halo'},
+	// 	{name: 'Vs Gungame Maps'},
+	// 	{name: 'TSG modes v3'},
+	// 	{name: 'Campaign/Firefight maps'},
+	// 	{name: 'Halo Remake Maps'},
+	// 	{name: 'HFT Husky Raid Competition'},
+	//
+	// ]
+	export let people = $user.Playlist
 
-	]
-
-	const combobox = createCombobox({ label: 'Actions', selected: people[0] });
+	const combobox = createCombobox({ label: 'Playlists', selected: '' });
 
 	function onChange(e: Event) {
-		console.log('select', (e as CustomEvent).detail.selected.name);
-		dispatcher('select', { playlist: (e as CustomEvent).detail.selected.name });
+		if ((e as CustomEvent).detail?.selected?.name) {
+			console.log('select', (e as CustomEvent).detail.selected.name);
+			dispatcher('select', { playlist: (e as CustomEvent).detail.selected.name });
+		}
 		// combobox.reset();
 	}
 

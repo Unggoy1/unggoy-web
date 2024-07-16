@@ -2,6 +2,7 @@
 	import Modal from './Modal.svelte';
 	import Combobox from './Combobox.svelte';
 	// import { emptyDetails, type Details } from './details';
+	import { user } from '../../stores/user';
 
 	let modal: Modal;
 	// let details: Details = $state(emptyDetails);
@@ -31,8 +32,10 @@
 		});
 	}
 
-	function save() {
-		modal.close();
+	function save(e: CustomEvent) {
+		console.log(e.detail.playlist);
+
+		// modal.close();
 		resolve({});
 	}
 

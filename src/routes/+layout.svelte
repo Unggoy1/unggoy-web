@@ -12,11 +12,12 @@
 	import Play from '../components/Play.svelte';
 	import Star from '../components/Star.svelte';
 	import LogOut from '../components/LogOut.svelte';
-	import DropdownA from '../components/dropdownA.svelte';
+	import Dropdown from '$lib/components/Dropdown.svelte';
 	import { DropdownType } from '$lib/enums';
 
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);
+	let dropdown: Dropdown;
 
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
 	function test() {
@@ -252,7 +253,17 @@
 				<!-- 	<div class="user-name">{$user.username}</div> -->
 				<!-- 	<ChevronDown></ChevronDown> -->
 				<!-- </div> -->
-				<DropdownA {groups}></DropdownA>
+				<Dropdown bind:this={dropdown} {groups}>
+					<div class="user-settings">
+						<img
+							class="user-img"
+							src="/emblems/popculture_dealerschoice_bigfoot_emblem.png"
+							alt=""
+						/>
+						<div class="user-name">{$user.username}</div>
+						<ChevronDown></ChevronDown>
+					</div>
+				</Dropdown>
 			{:else}
 				<div class="user-settings">
 					<a

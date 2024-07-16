@@ -1,10 +1,32 @@
 <script lang="ts">
 	import type { PlaylistData, UgcData } from '$lib/api';
 	import AssetKind from './assetKind.svelte';
-	import PlaylistDialog from './playlistDialog.svelte';
+	import LogOut from './LogOut.svelte';
+	import { DropdownType } from '$lib/enums';
+	import Star from './Star.svelte';
+	import Play from './Play.svelte';
+	import { page } from '$app/stores';
+	import { PUBLIC_API_URL } from '$env/static/public';
+	import DropdownCard from '$lib/components/DropdownCard.svelte';
 	export let ugc: UgcData = undefined;
 	export let playlist: PlaylistData = undefined;
 	export let assetUrl: string;
+
+	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
+	let dropdown: DropdownCard;
+	const groups = [
+		[
+			{ type: DropdownType.Button, icon: Play, text: `Create New Playlist` },
+			{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '' },
+			{ type: DropdownType.A, icon: Star, text: `Liked Playlists`, href: '' },
+			{
+				type: DropdownType.A,
+				icon: LogOut,
+				text: `Log Out`,
+				href: `${endpoint}logout?redirectUrl=${escape($page.url.href)}`
+			}
+		]
+	];
 </script>
 
 <div class="asset">
@@ -23,8 +45,7 @@
 		<a href={assetUrl} class="asset-name">
 			{ugc?.name || playlist?.name}
 		</a>
-
-		<button class="elipsis">
+		<button use:dropdown.button class="elipsis">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
@@ -39,4 +60,5 @@
 			</svg>
 		</button>
 	</div>
+	<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
 </div>
