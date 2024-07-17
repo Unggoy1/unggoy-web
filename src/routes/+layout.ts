@@ -5,7 +5,8 @@ export const load: LayoutLoad = async ({ fetch }) => {
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
 
 	const response = await fetch(endpoint + 'user', {
-		method: 'GET'
+		method: 'GET',
+		credentials: 'include'
 	});
 	if (!response.ok) {
 		return {

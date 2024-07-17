@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { createMenu } from 'svelte-headlessui';
 	import Transition from 'svelte-transition';
-	import ChevronDown from './ChevronDown.svelte';
-	import { user } from '../../stores/user';
 	import { DropdownType } from '$lib/enums';
-	import type { Snippet } from 'svelte';
 
 	interface Props {
 		groups: any;
@@ -34,12 +31,9 @@
 </script>
 
 <Transition show={$menu.expanded} unmount>
-	<!-- <div class="menu"> -->
-	<!-- 	<div class=" text-right"> -->
-	<!-- 		<div class="inline-block text-left"> -->
 	<div
 		use:menu.items
-		class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
+		class="z-20 absolute right-0 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
 	>
 		{#each groups as group}
 			<div class="px-1 py-1">
@@ -60,7 +54,7 @@
 						<button
 							use:menu.item
 							onclick={() => {
-								option.function();
+								option.function(option.params);
 								menu.close();
 							}}
 							class="menu-item flex w-full items-center rounded-md {active
@@ -75,9 +69,6 @@
 			</div>
 		{/each}
 	</div>
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<!-- </div> -->
 </Transition>
 
 <style>

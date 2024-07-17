@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { createDialog } from 'svelte-headlessui';
 	import Transition from 'svelte-transition';
-	import Combobox from './combobox.svelte';
+	import Combobox from './Combobox.svelte';
 
 	interface Props {
 		children: Snippet;

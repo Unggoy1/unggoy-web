@@ -242,7 +242,7 @@
 		<!-- 	</div> -->
 		<!-- </div> -->
 	</div>
-	<div class="wrapper">
+	<div class="header-wrapper">
 		<div class="header">
 			<div class="search-bar">
 				<input bind:value={searchTerm} on:keydown={updateUrl} type="text" placeholder="Search" />

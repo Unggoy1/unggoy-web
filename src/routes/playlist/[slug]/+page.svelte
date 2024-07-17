@@ -1,17 +1,16 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import AssetCard from '../../../components/assetCard.svelte';
-	import Dropdown from '../../../components/dropdown.svelte';
-	import DropdownA from '../../../components/dropdownA.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Edit from '../../../components/Edit.svelte';
-	import LogOut from '../../../components/LogOut.svelte';
-	import Star from '../../../components/Star.svelte';
 	import Play from '../../../components/Play.svelte';
-	import Combobox from '../../../components/combobox.svelte';
 	import CreatePlaylistDialog from '../../../components/createPlaylistDialog.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
+	import { DropdownType } from '$lib/enums';
+	import { playlistDeleteAsset } from '$lib/api/playlist';
+	import { Toaster } from 'svelte-french-toast';
+	import Delete from '../../../components/Delete.svelte';
+
 	export let data: PageData;
 	const changePage = (page: number) => {
 		if (page < 1) {
@@ -23,7 +22,6 @@
 		}
 		updateUrl();
 	};
-
 	const updateUrl = () => {
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('page', String(data.currentPage));
@@ -36,25 +34,9 @@
 		query.set('order', data.order);
 		goto(`?${query.toString()}`);
 	};
-	const groups = [
-		[
-			{ icon: Edit, text: `New playlist` },
-			{ icon: Play, text: `My Playlists`, href: '' },
-			{ icon: Star, text: `Liked Playlists` },
-			{ icon: LogOut, text: `Log Out` }
-		]
-	];
 	let dialog: PlaylistModal;
 	export function open() {
 		dialog.create();
-	}
-	function onChange(e: Event) {
-		//TODO: Figure out how to set the selected playlist to null on start
-		console.log(e as CustomEvent);
-		// dialog.close();
-		// console.log('select', (e as CustomEvent).detail.selected.name);
-		// dispatcher('select', { playlist: (e as CustomEvent).detail.selected.name });
-		// combobox.reset();
 	}
 </script>
 
@@ -62,6 +44,7 @@
 	<title>{data.playlist.name}</title>
 </svelte:head>
 
+<Toaster />
 <div class="main-container">
 	<div class="playlist-container">
 		<div>
@@ -71,8 +54,6 @@
 			</div>
 		</div>
 		<div>
-			<!-- <Combobox></Combobox> -->
-			<!-- <PlaylistDialog bind:this={dialog}></PlaylistDialog> -->
 			<!-- <CreatePlaylistDialog></CreatePlaylistDialog> -->
 			<PlaylistModal bind:this={dialog}></PlaylistModal>
 			<button class="favorite" on:click={open}>
@@ -145,6 +126,19 @@
 				<div style="color: inherit; text-decoration: none; max-width: 560px">
 					<AssetCard
 						{ugc}
+						groups={[
+							[
+								{ type: DropdownType.Button, icon: Play, text: `Add to Playlist`, function: open },
+								{
+									type: DropdownType.Button,
+									icon: Delete,
+									text: `Remove From Playlist`,
+									function: () =>
+										playlistDeleteAsset({ playlistId: data.playlist.id, assetId: ugc.assetId })
+								},
+								{ type: DropdownType.Button, icon: Play, text: `Add to New Playlist` }
+							]
+						]}
 						assetUrl="/{ugc.assetKind == 2
 							? 'maps'
 							: ugc.assetKind == 6
