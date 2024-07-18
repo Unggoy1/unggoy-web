@@ -3,17 +3,13 @@
 	import Combobox from './Combobox.svelte';
 	// import { emptyDetails, type Details } from './details';
 	import { user } from '../../stores/user';
+	import { playlistAddAsset } from '$lib/api/playlist';
 
 	let modal: Modal;
-	// let details: Details = $state(emptyDetails);
+	let assetId: string = $state('');
 	let mode = $state<'edit' | 'create'>('edit');
 
-	export function create() {
-		mode = 'create';
-		return show({});
-	}
-
-	export function edit(value: any) {
+	export function create(value: string) {
 		mode = 'edit';
 		return show(value);
 	}
@@ -21,22 +17,25 @@
 	let resolve: (value: any | PromiseLike<any>) => void;
 	let reject: (reason?: any) => void;
 
-	function show(value: any) {
+	function show(value: string) {
 		return new Promise<any>((resolve_, reject_) => {
 			resolve = resolve_;
 			reject = reject_;
 
-			// make a copy of the object so our bound inputs don't mutate the original
-			// details = structuredClone($state.snapshot(value));
+			assetId = $state.snapshot(value);
 			modal.open();
 		});
 	}
 
-	function save(e: CustomEvent) {
-		console.log(e.detail.playlist);
-
-		// modal.close();
-		resolve({});
+	async function save(e: CustomEvent) {
+		console.log(e.detail.name);
+		await playlistAddAsset({
+			playlistId: e.detail.playlistId,
+			name: e.detail.name,
+			assetId
+		});
+		modal.close();
+		resolve(assetId);
 	}
 
 	function cancel() {

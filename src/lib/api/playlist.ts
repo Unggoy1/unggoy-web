@@ -24,24 +24,26 @@ export async function playlistCreate({
 			error: (err: Error) => err.message
 		});
 
-		const response = await request(context);
 		invalidateAll();
 	} catch (error) {}
 }
 
-export async function playlistAddAsset({ playlistId, assetId }: PlaylistAssetData): Promise<void> {
+export async function playlistAddAsset({
+	playlistId,
+	name,
+	assetId
+}: PlaylistAssetData): Promise<void> {
 	const context: RequestOpts = {
 		path: `/playlist/${playlistId}/asset/${assetId}`,
 		method: 'POST'
 	};
 	try {
 		const result = await toast.promise(request(context), {
-			loading: 'Removing...',
-			success: (data) => `Removed asset from playlist`,
+			loading: 'Adding...',
+			success: (data) => `Added asset to ${name}`,
 			error: (err: Error) => err.message
 		});
 
-		const response = await request(context);
 		invalidateAll();
 	} catch (error) {}
 }
@@ -61,7 +63,6 @@ export async function playlistDeleteAsset({
 			error: (err: Error) => err.message
 		});
 
-		const response = await request(context);
 		invalidateAll();
 	} catch (error) {}
 }
@@ -91,7 +92,6 @@ export async function playlistUpdate({
 			error: (err: Error) => err.message
 		});
 
-		const response = await request(context);
 		invalidateAll();
 	} catch (error) {}
 }
@@ -108,7 +108,6 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 			error: (err: Error) => err.message
 		});
 
-		const response = await request(context);
 		invalidateAll();
 	} catch (error) {}
 }
@@ -131,6 +130,7 @@ export interface PlaylistUpdateData {
 export interface PlaylistAssetData {
 	playlistId: string;
 	assetId: string;
+	name?: string;
 }
 
 export interface PlaylistDeleteData {

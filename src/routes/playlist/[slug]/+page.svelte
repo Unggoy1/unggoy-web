@@ -35,8 +35,8 @@
 		goto(`?${query.toString()}`);
 	};
 	let dialog: PlaylistModal;
-	export function open() {
-		dialog.create();
+	export function modalOpen(assetId: string) {
+		dialog.create(assetId);
 	}
 </script>
 
@@ -56,7 +56,7 @@
 		<div>
 			<!-- <CreatePlaylistDialog></CreatePlaylistDialog> -->
 			<PlaylistModal bind:this={dialog}></PlaylistModal>
-			<button class="favorite" on:click={open}>
+			<button class="favorite">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="34"
@@ -87,7 +87,7 @@
 	<div class="assets-container browse">
 		<div class="browse-filter-container">
 			<div class="filter-container">
-				<select bind:value={data.filter} on:change={updateUrl} class="dropdown-asset">
+				<select bind:value={data.filter} onchange={updateUrl} class="dropdown-asset">
 					<option value="" label="Game Type"></option>
 					<option value="Map" label="Maps"></option>
 					<option value="UgcGameVariant" label="Modes"></option>
@@ -109,7 +109,7 @@
 				</div>
 				<div class="filter-group">
 					<p class="filter-text">Sort:</p>
-					<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
+					<select bind:value={data.sort} onchange={updateUrl} class="dropdown-el">
 						<option value="publishedAt" label="Date Published"></option>
 						<option value="name" label="Name"></option><option value="averagerating" label="Rating"
 						></option>
@@ -128,7 +128,12 @@
 						{ugc}
 						groups={[
 							[
-								{ type: DropdownType.Button, icon: Play, text: `Add to Playlist`, function: open },
+								{
+									type: DropdownType.Button,
+									icon: Play,
+									text: `Add to Playlist`,
+									function: () => modalOpen(ugc.assetId)
+								},
 								{
 									type: DropdownType.Button,
 									icon: Delete,
@@ -154,19 +159,19 @@
 			<ul>
 				{#if data.currentPage > 1}
 					<li>
-						<button on:click={() => changePage(1)}>&lt;&lt;</button>
+						<button onclick={() => changePage(1)}>&lt;&lt;</button>
 					</li>
 				{/if}
 				<li class="prev-nav-group">
-					<button on:click={() => changePage(data.currentPage - 1)}>&lt;</button>
+					<button onclick={() => changePage(data.currentPage - 1)}>&lt;</button>
 				</li>
 				<li class="text-only">{data.currentPage} - {data.totalPages}</li>
 				<li class="next-nav-group">
-					<button on:click={() => changePage(data.currentPage + 1)}>&gt;</button>
+					<button onclick={() => changePage(data.currentPage + 1)}>&gt;</button>
 				</li>
 				{#if data.currentPage < data.totalPages}
 					<li>
-						<button on:click={() => changePage(data.totalPages)}>&gt;&gt;</button>
+						<button onclick={() => changePage(data.totalPages)}>&gt;&gt;</button>
 					</li>
 				{/if}
 			</ul>

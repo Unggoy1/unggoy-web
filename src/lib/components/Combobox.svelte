@@ -5,35 +5,22 @@
 	const dispatcher = createEventDispatcher();
 
 	// prettier-ignore
-	// const people = [
-	// 	{ name: 'Firefight Fridays' },
-	// 	{ name: 'Social Slayer Wacky' },
-	// 	{ name: 'Competitive 4v4' },
-	// 	{ name: 'Big Team Madness' },
-	// 	{ name: 'Action Sack' },
-	// 	{ name: 'Emus Minigames' },
-	// 	{name: 'High Charity Tuesday Night Halo'},
-	// 	{name: 'Vs Gungame Maps'},
-	// 	{name: 'TSG modes v3'},
-	// 	{name: 'Campaign/Firefight maps'},
-	// 	{name: 'Halo Remake Maps'},
-	// 	{name: 'HFT Husky Raid Competition'},
-	//
-	// ]
-	export let people = $user.Playlist
+	export let playlists = $user.Playlist
 
 	const combobox = createCombobox({ label: 'Playlists', selected: '' });
 
 	function onChange(e: Event) {
 		if ((e as CustomEvent).detail?.selected?.name) {
-			console.log('select', (e as CustomEvent).detail.selected.name);
-			dispatcher('select', { playlist: (e as CustomEvent).detail.selected.name });
+			dispatcher('select', {
+				playlistId: (e as CustomEvent).detail.selected.id,
+				name: (e as CustomEvent).detail.selected.name
+			});
 		}
 		// combobox.reset();
 	}
 
-	$: filtered = people.filter((person) =>
-		person.name
+	$: filtered = playlists.filter((playlist) =>
+		playlist.name
 			.toLowerCase()
 			.replace(/\s+/g, '')
 			.includes($combobox.filter.toLowerCase().replace(/\s+/g, ''))
