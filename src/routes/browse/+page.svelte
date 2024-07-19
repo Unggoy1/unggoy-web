@@ -3,6 +3,10 @@
 	import AssetCard from '../../components/assetCard.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import Play from '../../components/Play.svelte';
+	import { DropdownType } from '$lib/enums';
+	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
+	import { Toaster } from 'svelte-french-toast';
 
 	export let data: PageData;
 	const changePage = (page: number) => {
@@ -28,14 +32,17 @@
 		query.set('order', data.order);
 		goto(`?${query.toString()}`);
 	};
+	let dialog: AddAssetModal;
 </script>
 
+<Toaster />
+<AddAssetModal bind:this={dialog}></AddAssetModal>
 <div class="main-container">
 	<!-- <div class="main-header anim" style="--delay: 0s">Discover</div> -->
 	<div class="assets-container browse">
 		<div class="browse-filter-container">
 			<div class="filter-container">
-				<select bind:value={data.filter} on:change={updateUrl} class="dropdown-asset">
+				<select bind:value={data.filter} onchange={updateUrl} class="dropdown-asset">
 					<option value="" label="Game Type"></option>
 					<option value="Map" label="Maps"></option>
 					<option value="UgcGameVariant" label="Modes"></option>
@@ -57,7 +64,7 @@
 				</div>
 				<div class="filter-group">
 					<p class="filter-text">Sort:</p>
-					<select bind:value={data.sort} on:change={updateUrl} class="dropdown-el">
+					<select bind:value={data.sort} onchange={updateUrl} class="dropdown-el">
 						<option value="publishedAt" label="Date Published"></option>
 						<option value="name" label="Name"></option><option value="averagerating" label="Rating"
 						></option>
@@ -74,6 +81,17 @@
 				<div style="color: inherit; text-decoration: none; max-width: 560px">
 					<AssetCard
 						{ugc}
+						groups={[
+							[
+								{
+									type: DropdownType.Button,
+									icon: Play,
+									text: `Add to Playlist`,
+									function: () => dialog.create(ugc.assetId)
+								},
+								{ type: DropdownType.Button, icon: Play, text: `Add to New Playlist` }
+							]
+						]}
 						assetUrl="/{ugc.assetKind == 2
 							? 'maps'
 							: ugc.assetKind == 6
@@ -89,19 +107,19 @@
 			<ul>
 				{#if data.currentPage > 1}
 					<li>
-						<button on:click={() => changePage(1)}>&lt;&lt;</button>
+						<button onclick={() => changePage(1)}>&lt;&lt;</button>
 					</li>
 				{/if}
 				<li class="prev-nav-group">
-					<button on:click={() => changePage(data.currentPage - 1)}>&lt;</button>
+					<button onclick={() => changePage(data.currentPage - 1)}>&lt;</button>
 				</li>
 				<li class="text-only">{data.currentPage} - {data.totalPages}</li>
 				<li class="next-nav-group">
-					<button on:click={() => changePage(data.currentPage + 1)}>&gt;</button>
+					<button onclick={() => changePage(data.currentPage + 1)}>&gt;</button>
 				</li>
 				{#if data.currentPage < data.totalPages}
 					<li>
-						<button on:click={() => changePage(data.totalPages)}>&gt;&gt;</button>
+						<button onclick={() => changePage(data.totalPages)}>&gt;&gt;</button>
 					</li>
 				{/if}
 			</ul>

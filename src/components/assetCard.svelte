@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { PlaylistData, UgcData } from '$lib/api';
 	import AssetKind from './assetKind.svelte';
-	import { PUBLIC_API_URL } from '$env/static/public';
 	import DropdownCard from '$lib/components/DropdownCard.svelte';
 	export let ugc: UgcData = undefined;
 	export let playlist: PlaylistData = undefined;

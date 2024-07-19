@@ -2,7 +2,6 @@
 	import type { Snippet } from 'svelte';
 	import { createDialog } from 'svelte-headlessui';
 	import Transition from 'svelte-transition';
-	import Combobox from './Combobox.svelte';
 
 	interface Props {
 		children: Snippet;
@@ -39,7 +38,7 @@
 						{onclose}
 					>
 						<div>{@render children()}</div>
-						<div>{@render commands()}</div>
+						<div class="commands">{@render commands()}</div>
 						<!-- <h3 class="text-lg font-medium leading-6">Add to playlist...</h3> -->
 						<!---->
 						<!-- <Combobox on:select={onChange}></Combobox> -->
@@ -58,5 +57,10 @@
 	}
 	.dialog-background {
 		background-color: #00000040;
+	}
+
+	.commands {
+		display: flex;
+		flex-direction: row-reverse;
 	}
 </style>

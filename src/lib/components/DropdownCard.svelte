@@ -18,16 +18,6 @@
 	export function open() {
 		menu.open();
 	}
-
-	function onSelect(e: Event) {
-		console.log('select', (e as CustomEvent).detail);
-	}
-	function click(fn) {
-		fn();
-		menu.close();
-	}
-
-	// prettier-ignore
 </script>
 
 <Transition show={$menu.expanded} unmount>

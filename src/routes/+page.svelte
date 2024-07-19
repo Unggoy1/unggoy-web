@@ -1,9 +1,16 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import AssetCard from '../components/assetCard.svelte';
+	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
+	import { Toaster } from 'svelte-french-toast';
+	import { DropdownType } from '$lib/enums';
+	import Play from '../components/Play.svelte';
 	export let data: PageData;
+	let dialog: AddAssetModal;
 </script>
 
+<Toaster />
+<AddAssetModal bind:this={dialog}></AddAssetModal>
 <div class="main-container">
 	<div class="main-blogs">
 		<div class="main-blog">
@@ -31,6 +38,17 @@
 				<div style="color: inherit; text-decoration: none;">
 					<AssetCard
 						{ugc}
+						groups={[
+							[
+								{
+									type: DropdownType.Button,
+									icon: Play,
+									text: `Add to Playlist`,
+									function: () => dialog.create(ugc.assetId)
+								},
+								{ type: DropdownType.Button, icon: Play, text: `Add to New Playlist` }
+							]
+						]}
 						assetUrl="/{ugc.assetKind == 2
 							? 'maps'
 							: ugc.assetKind == 6
@@ -48,6 +66,17 @@
 				<div style="color: inherit; text-decoration: none;">
 					<AssetCard
 						{ugc}
+						groups={[
+							[
+								{
+									type: DropdownType.Button,
+									icon: Play,
+									text: `Add to Playlist`,
+									function: () => dialog.create(ugc.assetId)
+								},
+								{ type: DropdownType.Button, icon: Play, text: `Add to New Playlist` }
+							]
+						]}
 						assetUrl="/{ugc.assetKind == 2
 							? 'maps'
 							: ugc.assetKind == 6
@@ -65,6 +94,17 @@
 				<div style="color: inherit; text-decoration: none;">
 					<AssetCard
 						{ugc}
+						groups={[
+							[
+								{
+									type: DropdownType.Button,
+									icon: Play,
+									text: `Add to Playlist`,
+									function: () => dialog.create(ugc.assetId)
+								},
+								{ type: DropdownType.Button, icon: Play, text: `Add to New Playlist` }
+							]
+						]}
 						assetUrl="/{ugc.assetKind == 2
 							? 'maps'
 							: ugc.assetKind == 6
@@ -82,6 +122,17 @@
 				<div style="color: inherit; text-decoration: none;">
 					<AssetCard
 						{ugc}
+						groups={[
+							[
+								{
+									type: DropdownType.Button,
+									icon: Play,
+									text: `Add to Playlist`,
+									function: () => dialog.create(ugc.assetId)
+								},
+								{ type: DropdownType.Button, icon: Play, text: `Add to New Playlist` }
+							]
+						]}
 						assetUrl="/{ugc.assetKind == 2
 							? 'maps'
 							: ugc.assetKind == 6

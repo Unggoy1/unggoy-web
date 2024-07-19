@@ -5,6 +5,7 @@
 	import { page } from '$app/stores';
 	import Play from '../../../components/Play.svelte';
 	import CreatePlaylistDialog from '../../../components/createPlaylistDialog.svelte';
+	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import { DropdownType } from '$lib/enums';
 	import { playlistDeleteAsset } from '$lib/api/playlist';
@@ -34,9 +35,14 @@
 		query.set('order', data.order);
 		goto(`?${query.toString()}`);
 	};
-	let dialog: PlaylistModal;
-	export function modalOpen(assetId: string) {
-		dialog.create(assetId);
+	let dialog: AddAssetModal;
+	let playlistModal: PlaylistModal;
+	function open() {
+		playlistModal.edit({
+			playlistId: data.playlist.id,
+			name: data.playlist.name,
+			description: data.playlist.description
+		});
 	}
 </script>
 
@@ -45,6 +51,8 @@
 </svelte:head>
 
 <Toaster />
+<AddAssetModal bind:this={dialog}></AddAssetModal>
+<PlaylistModal bind:this={playlistModal}></PlaylistModal>
 <div class="main-container">
 	<div class="playlist-container">
 		<div>
@@ -55,8 +63,7 @@
 		</div>
 		<div>
 			<!-- <CreatePlaylistDialog></CreatePlaylistDialog> -->
-			<PlaylistModal bind:this={dialog}></PlaylistModal>
-			<button class="favorite">
+			<button class="favorite" onclick={open}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="34"
@@ -132,7 +139,7 @@
 									type: DropdownType.Button,
 									icon: Play,
 									text: `Add to Playlist`,
-									function: () => modalOpen(ugc.assetId)
+									function: () => dialog.create(ugc.assetId)
 								},
 								{
 									type: DropdownType.Button,

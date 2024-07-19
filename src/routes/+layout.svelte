@@ -87,13 +87,18 @@
 		//Add resize event listener on component mount
 		window.addEventListener('resize', handleResize);
 		handleResize();
-		updateActiveLink();
+		// updateActiveLink();
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
 	});
+	const sidebarLinks = [
+		{ text: 'Home', url: '/', icon: '' },
+		{ text: 'About', url: '/about', icon: '' }
+		// Add more links as needed
+	];
 
-	$: console.log('activLink:', activeLink);
+	// $: console.log('activLink:', activeLink);
 </script>
 
 <div class="container">
@@ -106,7 +111,7 @@
 					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link discover"
-					class:is-active={$activeLink === null}
+					class:is-active={activeLink === null}
 					href="/"
 				>
 					<svg viewBox="0 0 24 24" fill="currentColor">
@@ -120,7 +125,7 @@
 					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link trending"
-					class:is-active={$activeLink === null}
+					class:is-active={activeLink === null}
 					href="/browse?assetKind=Map"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
@@ -134,7 +139,7 @@
 					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link"
-					class:is-active={$activeLink === null}
+					class:is-active={activeLink === null}
 					href="/browse?assetKind=UgcGameVariant"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
@@ -148,7 +153,7 @@
 					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link"
-					class:is-active={$activeLink === null}
+					class:is-active={activeLink === null}
 					href="/browse?assetKind=Prefab"
 				>
 					<svg
@@ -170,7 +175,7 @@
 					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link"
-					class:is-active={$activeLink === null}
+					class:is-active={activeLink === null}
 					href="/browse/playlist"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
@@ -184,7 +189,7 @@
 					data-sveltekit-replacestate
 					on:click={handleClick}
 					class="sidebar-link"
-					class:is-active={$activeLink === null}
+					class:is-active={activeLink === null}
 					href="/browse"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
