@@ -36,7 +36,7 @@
 <div class="menu">
 <div use:menu.button>{@render children()}</div>
 	<div class=" text-right">
-		<div class="relative inline-block text-left">
+		<div class="  text-left">
 			<Transition show={$menu.expanded} unmount>
 				<div
 					use:menu.items
@@ -85,9 +85,10 @@
 	.menu {
 	display: flex;
 	align-items: center;
-	padding-left: 20px;
+	/* padding-left: 20px; */
 	flex-shrink: 0;
 	margin-left: auto;
+	float: right;
 	}
 	.menu-button {
 		width: 64px;

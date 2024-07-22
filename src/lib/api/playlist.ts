@@ -5,7 +5,8 @@ export async function playlistCreate({
 	name,
 	description,
 	isPrivate,
-	thumbnail
+	thumbnail,
+	assetId
 }: PlaylistData): Promise<void> {
 	const context: RequestOpts = {
 		path: '/playlist',
@@ -14,9 +15,11 @@ export async function playlistCreate({
 			name,
 			description,
 			isPrivate,
-			thumbnail
+			thumbnail,
+			assetId
 		}
 	};
+	console.log(assetId);
 	try {
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
@@ -117,6 +120,7 @@ export interface PlaylistData {
 	description: string;
 	isPrivate: boolean;
 	thumbnail: URL | string;
+	assetId?: string;
 }
 
 export interface PlaylistUpdateData {

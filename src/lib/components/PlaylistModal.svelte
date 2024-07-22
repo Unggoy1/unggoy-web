@@ -8,9 +8,9 @@
 	let details: any = $state({});
 	let mode = $state<'edit' | 'create'>('edit');
 
-	export function create() {
+	export function create({ assetId }: { assetId?: string }) {
 		mode = 'create';
-		return show({}); //emptyDetails;
+		return show({ assetId }); //emptyDetails;
 	}
 
 	export function edit(value: any) {

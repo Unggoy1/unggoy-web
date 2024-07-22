@@ -3,6 +3,12 @@
 	import type { PageData } from './$types';
 	import AssetKind from '../../../components/assetKind.svelte';
 	import { user } from '../../../stores/user';
+	import Dropdown from '$lib/components/Dropdown.svelte';
+	import Play from '../../../components/Play.svelte';
+	import DropdownCard from '$lib/components/DropdownCard.svelte';
+	import { DropdownType } from '$lib/enums';
+	import { Toaster } from 'svelte-french-toast';
+	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
 
 	export let data: PageData;
 	$: previewImage = data.map.files.fileRelativePaths[0];
@@ -18,7 +24,19 @@
 		previewImage = image;
 	};
 
-	const groups = [[{ text: `Edit` }], [{ text: `Private` }], [{ text: `Delete` }]];
+	const groups = [
+		[
+			{
+				type: DropdownType.Button,
+				icon: Play,
+				text: `Add to Playlist`,
+				function: () => dialog.create(data.map.assetId)
+			},
+			{ type: DropdownType.Button, icon: Play, text: `Add to New Playlist` }
+		]
+	];
+	let dropdown: DropdownCard;
+	let dialog: AddAssetModal;
 </script>
 
 <svelte:head>
@@ -36,6 +54,8 @@
 	/><meta name="twitter:img:src" content={data.map.thumbnailUrl} />
 </svelte:head>
 
+<Toaster />
+<AddAssetModal bind:this={dialog}></AddAssetModal>
 <div class="main-container show">
 	<div class="asset-area">
 		<div class="asset-container">
@@ -48,7 +68,7 @@
 					alt={data.map.name}
 				/>
 				{#if $user}
-					<button class="playlist-button">
+					<button use:dropdown.button class="playlist-button">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="32"
@@ -62,6 +82,9 @@
 							/>
 						</svg>
 					</button>
+					<div>
+						<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
+					</div>
 				{/if}
 				<AssetKind assetKind={data.map.assetKind} lg={true} featured={data.map.featured}
 				></AssetKind>

@@ -8,9 +8,13 @@
 	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import { DropdownType } from '$lib/enums';
-	import { playlistDeleteAsset } from '$lib/api/playlist';
+	import { playlistDelete, playlistDeleteAsset, playlistUpdate } from '$lib/api/playlist';
 	import { Toaster } from 'svelte-french-toast';
 	import Delete from '../../../components/Delete.svelte';
+	import Dropdown from '$lib/components/Dropdown.svelte';
+	import Star from '../../../components/Star.svelte';
+	import Edit from '../../../components/Edit.svelte';
+	import Private from '../../../components/Private.svelte';
 
 	export let data: PageData;
 	const changePage = (page: number) => {
@@ -44,6 +48,35 @@
 			description: data.playlist.description
 		});
 	}
+
+	const groups = [
+		[
+			{
+				type: DropdownType.Button,
+				icon: Edit,
+				text: 'Edit Playlist',
+				function: () =>
+					playlistModal.edit({
+						playlistId: data.playlist.id,
+						name: data.playlist.name,
+						description: data.playlist.description
+					})
+			},
+			{
+				type: DropdownType.Button,
+				icon: Private,
+				text: `Private Playlist`,
+				function: () =>
+					playlistUpdate({ playlistId: data.playlist.id, isPrivate: !data.playlist.private })
+			},
+			{
+				type: DropdownType.Button,
+				icon: Delete,
+				text: `Delete Playlist`,
+				function: () => playlistDelete({ playlistId: data.playlist.id })
+			}
+		]
+	];
 </script>
 
 <svelte:head>
@@ -63,6 +96,22 @@
 		</div>
 		<div>
 			<!-- <CreatePlaylistDialog></CreatePlaylistDialog> -->
+			<Dropdown {groups}>
+				<button class="favorite more">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="35"
+						height="32"
+						viewBox="0 0 35 32"
+						fill="none"
+					>
+						<path
+							d="M7.91838 13.3333C6.38967 13.3333 5.13892 14.5333 5.13892 16C5.13892 17.4666 6.38967 18.6666 7.91838 18.6666C9.44708 18.6666 10.6978 17.4666 10.6978 16C10.6978 14.5333 9.44708 13.3333 7.91838 13.3333ZM27.3746 13.3333C25.8459 13.3333 24.5951 14.5333 24.5951 16C24.5951 17.4666 25.8459 18.6666 27.3746 18.6666C28.9033 18.6666 30.1541 17.4666 30.1541 16C30.1541 14.5333 28.9033 13.3333 27.3746 13.3333ZM17.6465 13.3333C16.1178 13.3333 14.867 14.5333 14.867 16C14.867 17.4666 16.1178 18.6666 17.6465 18.6666C19.1752 18.6666 20.426 17.4666 20.426 16C20.426 14.5333 19.1752 13.3333 17.6465 13.3333Z"
+							fill="#CEE7EE"
+						/>
+					</svg>
+				</button>
+			</Dropdown>
 			<button class="favorite" onclick={open}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -76,18 +125,6 @@
 						fill="#212121"
 					/>
 				</svg>
-				<!-- <svg -->
-				<!-- 	xmlns="http://www.w3.org/2000/svg" -->
-				<!-- 	width="68" -->
-				<!-- 	height="64" -->
-				<!-- 	viewBox="0 0 68 64" -->
-				<!-- 	fill="none" -->
-				<!-- > -->
-				<!-- 	<path -->
-				<!-- 		d="M66.7779 32C66.7779 49.3776 52.0886 63.5 33.9243 63.5C15.7601 63.5 1.0708 49.3776 1.0708 32C1.0708 14.6224 15.7601 0.5 33.9243 0.5C52.0886 0.5 66.7779 14.6224 66.7779 32Z" -->
-				<!-- 		fill="#dee3e5" -->
-				<!-- 	/> -->
-				<!-- </svg> -->
 			</button>
 		</div>
 	</div>
@@ -148,7 +185,15 @@
 									function: () =>
 										playlistDeleteAsset({ playlistId: data.playlist.id, assetId: ugc.assetId })
 								},
-								{ type: DropdownType.Button, icon: Play, text: `Add to New Playlist` }
+								{
+									type: DropdownType.Button,
+									icon: Play,
+									text: `Add to New Playlist`,
+									function: () =>
+										playlistModal.create({
+											assetId: ugc.assetId
+										})
+								}
 							]
 						]}
 						assetUrl="/{ugc.assetKind == 2
