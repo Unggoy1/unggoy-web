@@ -49,7 +49,12 @@
 	<div class="assets-container browse">
 		<div class="browse-filter-container">
 			<div class="filter-container">
-				<select bind:value={data.filter} onchange={updateUrl} class="dropdown-asset">
+				<select
+					bind:value={data.filter}
+					onchange={updateUrl}
+					name="AssetFilter"
+					class="dropdown-asset"
+				>
 					<option value="" label="Game Type"></option>
 					<option value="Map" label="Maps"></option>
 					<option value="UgcGameVariant" label="Modes"></option>
@@ -81,7 +86,7 @@
 				</div>
 				<div class="filter-group">
 					<p class="filter-text">Sort:</p>
-					<select bind:value={data.sort} onchange={updateUrl} class="dropdown-el">
+					<select bind:value={data.sort} onchange={updateUrl} name="SortFilter" class="dropdown-el">
 						<option value="publishedAt" label="Date Published"></option>
 						<option value="name" label="Name"></option><option value="averageRating" label="Rating"
 						></option>

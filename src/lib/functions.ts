@@ -1,7 +1,7 @@
 import { PUBLIC_URL } from '$env/static/public';
 import toast from 'svelte-french-toast';
 import { DropdownType } from './enums';
-import Play from './components/icons/Play.svelte';
+import Plus from './components/icons/Plus.svelte';
 import Duplicate from './components/icons/Duplicate.svelte';
 import AddAssetModal from './components/AddAssetModal.svelte';
 import PlaylistModal from './components/PlaylistModal.svelte';
@@ -34,13 +34,13 @@ export function getAssetCardGroups(
 	const authGroups = [
 		{
 			type: DropdownType.Button,
-			icon: Play,
+			icon: Plus,
 			text: `Add to Playlist`,
 			function: () => addAssetModal.create(ugc.assetId)
 		},
 		{
 			type: DropdownType.Button,
-			icon: Play,
+			icon: Plus,
 			text: `Add to New Playlist`,
 			function: () =>
 				playlistModal.create({

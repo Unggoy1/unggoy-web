@@ -627,7 +627,7 @@ body {
 	border-radius: 28px;
 	overflow: hidden;
 	min-height: 414px;
-	max-height: min(70%, 900px);
+	max-height: min(70vh, 900px);
 	width: auto;
 	height: auto;
 }
