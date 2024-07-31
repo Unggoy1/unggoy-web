@@ -4,16 +4,13 @@ import { PUBLIC_API_URL } from '$env/static/public';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url, params }) => {
-	console.log(PUBLIC_API_URL);
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 	const playlistId: string = params.slug;
 	const fetchParams: UgcFetchData = {};
 
 	const page = url.searchParams.get('page');
 	if (page) {
-		console.log('Page', page);
 		const offset = (parseInt(page) - 1) * 20;
-		console.log(offset);
 		fetchParams.offset = offset;
 	}
 
@@ -45,18 +42,14 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 	}
 
 	const formatedFetchParams = new URLSearchParams(fetchParams);
-	console.log(formatedFetchParams);
 	const ugcEndpoint = endpoint + 'playlist/' + playlistId + '?' + formatedFetchParams.toString();
-	console.log(ugcEndpoint);
 	const response = await fetch(ugcEndpoint, {
 		method: 'GET',
 		// body: JSON.stringify(fetchParams),
 		headers: new Headers({ 'content-type': 'application/json' })
 	});
-	console.log(response.status);
 
 	const data = await response.json();
-	console.log(data);
 
 	return {
 		playlist: data.playlist,

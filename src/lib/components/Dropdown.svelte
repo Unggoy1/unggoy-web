@@ -40,7 +40,7 @@
 			<Transition show={$menu.expanded} unmount>
 				<div
 					use:menu.items
-					class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
+					class="z-20 absolute shadow right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
 				>
 					{#each groups as group}
 						<div class="px-1 py-1">
@@ -82,6 +82,9 @@
 	</div>
 
 <style>
+	.shadow {
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	}
 	.menu {
 	display: flex;
 	align-items: center;

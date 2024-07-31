@@ -6,6 +6,8 @@ export interface UgcFetchData {
 	offset?: number; //number
 	count?: number;
 	tags?: string[];
+	gamertag?: string;
+	ownerOnly?: boolean;
 	searchTerm?: string;
 }
 

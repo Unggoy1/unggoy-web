@@ -420,7 +420,6 @@ body {
 		minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr)
 	);
 	grid-gap: var(--grid-layout-gap);
-	/* max-width: 2700px;   1963*/
 	padding-bottom: 16px;
 }
 
@@ -429,13 +428,34 @@ body {
    * User input values.
    */
 	--grid-column-count: 5; /* This gets overridden by an inline style. */
+	/* max-width: 2900px; */
+}
+
+.no-results {
+	font-size: 24px;
+	padding-bottom: 16px;
 	max-width: 2900px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+.no-results img {
+	max-width: 250px;
+	max-height: 250px;
+	padding-bottom: 16px;
 }
 
 .small-header {
 	font-size: 24px;
 	font-weight: 500;
 	margin: 24px 0;
+	display: flex;
+	align-items: center;
+}
+.small-header svg {
+	/* margin-left: 4px; */
+	padding: 1px;
 }
 
 /* ASSET CARDS*/
@@ -454,15 +474,20 @@ body {
 	border-radius: 20px;
 }
 .asset-image-wrapper {
-	aspect-ratio: 560 / 320;
+	position: relative;
+	width: 100%;
+	padding-top: calc(320 / 560 * 100%); /* Aspect ratio of 560 / 320 */
+	border-radius: 20px;
+	overflow: hidden;
 }
 .asset-image {
-	aspect-ratio: 560 / 320;
-	max-height: 100%;
-	border-radius: 20px;
 	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
-	bottom: 0;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 20px;
 }
 
 .asset-type {

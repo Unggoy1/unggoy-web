@@ -36,6 +36,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@sveltejs/enhanced-img": "^0.3.0",
     "svelte-french-toast": "^1.2.0",
     "svelte-headlessui": "^0.0.38",
     "svelte-transition": "^0.0.17"

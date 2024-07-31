@@ -14,7 +14,7 @@
 	<div class="asset">
 		<!-- <div class="video-time">{ugc.likes}</div> -->
 		<div class="asset-image-wrapper">
-			<a href={assetUrl} class="asset-image-wrapper">
+			<a href={assetUrl} class="">
 				<img
 					class="asset-image"
 					src={ugc?.thumbnailUrl || playlist?.thumbnail || '/placeholder.webp'}
@@ -23,7 +23,6 @@
 			</a>
 
 			<AssetKind assetKind={ugc?.assetKind || 5} featured={ugc?.featured || false}></AssetKind>
-
 			<a href={assetUrl} class="asset-name">
 				{ugc?.name || playlist?.name}
 			</a>

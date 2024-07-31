@@ -15,8 +15,6 @@ export const load: LayoutLoad = async ({ fetch }) => {
 	}
 
 	const user = await response.json();
-	console.log('ioearsn');
-	console.log(user);
 	return {
 		user: user
 	};

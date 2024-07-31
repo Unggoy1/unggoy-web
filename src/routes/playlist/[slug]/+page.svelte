@@ -15,6 +15,8 @@
 	import Star from '../../../components/Star.svelte';
 	import Edit from '../../../components/Edit.svelte';
 	import Private from '../../../components/Private.svelte';
+	import Duplicate from '../../../components/Duplicate.svelte';
+	import { getAssetLink } from '$lib/functions';
 
 	export let data: PageData;
 	const changePage = (page: number) => {
@@ -193,6 +195,14 @@
 										playlistModal.create({
 											assetId: ugc.assetId
 										})
+								}
+							],
+							[
+								{
+									type: DropdownType.Button,
+									icon: Duplicate,
+									text: `Copy asset link`,
+									function: () => getAssetLink({ assetId: ugc.assetId, assetKind: ugc.assetKind })
 								}
 							]
 						]}

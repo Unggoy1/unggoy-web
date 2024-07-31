@@ -38,9 +38,14 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	}
 
 	const tagArray = url.searchParams.get('tags');
+	let tags: string[];
 	if (tagArray) {
-		const tags = tagArray.split(',');
+		tags = tagArray.split(',');
 		fetchParams.tags = tags;
+	}
+	const gamertag = url.searchParams.get('gamertag');
+	if (gamertag) {
+		fetchParams.gamertag = gamertag;
 	}
 
 	const ugcEndpoint = endpoint + 'ugc/browse';
@@ -52,14 +57,18 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const data: UgcBrowseResponse = await response.json();
 
+	console.log(data.totalCount);
+	console.log(data.pageSize);
 	return {
 		ugc: data.assets,
-		totalPages: data.totalCount / data.pageSize + 1,
+		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
 		filter: assetKind || '',
 		sort: sort || 'publishedAt',
-		order: order || 'desc'
+		order: order || 'desc',
+		gamertag: gamertag || '',
+		tag: tags ? tags[0] : ''
 	};
 };

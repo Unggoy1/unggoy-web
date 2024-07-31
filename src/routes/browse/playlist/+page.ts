@@ -4,15 +4,14 @@ import { PUBLIC_API_URL } from '$env/static/public';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
-	console.log(PUBLIC_API_URL);
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 	const fetchParams: UgcFetchData = {};
 
 	const page = url.searchParams.get('page');
 	if (page) {
-		console.log('Page', page);
+		// console.log('Page', page);
 		const offset = (parseInt(page) - 1) * 20;
-		console.log(offset);
+		// console.log(offset);
 		fetchParams.offset = offset;
 	}
 
@@ -45,10 +44,9 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	});
 
 	const data: PlaylistBrowseResponse = await response.json();
-
 	return {
 		ugc: data.assets,
-		totalPages: data.totalCount / data.pageSize + 1,
+		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
