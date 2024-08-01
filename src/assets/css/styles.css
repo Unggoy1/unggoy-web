@@ -41,7 +41,11 @@ body {
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
+	/* filter: hue-rotate(45d-45g); */
 }
+/* img { */
+/* 	filter: hue-rotate(-45deg) !important; */
+/* } */
 
 .container {
 	background-color: var(--theme-bg);
@@ -199,7 +203,7 @@ body {
 
 /* HEADER CSS */
 
-.wrapper {
+.header-wrapper {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
@@ -241,6 +245,87 @@ body {
 }
 
 /* TODO: LOGIN BUTTON AND USER SIGNED IN STUFF WILL GO HERE */
+.user-signin {
+	padding: 8px 20px;
+	background-color: var(--button-bg);
+	border-radius: 8px;
+	font-family: var(--body-font);
+	font-size: 14px;
+	font-weight: 500;
+	height: 34px;
+	box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+	color: var(--body-color);
+	display: flex;
+	text-decoration: none;
+}
+
+.user-signin:hover {
+	color: #ffffff;
+	background-color: var(--border-color);
+}
+
+.xbox-signin {
+	height: 20px !important;
+	width: 20px !important;
+	margin: auto;
+}
+.xbox-signin-text {
+	font-size: 14px;
+	margin: auto;
+	font-weight: 700;
+}
+.user-img {
+	width: 36px;
+	height: 36px;
+	margin-right: 12px;
+}
+.user-settings {
+	display: flex;
+	align-items: center;
+	padding-left: 20px;
+	flex-shrink: 0;
+	margin-left: auto;
+}
+.user-settings svg {
+	width: 15px;
+	flex-shrink: 0;
+}
+@media screen and (max-width: 575px) {
+	.user-settings .arrow {
+		display: none;
+	}
+}
+.user-settings .notify {
+	position: relative;
+}
+.user-settings .notify svg {
+	width: 20px;
+	margin-left: 24px;
+	flex-shrink: 0;
+}
+.user-settings .notify .notification {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #ec5252;
+	position: absolute;
+	right: 1px;
+	border: 1px solid var(--theme-bg);
+	top: -2px;
+}
+@media screen and (max-width: 575px) {
+	.user-settings .notify .notification {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 575px) {
+	.xbox-signin-text {
+		display: none;
+	}
+}
+
+/*TODO: remove UNUSED LOGIN CSS  */
 
 .main-container {
 	display: flex;
@@ -335,7 +420,6 @@ body {
 		minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr)
 	);
 	grid-gap: var(--grid-layout-gap);
-	/* max-width: 2700px;   1963*/
 	padding-bottom: 16px;
 }
 
@@ -344,13 +428,34 @@ body {
    * User input values.
    */
 	--grid-column-count: 5; /* This gets overridden by an inline style. */
+	/* max-width: 2900px; */
+}
+
+.no-results {
+	font-size: 24px;
+	padding-bottom: 16px;
 	max-width: 2900px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+.no-results img {
+	max-width: 250px;
+	max-height: 250px;
+	padding-bottom: 16px;
 }
 
 .small-header {
 	font-size: 24px;
 	font-weight: 500;
 	margin: 24px 0;
+	display: flex;
+	align-items: center;
+}
+.small-header svg {
+	/* margin-left: 4px; */
+	padding: 1px;
 }
 
 /* ASSET CARDS*/
@@ -369,15 +474,20 @@ body {
 	border-radius: 20px;
 }
 .asset-image-wrapper {
-	aspect-ratio: 560 / 320;
+	position: relative;
+	width: 100%;
+	padding-top: calc(320 / 560 * 100%); /* Aspect ratio of 560 / 320 */
+	border-radius: 20px;
+	overflow: hidden;
 }
 .asset-image {
-	aspect-ratio: 560 / 320;
-	max-height: 100%;
-	border-radius: 20px;
 	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
-	bottom: 0;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 20px;
 }
 
 .asset-type {
@@ -450,11 +560,20 @@ body {
 	aspect-ratio: 560 / 40;
 }
 
-.elipsis svg {
+.elipsis {
 	width: 24px;
 	height: 40px;
 	position: absolute;
 	right: 14px;
+	bottom: 0;
+	z-index: 11;
+}
+
+.elipsis svg {
+	width: 24px;
+	height: 40px;
+	position: absolute;
+	right: 0px;
 	bottom: 0;
 	z-index: 9;
 }
@@ -508,7 +627,7 @@ body {
 	border-radius: 28px;
 	overflow: hidden;
 	min-height: 414px;
-	max-height: min(70%, 900px);
+	max-height: min(70vh, 900px);
 	width: auto;
 	height: auto;
 }

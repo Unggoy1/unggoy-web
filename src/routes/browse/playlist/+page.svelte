@@ -55,12 +55,7 @@
 
 		<div class="assets browse">
 			{#each data.ugc as playlist (playlist.id)}
-				<a
-					href="/playlist/{playlist.id}"
-					style="color: inherit; text-decoration: none; max-width: 560px"
-				>
-					<AssetCard {playlist} />
-				</a>
+				<AssetCard {playlist} assetUrl="/playlist/{playlist.id}" groups={[]} />
 			{/each}
 		</div>
 	</div>
