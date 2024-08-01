@@ -1,29 +1,46 @@
 <script lang="ts">
 	import { createMenu } from 'svelte-headlessui';
+	import { createCombobox } from 'svelte-headlessui';
 	import Transition from 'svelte-transition';
-	import Archive from './Archive.svelte';
-	import Delete from './Delete.svelte';
-	import Duplicate from './Duplicate.svelte';
-	import Edit from './Edit.svelte';
-	import Move from './Move.svelte';
-	import MapSvg from './mapSvg.svelte';
-	import IconOne from './IconOne.svelte';
-	import IconThree from './IconThree.svelte';
 	import Selector from './Selector.svelte';
 	import Check from './Check.svelte';
-	import Private from './Private.svelte';
 
 	const menu = createMenu({ label: 'Actions' });
+	let searchInput: string;
 
 	function onSelect(e: Event) {
 		console.log('select', (e as CustomEvent).detail);
 	}
 
+	function onInput(e) {
+		console.log(searchInput);
+	}
+
 	// prettier-ignore
 	export let groups;
+
+	const people = [
+		{ name: 'Wade Cooper' },
+		{ name: 'Arlene Mccoy' },
+		{ name: 'Devon Webb' },
+		{ name: 'Tom Cook' },
+		{ name: 'Tanya Fox' },
+		{ name: 'Hellen Schmidt' }
+	];
+	const combobox = createCombobox({ label: 'Actions' });
+	function onChange(e: Event) {
+		console.log('select', (e as CustomEvent).detail.selected);
+	}
+
+	$: filtered = people.filter((person) =>
+		person.name
+			.toLowerCase()
+			.replace(/\s+/g, '')
+			.includes($combobox.filter.toLowerCase().replace(/\s+/g, ''))
+	);
 </script>
 
-<div class="menu">
+<div class="elipsis">
 	<div class=" text-right">
 		<div class="relative inline-block text-left">
 			<button use:menu.button on:select={onSelect} class="menu-button">
@@ -47,7 +64,7 @@
 					class="z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
 				>
 					{#each groups as group}
-						<div class="tt px-1 py-1">
+						<div class="px-1 py-1">
 							{#each group as option}
 								{@const active = $menu.active === option.text}
 								<button
