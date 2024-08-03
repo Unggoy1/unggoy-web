@@ -7,6 +7,7 @@ import Delete from './components/icons/Delete.svelte';
 import AddAssetModal from './components/AddAssetModal.svelte';
 import PlaylistModal from './components/PlaylistModal.svelte';
 import { user } from '../stores/user';
+import { addAssetModal, playlistModal } from '../stores/modal';
 import { get } from 'svelte/store';
 import { playlistDeleteAsset } from './api/playlist';
 import type { PlaylistData, UgcData } from './api';
@@ -26,17 +27,15 @@ export async function getAssetLink({ assetId, assetKind }) {
 export function getAssetCardGroups({
 	assetId,
 	assetKind,
-	playlist,
-	addAssetModal,
-	playlistModal
+	playlist
 }: {
 	assetId: string;
 	assetKind: number;
-	addAssetModal: AddAssetModal;
-	playlistModal: PlaylistModal;
 	playlist?: PlaylistData;
 }) {
 	const activeUser = get(user);
+	const addAssetModalVar = get(addAssetModal);
+	const playlistModalVar = get(playlistModal);
 	let authGroups;
 	if (assetKind === 5) {
 		authGroups = [
@@ -52,14 +51,14 @@ export function getAssetCardGroups({
 				type: DropdownType.Button,
 				icon: Plus,
 				text: `Add to Playlist`,
-				function: () => addAssetModal.create(assetId)
+				function: () => addAssetModalVar.create(assetId)
 			},
 			{
 				type: DropdownType.Button,
 				icon: Plus,
 				text: `Add to New Playlist`,
 				function: () =>
-					playlistModal.create({
+					playlistModalVar.create({
 						assetId: assetId
 					})
 			}
@@ -70,7 +69,7 @@ export function getAssetCardGroups({
 				type: DropdownType.Button,
 				icon: Delete,
 				text: `Remove From Playlist`,
-				function: () => playlistDeleteAsset({ playlistId: playlist.id, assetId: assetId })
+				function: () => playlistDeleteAsset({ playlistId: playlist.assetId, assetId: assetId })
 			});
 		}
 	}

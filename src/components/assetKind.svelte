@@ -5,16 +5,16 @@
 
 	export let assetKind: number;
 	export let lg: boolean = false;
-	export let featured: boolean = false;
+	export let recommended: boolean;
 </script>
 
-<div class="asset-type" class:lg class:featured>
+<div class="asset-type" class:lg class:recommended>
 	{#if assetKind === 2}
-		<MapSvg {featured}></MapSvg>
+		<MapSvg {recommended}></MapSvg>
 	{:else if assetKind === 4}
-		<PrefabSvg {featured}></PrefabSvg>
+		<PrefabSvg {recommended}></PrefabSvg>
 	{:else if assetKind === 6}
-		<ModeSvg {featured}></ModeSvg>
+		<ModeSvg {recommended}></ModeSvg>
 	{:else if assetKind === 5}
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
 			><path

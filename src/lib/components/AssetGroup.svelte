@@ -1,24 +1,17 @@
 <script lang="ts">
 	import type { UgcData } from '$lib/api';
-	import { DropdownType } from '$lib/enums';
 	import { getAssetCardGroups } from '$lib/functions';
 	import type { Snippet } from 'svelte';
-	import Duplicate from '../../components/Duplicate.svelte';
-	import Play from '../../components/Play.svelte';
 	import AssetCard from '../../components/assetCard.svelte';
-	import AddAssetModal from './AddAssetModal.svelte';
-	import PlaylistModal from './PlaylistModal.svelte';
 	import { flip } from 'svelte/animate';
 	import { quintOut } from 'svelte/easing';
 
 	interface Props {
 		children: Snippet;
 		assets: UgcData[];
-		addAssetModal: AddAssetModal;
-		playlistModal?: PlaylistModal;
 	}
 
-	let { children, assets, addAssetModal, playlistModal }: Props = $props();
+	let { children, assets }: Props = $props();
 </script>
 
 <div class="assets-container">
@@ -30,9 +23,7 @@
 					{asset}
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
-						assetKind: asset.assetKind,
-						addAssetModal,
-						playlistModal
+						assetKind: asset.assetKind
 					})}
 					assetUrl="/{asset.assetKind == 2
 						? 'maps'

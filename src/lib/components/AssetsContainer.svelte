@@ -4,16 +4,12 @@
 	import type { BrowseData } from '$lib/api';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from '../../components/assetCard.svelte';
-	import AddAssetModal from './AddAssetModal.svelte';
-	import PlaylistModal from './PlaylistModal.svelte';
 
 	interface Props {
 		browseData: BrowseData;
-		addAssetModal: AddAssetModal;
-		playlistModal: PlaylistModal;
 	}
 
-	let { browseData, addAssetModal, playlistModal }: Props = $props();
+	let { browseData }: Props = $props();
 
 	const changePage = (page: number) => {
 		if (page < 1) {
@@ -114,8 +110,6 @@
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
 						assetKind: asset.assetKind,
-						addAssetModal,
-						playlistModal,
 						playlist: browseData.playlist || undefined
 					})}
 					assetUrl="/{asset.assetKind == 2

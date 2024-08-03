@@ -17,6 +17,9 @@
 	import { DropdownType } from '$lib/enums';
 	import BetaLogin from '$lib/components/BetaLogin.svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
+	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
+	import { addAssetModal, playlistModal } from '../stores/modal';
 
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);
@@ -107,6 +110,8 @@
 	// $: console.log('activLink:', activeLink);
 </script>
 
+<AddAssetModal bind:this={$addAssetModal}></AddAssetModal>
+<PlaylistModal bind:this={$playlistModal}></PlaylistModal>
 <Toaster></Toaster>
 {#if !$user && !dev}
 	<BetaLogin url={endpoint + 'login/azure?redirectUrl=' + escape($page.url.href)}></BetaLogin>

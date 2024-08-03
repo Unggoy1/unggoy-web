@@ -17,7 +17,7 @@
 				<img class="asset-image" src={asset?.thumbnailUrl || '/placeholder.webp'} alt="thumbnail" />
 			</a>
 
-			<AssetKind assetKind={asset.assetKind} featured={asset?.featured || false}></AssetKind>
+			<AssetKind assetKind={asset.assetKind} recommended={asset?.recommended || false}></AssetKind>
 			<a href={assetUrl} class="asset-name">
 				{asset.name}
 			</a>

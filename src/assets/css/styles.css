@@ -542,8 +542,11 @@ body {
 	height: 64px;
 }
 
-.featured svg {
+.recommended svg {
 	width: 20px;
+	height: 20px;
+	margin-top: 7px;
+	margin-left: 2px;
 }
 
 .lg {
@@ -558,8 +561,11 @@ body {
 	height: 32px;
 	margin-top: 16px;
 }
-.lg.featured svg {
+.lg.recommended svg {
 	width: 42px;
+	height: 42px;
+	margin-top: 12px;
+	margin-left: 0;
 }
 
 .asset-name {

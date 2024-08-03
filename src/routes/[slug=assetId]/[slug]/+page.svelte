@@ -4,10 +4,8 @@
 	import { user } from '../../../stores/user';
 	import DropdownCard from '$lib/components/DropdownCard.svelte';
 	import { DropdownType } from '$lib/enums';
-	import { Toaster } from 'svelte-french-toast';
-	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
-	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import Plus from '$lib/components/icons/Plus.svelte';
+	import { addAssetModal, playlistModal } from '../../../stores/modal';
 
 	export let data: PageData;
 	$: previewImage = data.map.files.fileRelativePaths[0];
@@ -22,19 +20,17 @@
 				type: DropdownType.Button,
 				icon: Plus,
 				text: `Add to Playlist`,
-				function: () => addAssetModal.create(data.map.assetId)
+				function: () => $addAssetModal.create(data.map.assetId)
 			},
 			{
 				type: DropdownType.Button,
 				icon: Plus,
 				text: `Add to New Playlist`,
-				function: () => playlistModal.create({ assetId: data.map.assetId })
+				function: () => $playlistModal.create({ assetId: data.map.assetId })
 			}
 		]
 	];
 	let dropdown: DropdownCard;
-	let addAssetModal: AddAssetModal;
-	let playlistModal: PlaylistModal;
 </script>
 
 <svelte:head>
@@ -52,9 +48,6 @@
 	/><meta name="twitter:img:src" content={data.map.thumbnailUrl} />
 </svelte:head>
 
-<Toaster />
-<AddAssetModal bind:this={addAssetModal}></AddAssetModal>
-<PlaylistModal bind:this={playlistModal}></PlaylistModal>
 <div class="main-container show">
 	<div class="asset-area">
 		<div class="asset-container">
@@ -74,7 +67,7 @@
 						<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
 					</div>
 				{/if}
-				<AssetKind assetKind={data.map.assetKind} lg={true} featured={data.map.featured}
+				<AssetKind assetKind={data.map.assetKind} lg={true} recommended={data.map.recommended}
 				></AssetKind>
 			</div>
 

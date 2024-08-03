@@ -12,7 +12,7 @@
 	function onChange(e: Event) {
 		if ((e as CustomEvent).detail?.selected?.name) {
 			dispatcher('select', {
-				playlistId: (e as CustomEvent).detail.selected.id,
+				playlistId: (e as CustomEvent).detail.selected.assetId,
 				name: (e as CustomEvent).detail.selected.name
 			});
 		}

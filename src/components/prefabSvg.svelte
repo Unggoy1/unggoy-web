@@ -1,8 +1,8 @@
 <script lang="ts">
-	export let featured: boolean;
+	export let recommended: boolean;
 </script>
 
-{#if !featured}
+{#if !recommended}
 	<svg
 		class={$$props.class}
 		width="33"

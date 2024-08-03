@@ -1,27 +1,15 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import AssetCard from '../../../components/assetCard.svelte';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-	import Play from '../../../components/Play.svelte';
-	import CreatePlaylistDialog from '../../../components/createPlaylistDialog.svelte';
-	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
-	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import { DropdownType } from '$lib/enums';
 	import { playlistDelete, playlistDeleteAsset, playlistUpdate } from '$lib/api/playlist';
-	import { Toaster } from 'svelte-french-toast';
 	import Delete from '../../../components/Delete.svelte';
 	import Dropdown from '$lib/components/Dropdown.svelte';
-	import Star from '../../../components/Star.svelte';
 	import Edit from '../../../components/Edit.svelte';
 	import Private from '../../../components/Private.svelte';
-	import Duplicate from '../../../components/Duplicate.svelte';
-	import { getAssetCardGroups, getAssetLink } from '$lib/functions';
 	import AssetsContainer from '$lib/components/AssetsContainer.svelte';
+	import { playlistModal } from '../../../stores/modal';
 
 	export let data: PageData;
-	let addAssetModal: AddAssetModal;
-	let playlistModal: PlaylistModal;
 
 	const groups = [
 		[
@@ -30,8 +18,8 @@
 				icon: Edit,
 				text: 'Edit Playlist',
 				function: () =>
-					playlistModal.edit({
-						playlistId: data.playlist.id,
+					$playlistModal.edit({
+						playlistId: data.playlist.assetId,
 						name: data.playlist.name,
 						description: data.playlist.description
 					})
@@ -41,13 +29,13 @@
 				icon: Private,
 				text: `Private Playlist`,
 				function: () =>
-					playlistUpdate({ playlistId: data.playlist.id, isPrivate: !data.playlist.private })
+					playlistUpdate({ playlistId: data.playlist.assetId, isPrivate: !data.playlist.private })
 			},
 			{
 				type: DropdownType.Button,
 				icon: Delete,
 				text: `Delete Playlist`,
-				function: () => playlistDelete({ playlistId: data.playlist.id })
+				function: () => playlistDelete({ playlistId: data.playlist.assetId })
 			}
 		]
 	];
@@ -57,9 +45,6 @@
 	<title>{data.playlist.name}</title>
 </svelte:head>
 
-<Toaster />
-<AddAssetModal bind:this={addAssetModal}></AddAssetModal>
-<PlaylistModal bind:this={playlistModal}></PlaylistModal>
 <div class="main-container">
 	<div class="playlist-container">
 		<div>
@@ -102,5 +87,5 @@
 		</div>
 	</div>
 
-	<AssetsContainer browseData={data} {addAssetModal} {playlistModal}></AssetsContainer>
+	<AssetsContainer browseData={data}></AssetsContainer>
 </div>

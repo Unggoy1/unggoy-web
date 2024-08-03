@@ -52,7 +52,7 @@ export interface PlaylistData {
 	thumbnailUrl: string;
 	private: boolean;
 	userId: string;
-	featured?: boolean;
+	recommended?: boolean;
 }
 
 export interface Contributor {
@@ -82,5 +82,5 @@ export interface UgcData {
 	contributors: Contributor[];
 	authorId: string; //xuid(12345612645614)
 	tags?: string[];
-	featured?: boolean;
+	recommended: boolean;
 }
