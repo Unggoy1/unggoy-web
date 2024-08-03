@@ -36,30 +36,38 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 	}
 
 	const tagArray = url.searchParams.get('tags');
+	console.log('ieno: ', tagArray);
+	let tags: string[];
 	if (tagArray) {
-		const tags = tagArray.split(',');
-		fetchParams.tags = tags;
+		tags = tagArray.split(',');
+		fetchParams.tags = tags[0];
+	}
+
+	const gamertag = url.searchParams.get('gamertag');
+	if (gamertag) {
+		fetchParams.gamertag = gamertag;
 	}
 
 	const formatedFetchParams = new URLSearchParams(fetchParams);
 	const ugcEndpoint = endpoint + 'playlist/' + playlistId + '?' + formatedFetchParams.toString();
 	const response = await fetch(ugcEndpoint, {
 		method: 'GET',
-		// body: JSON.stringify(fetchParams),
 		headers: new Headers({ 'content-type': 'application/json' })
 	});
 
 	const data = await response.json();
-
+	console.log(data);
 	return {
 		playlist: data.playlist,
-		ugc: data.assets,
+		assets: data.assets,
 		totalPages: data.totalCount / data.pageSize + 1,
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
 		filter: assetKind || '',
 		sort: sort || 'publishedAt',
-		order: order || 'desc'
+		order: order || 'desc',
+		gamertag: gamertag || '',
+		tag: tags ? tags[0] : ''
 	};
 };

@@ -6,6 +6,7 @@
 	import '../assets/css/styles.css';
 	import '../assets/css/app.css';
 	import { PUBLIC_API_URL } from '$env/static/public';
+	import { dev } from '$app/environment';
 	import type { LayoutData } from './$types';
 	import { user } from '../stores/user';
 	import ChevronDown from '../components/ChevronDown.svelte';
@@ -107,7 +108,7 @@
 </script>
 
 <Toaster></Toaster>
-{#if !$user}
+{#if !$user && !dev}
 	<BetaLogin url={endpoint + 'login/azure?redirectUrl=' + escape($page.url.href)}></BetaLogin>
 {:else}
 	<div class="container">
@@ -269,11 +270,7 @@
 					<!-- </div> -->
 					<Dropdown bind:this={dropdown} {groups}>
 						<div class="user-settings">
-							<img
-								class="user-img"
-								src="/emblems/popculture_dealerschoice_bigfoot_emblem.png"
-								alt=""
-							/>
+							<img class="user-img" src={$user.emblemPath} alt="" />
 							<div class="user-name">{$user.username}</div>
 							<ChevronDown></ChevronDown>
 						</div>

@@ -16,40 +16,12 @@
 	import Edit from '../../../components/Edit.svelte';
 	import Private from '../../../components/Private.svelte';
 	import Duplicate from '../../../components/Duplicate.svelte';
-	import { getAssetLink } from '$lib/functions';
+	import { getAssetCardGroups, getAssetLink } from '$lib/functions';
+	import AssetsContainer from '$lib/components/AssetsContainer.svelte';
 
 	export let data: PageData;
-	const changePage = (page: number) => {
-		if (page < 1) {
-			data.currentPage = 1;
-		} else if (page > data.totalPages) {
-			data.currentPage = data.totalPages;
-		} else {
-			data.currentPage = page;
-		}
-		updateUrl();
-	};
-	const updateUrl = () => {
-		let query = new URLSearchParams($page.url.searchParams.toString());
-		query.set('page', String(data.currentPage));
-		if (data.filter !== '') {
-			query.set('assetKind', data.filter);
-		} else {
-			query.delete('assetKind');
-		}
-		query.set('sort', data.sort);
-		query.set('order', data.order);
-		goto(`?${query.toString()}`);
-	};
-	let dialog: AddAssetModal;
+	let addAssetModal: AddAssetModal;
 	let playlistModal: PlaylistModal;
-	function open() {
-		playlistModal.edit({
-			playlistId: data.playlist.id,
-			name: data.playlist.name,
-			description: data.playlist.description
-		});
-	}
 
 	const groups = [
 		[
@@ -86,7 +58,7 @@
 </svelte:head>
 
 <Toaster />
-<AddAssetModal bind:this={dialog}></AddAssetModal>
+<AddAssetModal bind:this={addAssetModal}></AddAssetModal>
 <PlaylistModal bind:this={playlistModal}></PlaylistModal>
 <div class="main-container">
 	<div class="playlist-container">
@@ -97,7 +69,6 @@
 			</div>
 		</div>
 		<div>
-			<!-- <CreatePlaylistDialog></CreatePlaylistDialog> -->
 			<Dropdown {groups}>
 				<button class="favorite more">
 					<svg
@@ -114,7 +85,7 @@
 					</svg>
 				</button>
 			</Dropdown>
-			<button class="favorite" onclick={open}>
+			<button class="favorite">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="34"
@@ -130,113 +101,6 @@
 			</button>
 		</div>
 	</div>
-	<div class="assets-container browse">
-		<div class="browse-filter-container">
-			<div class="filter-container">
-				<select bind:value={data.filter} onchange={updateUrl} class="dropdown-asset">
-					<option value="" label="Game Type"></option>
-					<option value="Map" label="Maps"></option>
-					<option value="UgcGameVariant" label="Modes"></option>
-					<option value="Prefab" label="Prefabs"></option>
-				</select>
-			</div>
-			<div class="filter-container">
-				<div class="filter-group">
-					<p class="filter-text">Author:</p>
-					<div class="search-bar-filter">
-						<input type="text" placeholder="gamertag" />
-					</div>
-				</div>
-				<div class="filter-group">
-					<p class="filter-text">Tags:</p>
-					<div class="search-bar-filter">
-						<input type="text" placeholder="tag" />
-					</div>
-				</div>
-				<div class="filter-group">
-					<p class="filter-text">Sort:</p>
-					<select bind:value={data.sort} onchange={updateUrl} class="dropdown-el">
-						<option value="publishedAt" label="Date Published"></option>
-						<option value="name" label="Name"></option><option value="averagerating" label="Rating"
-						></option>
-						<option value="bookmarks" label="Bookmarks"></option>
-						<option value="playsRecent" label="Plays Recent"></option>
-						<option value="playsAllTime" label="Plays"></option>
-					</select>
-				</div>
-			</div>
-		</div>
 
-		<div class="assets browse">
-			{#each data.ugc as ugc (ugc.assetId)}
-				<div style="color: inherit; text-decoration: none; max-width: 560px">
-					<AssetCard
-						{ugc}
-						groups={[
-							[
-								{
-									type: DropdownType.Button,
-									icon: Play,
-									text: `Add to Playlist`,
-									function: () => dialog.create(ugc.assetId)
-								},
-								{
-									type: DropdownType.Button,
-									icon: Delete,
-									text: `Remove From Playlist`,
-									function: () =>
-										playlistDeleteAsset({ playlistId: data.playlist.id, assetId: ugc.assetId })
-								},
-								{
-									type: DropdownType.Button,
-									icon: Play,
-									text: `Add to New Playlist`,
-									function: () =>
-										playlistModal.create({
-											assetId: ugc.assetId
-										})
-								}
-							],
-							[
-								{
-									type: DropdownType.Button,
-									icon: Duplicate,
-									text: `Copy asset link`,
-									function: () => getAssetLink({ assetId: ugc.assetId, assetKind: ugc.assetKind })
-								}
-							]
-						]}
-						assetUrl="/{ugc.assetKind == 2
-							? 'maps'
-							: ugc.assetKind == 6
-							  ? 'modes'
-							  : 'prefabs'}/{ugc.assetId}"
-					/>
-				</div>
-			{/each}
-		</div>
-	</div>
-	<div class="pagination-container">
-		<div class="pagination">
-			<ul>
-				{#if data.currentPage > 1}
-					<li>
-						<button onclick={() => changePage(1)}>&lt;&lt;</button>
-					</li>
-				{/if}
-				<li class="prev-nav-group">
-					<button onclick={() => changePage(data.currentPage - 1)}>&lt;</button>
-				</li>
-				<li class="text-only">{data.currentPage} - {data.totalPages}</li>
-				<li class="next-nav-group">
-					<button onclick={() => changePage(data.currentPage + 1)}>&gt;</button>
-				</li>
-				{#if data.currentPage < data.totalPages}
-					<li>
-						<button onclick={() => changePage(data.totalPages)}>&gt;&gt;</button>
-					</li>
-				{/if}
-			</ul>
-		</div>
-	</div>
+	<AssetsContainer browseData={data} {addAssetModal} {playlistModal}></AssetsContainer>
 </div>

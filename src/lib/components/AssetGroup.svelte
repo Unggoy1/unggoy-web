@@ -12,7 +12,7 @@
 	import { quintOut } from 'svelte/easing';
 
 	interface Props {
-	  children: Snippet
+		children: Snippet;
 		assets: UgcData[];
 		addAssetModal: AddAssetModal;
 		playlistModal?: PlaylistModal;
@@ -24,16 +24,21 @@
 <div class="assets-container">
 	{@render children()}
 	<div class="assets">
-		{#each assets as ugc (ugc.assetId)}
+		{#each assets as asset (asset.assetId)}
 			<div style="color: inherit; text-decoration: none;">
 				<AssetCard
-				  {ugc}
-					groups={getAssetCardGroups(ugc, addAssetModal, playlistModal)}
-					assetUrl="/{ugc.assetKind == 2
+					{asset}
+					groups={getAssetCardGroups({
+						assetId: asset.assetId,
+						assetKind: asset.assetKind,
+						addAssetModal,
+						playlistModal
+					})}
+					assetUrl="/{asset.assetKind == 2
 						? 'maps'
-						: ugc.assetKind == 6
-						  ? 'modes'
-						  : 'prefabs'}/{ugc.assetId}"
+						: asset.assetKind == 6
+							? 'modes'
+							: 'prefabs'}/{asset.assetId}"
 				/>
 			</div>
 		{/each}
