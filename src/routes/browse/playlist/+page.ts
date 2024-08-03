@@ -36,21 +36,27 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		fetchParams.tags = tags;
 	}
 
-	const ugcEndpoint = endpoint + 'playlist/browse';
+	const gamertag = url.searchParams.get('gamertag');
+	if (gamertag) {
+		fetchParams.gamertag = gamertag;
+	}
+
+	const formatedFetchParams = new URLSearchParams(fetchParams);
+	const ugcEndpoint = endpoint + 'playlist/browse' + '?' + formatedFetchParams.toString();
 	const response = await fetch(ugcEndpoint, {
-		method: 'POST',
-		body: JSON.stringify(fetchParams),
+		method: 'GET',
 		headers: new Headers({ 'content-type': 'application/json' })
 	});
 
 	const data: PlaylistBrowseResponse = await response.json();
 	return {
-		ugc: data.assets,
+		assets: data.assets,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
 		sort: sort || 'publishedAt',
-		order: order || 'desc'
+		order: order || 'desc',
+		gamertag: gamertag || ''
 	};
 };

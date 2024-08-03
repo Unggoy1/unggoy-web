@@ -2,8 +2,7 @@
 	import type { PlaylistData, UgcData } from '$lib/api';
 	import AssetKind from './assetKind.svelte';
 	import DropdownCard from '$lib/components/DropdownCard.svelte';
-	export let ugc: UgcData = undefined;
-	export let playlist: PlaylistData = undefined;
+	export let asset: UgcData | PlaylistData = undefined;
 	export let assetUrl: string;
 
 	let dropdown: DropdownCard;
@@ -15,16 +14,12 @@
 		<!-- <div class="video-time">{ugc.likes}</div> -->
 		<div class="asset-image-wrapper">
 			<a href={assetUrl} class="">
-				<img
-					class="asset-image"
-					src={ugc?.thumbnailUrl || playlist?.thumbnail || '/placeholder.webp'}
-					alt="thumbnail"
-				/>
+				<img class="asset-image" src={asset?.thumbnailUrl || '/placeholder.webp'} alt="thumbnail" />
 			</a>
 
-			<AssetKind assetKind={ugc?.assetKind || 5} featured={ugc?.featured || false}></AssetKind>
+			<AssetKind assetKind={asset.assetKind} featured={asset?.featured || false}></AssetKind>
 			<a href={assetUrl} class="asset-name">
-				{ugc?.name || playlist?.name}
+				{asset.name}
 			</a>
 			<button use:dropdown.button class="elipsis">
 				<svg

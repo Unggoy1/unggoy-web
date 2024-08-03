@@ -13,7 +13,12 @@ html {
 img {
 	max-width: 100%;
 }
-
+button {
+	transition: all 0.2s ease-in-out;
+}
+a {
+	transition: all 0.2s ease-in-out;
+}
 :root {
 	--body-font: 'Inter', sans-serif;
 	--theme-bg: #171d1e;
@@ -21,7 +26,9 @@ img {
 	--sidebar-bg: #d9d9d903;
 	--sidebar-color: #bfc8cb;
 	--button-bg: #334a50;
+	--button-bg-hover: #1c343a;
 	--button-color: #cee7ee;
+	--button-color-hover: #b2cbd2;
 	--container-bg: #252b2d;
 	--container-color: #dee3e5;
 	--asset-card-bg: #334a50d9;
@@ -165,6 +172,7 @@ body {
 	border-radius: 12px;
 	padding-left: 16px;
 	margin-bottom: 20px;
+	transition: all 0.3s ease-in-out;
 }
 .side-menu svg {
 	width: 24px;
@@ -522,6 +530,13 @@ body {
 	padding: 0;
 	cursor: pointer;
 }
+.playlist-button:hover {
+	background-color: var(--button-bg-hover);
+	fill: var(--button-color-hover);
+}
+.playlist-button svg:hover {
+	fill: var(--button-color-hover);
+}
 .playlist-button svg {
 	width: 32px;
 	height: 64px;
@@ -763,6 +778,10 @@ body {
 	max-width: fit-content;
 	margin-right: 14px;
 	margin-bottom: 12px;
+	transition: all 0.2s ease-in-out;
+}
+.tag:hover {
+	background-color: var(--button-bg-hover);
 }
 
 .tag-info {
@@ -778,6 +797,9 @@ body {
 	/* padding: 0 8px; */
 	margin-top: 0px;
 	height: 56px;
+}
+.contributor-container:hover {
+	/* transform: scale(1.02); */
 }
 .contributor-text {
 	display: flex;
@@ -1022,6 +1044,14 @@ li.text-only {
 .more {
 	background-color: var(--button-bg);
 }
+.more:hover {
+	background-color: var(--button-bg-hover);
+	fill: var(--button-color-hover);
+}
+.more svg:hover {
+	fill: var(--button-color-hover);
+}
+
 .favorite svg {
 	width: 32px;
 	height: 64px;

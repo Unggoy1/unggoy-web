@@ -48,10 +48,10 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		fetchParams.gamertag = gamertag;
 	}
 
-	const ugcEndpoint = endpoint + 'ugc/browse';
+	const formatedFetchParams = new URLSearchParams(fetchParams);
+	const ugcEndpoint = endpoint + 'ugc/browse' + '?' + formatedFetchParams.toString();
 	const response = await fetch(ugcEndpoint, {
-		method: 'POST',
-		body: JSON.stringify(fetchParams),
+		method: 'GET',
 		headers: new Headers({ 'content-type': 'application/json' })
 	});
 
@@ -59,8 +59,9 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	console.log(data.totalCount);
 	console.log(data.pageSize);
+	console.log(data);
 	return {
-		ugc: data.assets,
+		assets: data.assets,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,

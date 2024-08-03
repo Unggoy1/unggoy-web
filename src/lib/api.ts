@@ -1,4 +1,17 @@
 import { PUBLIC_API_URL } from '$env/static/public';
+export interface BrowseData {
+	playlist?: PlaylistData;
+	assets: UgcData[] | PlaylistData[];
+	totalPages: number;
+	pageSize: number;
+	totalResults: number;
+	currentPage: number;
+	sort: string;
+	order: string;
+	filter?: string;
+	gamertag: string;
+	tag?: string;
+}
 export interface UgcFetchData {
 	assetKind?: number; //'Map' | ''UgcGameVariant'' | 'Prefab';
 	sort?: string; //'datepublishedutc';
@@ -32,12 +45,14 @@ export interface PlaylistBrowseResponse {
 }
 
 export interface PlaylistData {
-	id: string;
+	assetId: string;
 	name: string;
 	description: string;
-	thumbnail: string;
+	assetKind: number;
+	thumbnailUrl: string;
 	private: boolean;
 	userId: string;
+	featured?: boolean;
 }
 
 export interface Contributor {
