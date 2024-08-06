@@ -13,14 +13,14 @@ export interface BrowseData {
 	tag?: string;
 }
 export interface UgcFetchData {
-	assetKind?: number; //'Map' | ''UgcGameVariant'' | 'Prefab';
+	assetKind?: string; // number 'Map' | ''UgcGameVariant'' | 'Prefab';
 	sort?: string; //'datepublishedutc';
 	order?: string; //'desc' | 'asc';
-	offset?: number; //number
-	count?: number;
-	tags?: string[];
+	offset?: string; //number
+	count?: string; //number
+	tags?: string;
 	gamertag?: string;
-	ownerOnly?: boolean;
+	ownerOnly?: string; // "boolean"
 	searchTerm?: string;
 }
 

@@ -1,10 +1,11 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 const apiEndpoint = `${PUBLIC_API_URL}` || 'http://localhost:3200';
 
-export async function request(context: RequestOpts): Promise<Response> {
+export async function request(context: RequestOpts, svelteFetch?: typeof fetch): Promise<Response> {
 	const { url, body } = await createFetchUrl(context);
+	const fetchFunction = svelteFetch ?? fetch;
 
-	const response = await fetch(url, {
+	const response = await fetchFunction(url, {
 		method: context.method,
 		credentials: 'include',
 		body: body,
@@ -16,6 +17,7 @@ export async function request(context: RequestOpts): Promise<Response> {
 
 	if (!response.ok) {
 		//do error handling here
+		console.log(await response.text());
 		throw new Error('temporary error message');
 	}
 	return response;
@@ -27,13 +29,53 @@ async function createFetchUrl(context: RequestOpts) {
 		// only add the querystring to the URL if there are query parameters.
 		// this is done to avoid urls ending with a "?" character which buggy webservers
 		// do not handle correctly sometimes.
-		url += '?' + this.configuration.queryParamsStringify(context.query);
+		url += '?' + queryParamsStringify(context.query);
 	}
 	let body;
 	if (context.body) {
 		body = JSON.stringify(context.body);
 	}
 	return { url, body };
+}
+export function queryParamsStringify(params: HTTPQuery, prefix: string = ''): string {
+	return Object.keys(params)
+		.filter((key) => params[key] !== undefined) // Exclude keys with undefined values
+		.map((key) => querystringSingleKey(key, params[key], prefix))
+		.filter((part) => part.length > 0)
+		.join('&');
+}
+
+function querystringSingleKey(
+	key: string,
+	value:
+		| string
+		| number
+		| null
+		| undefined
+		| boolean
+		| Array<string | number | null | boolean>
+		| Set<string | number | null | boolean>
+		| HTTPQuery,
+	keyPrefix: string = ''
+): string {
+	const fullKey = keyPrefix + (keyPrefix.length ? `[${key}]` : key);
+	if (value instanceof Array) {
+		const multiValue = value
+			.map((singleValue) => encodeURIComponent(String(singleValue)))
+			.join(`&${encodeURIComponent(fullKey)}=`);
+		return `${encodeURIComponent(fullKey)}=${multiValue}`;
+	}
+	if (value instanceof Set) {
+		const valueAsArray = Array.from(value);
+		return querystringSingleKey(key, valueAsArray, keyPrefix);
+	}
+	if (value instanceof Date) {
+		return `${encodeURIComponent(fullKey)}=${encodeURIComponent(value.toISOString())}`;
+	}
+	if (value instanceof Object) {
+		return queryParamsStringify(value as HTTPQuery, fullKey);
+	}
+	return `${encodeURIComponent(fullKey)}=${encodeURIComponent(String(value))}`;
 }
 
 export type Json = any;
@@ -56,4 +98,8 @@ export interface RequestOpts {
 	headers?: HTTPHeaders;
 	query?: HTTPQuery;
 	body?: Json;
+}
+
+export interface Fetch {
+	svelteFetch?: typeof fetch;
 }

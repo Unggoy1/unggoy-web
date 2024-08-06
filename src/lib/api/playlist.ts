@@ -1,13 +1,13 @@
 import { invalidateAll } from '$app/navigation';
 import toast from 'svelte-french-toast';
-import { request, type RequestOpts } from './base';
+import { request, type Fetch, type RequestOpts } from './base';
 export async function playlistCreate({
 	name,
 	description,
 	isPrivate,
 	thumbnail,
 	assetId
-}: PlaylistData): Promise<void> {
+}: PlaylistCreate): Promise<void> {
 	const context: RequestOpts = {
 		path: '/playlist',
 		method: 'POST',
@@ -19,7 +19,6 @@ export async function playlistCreate({
 			assetId
 		}
 	};
-	console.log(assetId);
 	try {
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
@@ -115,7 +114,71 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 	} catch (error) {}
 }
 
-export interface PlaylistData {
+export async function playlistGet({
+	playlistId,
+	assetKind,
+	sort,
+	order,
+	offset,
+	count,
+	tags,
+	gamertag,
+	ownerOnly,
+	searchTerm,
+	svelteFetch
+}: PlaylistGet) {
+	const context: RequestOpts = {
+		path: `/playlist/${playlistId}`,
+		method: 'GET',
+		query: {
+			assetKind,
+			sort,
+			order,
+			offset,
+			count,
+			tags,
+			gamertag,
+			ownerOnly,
+			searchTerm
+		}
+	};
+	try {
+		const result = await request(context, svelteFetch);
+		return result.json();
+	} catch (error) {
+		//throw some error here about not being able to decode the data
+	}
+}
+export async function playlistBrowse({
+	sort,
+	order,
+	offset,
+	count,
+	gamertag,
+	searchTerm,
+	svelteFetch
+}: PlaylistBrowse) {
+	const context: RequestOpts = {
+		path: `/playlist/browse`,
+		method: 'GET',
+		query: {
+			sort,
+			order,
+			offset,
+			count,
+			gamertag,
+			searchTerm
+		}
+	};
+	try {
+		const result = await request(context, svelteFetch);
+		return result.json();
+	} catch (error) {
+		//throw some error here about not being able to decode the data
+	}
+}
+
+export interface PlaylistCreate {
 	name: string;
 	description: string;
 	isPrivate: boolean;
@@ -141,15 +204,48 @@ export interface PlaylistDeleteData {
 	playlistId: string;
 }
 
-export async function test({ playlistId, assetId }) {
-	try {
-		const result = await toast.promise(playlistDeleteAsset({ playlistId, assetId }), {
-			loading: 'Deleting...',
-			success: (data) => `Deleted asset from playlist`,
-			error: (err) => err.toString()
-		});
-		invalidateAll();
-	} catch (e) {
-		console.log('did we quit');
-	}
+export interface PlaylistGet extends Fetch {
+	playlistId: string;
+	assetKind?: number; // number 'Map' | ''UgcGameVariant'' | 'Prefab';
+	sort?: string; //'datepublishedutc';
+	order?: string; //'desc' | 'asc';
+	offset?: number; //number
+	count?: number; //number
+	tags?: string;
+	gamertag?: string;
+	ownerOnly?: boolean; // "boolean"
+	searchTerm?: string;
+}
+export interface PlaylistBrowse extends Fetch {
+	sort?: string;
+	order?: string;
+	offset?: number;
+	count?: number;
+	gamertag?: string;
+	searchTerm?: string;
+}
+
+export interface PlaylistFetchData {
+	sort?: string; //'datepublishedutc';
+	order?: string; //'desc' | 'asc';
+	offset?: number; //number
+	count?: number;
+	searchTerm?: string;
+}
+
+export interface PlaylistBrowseResponse {
+	assets: PlaylistData[];
+	totalCount: number;
+	pageSize: number;
+}
+
+export interface PlaylistData {
+	assetId: string;
+	name: string;
+	description: string;
+	assetKind: number;
+	thumbnailUrl: string;
+	private: boolean;
+	userId: string;
+	recommended?: boolean;
 }

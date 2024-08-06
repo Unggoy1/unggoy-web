@@ -1,12 +1,13 @@
 import type { UgcBrowseResponse, UgcFetchData } from '$lib/api';
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
+import { playlistDelete, playlistGet, type PlaylistGet } from '$lib/api/playlist';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url, params }) => {
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 	const playlistId: string = params.slug;
-	const fetchParams: UgcFetchData = {};
+	const fetchParams: PlaylistGet = { playlistId: playlistId, svelteFetch: fetch };
 
 	const page = url.searchParams.get('page');
 	if (page) {
@@ -36,7 +37,6 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 	}
 
 	const tagArray = url.searchParams.get('tags');
-	console.log('ieno: ', tagArray);
 	let tags: string[];
 	if (tagArray) {
 		tags = tagArray.split(',');
@@ -48,15 +48,7 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		fetchParams.gamertag = gamertag;
 	}
 
-	const formatedFetchParams = new URLSearchParams(fetchParams);
-	const ugcEndpoint = endpoint + 'playlist/' + playlistId + '?' + formatedFetchParams.toString();
-	const response = await fetch(ugcEndpoint, {
-		method: 'GET',
-		headers: new Headers({ 'content-type': 'application/json' })
-	});
-
-	const data = await response.json();
-	console.log(data);
+	const data = await playlistGet(fetchParams);
 	return {
 		playlist: data.playlist,
 		assets: data.assets,

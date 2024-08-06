@@ -10,16 +10,14 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const page = url.searchParams.get('page');
 	if (page) {
-		console.log('Page', page);
 		const offset = (parseInt(page) - 1) * 20;
-		console.log(offset);
-		fetchParams.offset = offset;
+		fetchParams.offset = offset.toString();
 	}
 
 	const assetKind = url.searchParams.get('assetKind');
 	if (assetKind) {
 		const assetInt = assetKind === 'Map' ? 2 : assetKind === 'Prefab' ? 4 : 6;
-		fetchParams.assetKind = assetInt;
+		fetchParams.assetKind = assetInt.toString();
 	}
 
 	const sort = url.searchParams.get('sort');
@@ -41,14 +39,14 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	let tags: string[];
 	if (tagArray) {
 		tags = tagArray.split(',');
-		fetchParams.tags = tags;
+		fetchParams.tags = tags[0];
 	}
 	const gamertag = url.searchParams.get('gamertag');
 	if (gamertag) {
 		fetchParams.gamertag = gamertag;
 	}
 
-	const formatedFetchParams = new URLSearchParams(fetchParams);
+	const formatedFetchParams = new URLSearchParams(fetchParams as Record<string, string>);
 	const ugcEndpoint = endpoint + 'ugc/browse' + '?' + formatedFetchParams.toString();
 	const response = await fetch(ugcEndpoint, {
 		method: 'GET',
@@ -57,9 +55,6 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const data: UgcBrowseResponse = await response.json();
 
-	console.log(data.totalCount);
-	console.log(data.pageSize);
-	console.log(data);
 	return {
 		assets: data.assets,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),

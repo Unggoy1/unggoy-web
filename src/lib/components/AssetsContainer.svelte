@@ -42,7 +42,7 @@
 <div class="assets-container browse">
 	<div class="browse-filter-container">
 		<div class="filter-container">
-			{#if browseData.filter}
+			{#if browseData.filter != undefined}
 				<select
 					bind:value={browseData.filter}
 					onchange={updateUrl}
@@ -70,7 +70,7 @@
 					/>
 				</div>
 			</div>
-			{#if browseData.tag}
+			{#if browseData.tag != undefined}
 				<div class="filter-group">
 					<p class="filter-text">Tags:</p>
 					<div class="search-bar-filter">
@@ -125,7 +125,7 @@
 	{:else}
 		<div class="no-results">
 			<div>
-				<img src="superintendent_sad.webp" alt="Superintendent Sad" />
+				<img src="/superintendent_sad.webp" alt="Superintendent Sad" />
 				<div>Sorry, no results.</div>
 				<div>Try searching for something else.</div>
 			</div>
