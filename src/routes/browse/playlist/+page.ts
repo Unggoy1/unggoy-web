@@ -1,5 +1,4 @@
 import type { PageLoad } from './$types';
-import { PUBLIC_API_URL } from '$env/static/public';
 import {
 	playlistBrowse,
 	type PlaylistBrowse,
@@ -8,8 +7,9 @@ import {
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
-	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
-	const fetchParams: PlaylistBrowse = {};
+	const fetchParams: PlaylistBrowse = {
+		svelteFetch: fetch
+	};
 
 	const page = url.searchParams.get('page');
 	if (page) {

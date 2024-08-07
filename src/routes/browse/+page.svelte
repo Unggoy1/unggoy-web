@@ -1,8 +1,5 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
-	import { Toaster } from 'svelte-french-toast';
-	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import AssetsContainer from '$lib/components/AssetsContainer.svelte';
 
 	export let data: PageData;

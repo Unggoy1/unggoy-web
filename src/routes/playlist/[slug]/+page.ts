@@ -1,7 +1,6 @@
-import type { UgcBrowseResponse, UgcFetchData } from '$lib/api';
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
-import { playlistDelete, playlistGet, type PlaylistGet } from '$lib/api/playlist';
+import { playlistGet, type PlaylistGet } from '$lib/api/playlist';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url, params }) => {

@@ -1,23 +1,23 @@
-import type { UgcBrowseResponse, UgcFetchData } from '$lib/api';
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
+import { type UgcBrowseResponse, type UgcBrowse, ugcBrowse } from '$lib/api/ugc';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
-	console.log(PUBLIC_API_URL);
-	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
-	const fetchParams: UgcFetchData = {};
+	const fetchParams: UgcBrowse = {
+		svelteFetch: fetch
+	};
 
 	const page = url.searchParams.get('page');
 	if (page) {
 		const offset = (parseInt(page) - 1) * 20;
-		fetchParams.offset = offset.toString();
+		fetchParams.offset = offset;
 	}
 
 	const assetKind = url.searchParams.get('assetKind');
 	if (assetKind) {
 		const assetInt = assetKind === 'Map' ? 2 : assetKind === 'Prefab' ? 4 : 6;
-		fetchParams.assetKind = assetInt.toString();
+		fetchParams.assetKind = assetInt;
 	}
 
 	const sort = url.searchParams.get('sort');
@@ -46,14 +46,13 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		fetchParams.gamertag = gamertag;
 	}
 
-	const formatedFetchParams = new URLSearchParams(fetchParams as Record<string, string>);
-	const ugcEndpoint = endpoint + 'ugc/browse' + '?' + formatedFetchParams.toString();
-	const response = await fetch(ugcEndpoint, {
-		method: 'GET',
-		headers: new Headers({ 'content-type': 'application/json' })
-	});
+	const ownerOnlyString = url.searchParams.get('ownerOnly');
+	if (ownerOnlyString) {
+		const ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
+		fetchParams.ownerOnly = ownerOnly;
+	}
 
-	const data: UgcBrowseResponse = await response.json();
+	const data: UgcBrowseResponse = await ugcBrowse(fetchParams);
 
 	return {
 		assets: data.assets,

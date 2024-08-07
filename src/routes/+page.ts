@@ -1,44 +1,25 @@
-import type { UgcBrowseResponse, UgcFetchData } from '$lib/api';
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
+import { ugcBrowse, type UgcBrowse, type UgcBrowseResponse } from '$lib/api/ugc';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch }) => {
-	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
+	const fetchParams: UgcBrowse = {
+		svelteFetch: fetch,
+		assetKind: 2,
+		count: 8
+	};
 
-	const formatedFetchParams = new URLSearchParams({
-		assetKind: '2',
-		count: '8'
-	});
-	// const fetchParams: UgcFetchData = {
-	// 	assetKind: '2',
-	// 	count: '8'
-	// };
+	const newMaps: UgcBrowseResponse = await ugcBrowse(fetchParams);
 
-	const ugcEndpoint = endpoint + 'ugc/browse';
-	const response = await fetch(`${ugcEndpoint}?${formatedFetchParams.toString()}`, {
-		headers: new Headers({ 'content-type': 'application/json' })
-	});
-	const newMaps: UgcBrowseResponse = await response.json();
+	fetchParams.assetKind = 6;
+	const newModes: UgcBrowseResponse = await ugcBrowse(fetchParams);
 
-	formatedFetchParams.set('assetKind', '6');
-	const newModeResponse = await fetch(`${ugcEndpoint}?${formatedFetchParams.toString()}`, {
-		headers: new Headers({ 'content-type': 'application/json' })
-	});
-	const newModes: UgcBrowseResponse = await newModeResponse.json();
+	fetchParams.sort = 'playsRecent';
+	const trendingModes: UgcBrowseResponse = await ugcBrowse(fetchParams);
 
-	formatedFetchParams.set('sort', 'playsRecent');
-	const trendingModeResponse = await fetch(`${ugcEndpoint}?${formatedFetchParams.toString()}`, {
-		headers: new Headers({ 'content-type': 'application/json' })
-	});
-	const trendingModes: UgcBrowseResponse = await trendingModeResponse.json();
-
-	formatedFetchParams.set('assetKind', '2');
-	const trendingMapResponse = await fetch(`${ugcEndpoint}?${formatedFetchParams.toString()}`, {
-		headers: new Headers({ 'content-type': 'application/json' })
-	});
-
-	const trendingMaps: UgcBrowseResponse = await trendingMapResponse.json();
+	fetchParams.assetKind = 2;
+	const trendingMaps: UgcBrowseResponse = await ugcBrowse(fetchParams);
 
 	return {
 		newMaps: newMaps.assets,
