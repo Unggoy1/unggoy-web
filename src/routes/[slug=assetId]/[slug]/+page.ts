@@ -3,7 +3,7 @@ import { PUBLIC_API_URL } from '$env/static/public';
 import { ugcGet, type UgcData } from '$lib/api/ugc';
 
 export const ssr = true;
-export const load: PageLoad = async ({ fetch, url, params }) => {
+export const load: PageLoad = async ({ fetch, params }) => {
 	const assetId: string = params.slug;
 
 	const data: UgcData = await ugcGet({ assetId, svelteFetch: fetch });

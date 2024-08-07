@@ -33,7 +33,7 @@
 		[
 			{ type: DropdownType.Button, icon: Play, text: `Create New Playlist`, function: test },
 			{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '' },
-			{ type: DropdownType.A, icon: Star, text: `Liked Playlists`, href: '' },
+			{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
 			{
 				type: DropdownType.A,
 				icon: LogOut,
