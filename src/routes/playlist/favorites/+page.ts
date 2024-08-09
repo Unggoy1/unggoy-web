@@ -4,6 +4,7 @@ import {
 	type PlaylistBrowse,
 	type PlaylistBrowseResponse
 } from '$lib/api/playlist';
+import { favoritesGet, type FavoritesGetResponse } from '$lib/api/favorites';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
@@ -32,26 +33,22 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		fetchParams.searchTerm = searchTerm;
 	}
 
-	// const tagArray = url.searchParams.get('tags');
-	// if (tagArray) {
-	// 	const tags = tagArray.split(',');
-	// 	fetchParams.tags = tags[0];
-	// }
-
 	const gamertag = url.searchParams.get('gamertag');
 	if (gamertag) {
 		fetchParams.gamertag = gamertag;
 	}
 
-	const data: PlaylistBrowseResponse = await playlistBrowse(fetchParams);
+	const data: FavoritesGetResponse = await favoritesGet(fetchParams);
+	console.log('we in here');
+	console.log(data);
 	return {
 		assets: data.assets,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
-		sort: sort || 'name',
-		order: order || 'desc',
+		sort: sort || '',
+		order: order || '',
 		gamertag: gamertag || ''
 	};
 };

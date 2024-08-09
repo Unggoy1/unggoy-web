@@ -14,7 +14,6 @@ import type { PlaylistData, UgcData } from './api';
 export async function getAssetLink({ assetId, assetKind }) {
 	const assetUrl =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';
-	console.log(assetKind);
 
 	await toast.promise(navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}`), {
 		loading: 'Copying...',

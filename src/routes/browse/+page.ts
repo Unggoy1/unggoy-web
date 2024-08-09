@@ -1,18 +1,16 @@
-import type { UgcBrowseResponse, UgcFetchData } from '$lib/api';
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
+import { type UgcBrowseResponse, type UgcBrowse, ugcBrowse } from '$lib/api/ugc';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
-	console.log(PUBLIC_API_URL);
-	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
-	const fetchParams: UgcFetchData = {};
+	const fetchParams: UgcBrowse = {
+		svelteFetch: fetch
+	};
 
 	const page = url.searchParams.get('page');
 	if (page) {
-		console.log('Page', page);
 		const offset = (parseInt(page) - 1) * 20;
-		console.log(offset);
 		fetchParams.offset = offset;
 	}
 
@@ -41,25 +39,21 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	let tags: string[];
 	if (tagArray) {
 		tags = tagArray.split(',');
-		fetchParams.tags = tags;
+		fetchParams.tags = tags[0];
 	}
 	const gamertag = url.searchParams.get('gamertag');
 	if (gamertag) {
 		fetchParams.gamertag = gamertag;
 	}
 
-	const formatedFetchParams = new URLSearchParams(fetchParams);
-	const ugcEndpoint = endpoint + 'ugc/browse' + '?' + formatedFetchParams.toString();
-	const response = await fetch(ugcEndpoint, {
-		method: 'GET',
-		headers: new Headers({ 'content-type': 'application/json' })
-	});
+	const ownerOnlyString = url.searchParams.get('ownerOnly');
+	if (ownerOnlyString) {
+		const ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
+		fetchParams.ownerOnly = ownerOnly;
+	}
 
-	const data: UgcBrowseResponse = await response.json();
+	const data: UgcBrowseResponse = await ugcBrowse(fetchParams);
 
-	console.log(data.totalCount);
-	console.log(data.pageSize);
-	console.log(data);
 	return {
 		assets: data.assets,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),

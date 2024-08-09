@@ -32,8 +32,8 @@
 	const groups = [
 		[
 			{ type: DropdownType.Button, icon: Play, text: `Create New Playlist`, function: test },
-			{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '' },
-			{ type: DropdownType.A, icon: Star, text: `Liked Playlists`, href: '' },
+			{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '/playlist/me' },
+			{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
 			{
 				type: DropdownType.A,
 				icon: LogOut,
@@ -46,6 +46,8 @@
 	let isSidebarCollapsed = false;
 	let activeLink = null;
 	let searchTerm = '';
+
+	$: currentAssetKind = new URLSearchParams($page.url.search).get('assetKind');
 
 	const handleClick = (event) => {
 		const clickedLink = event.currentTarget;
@@ -126,7 +128,7 @@
 						data-sveltekit-replacestate
 						on:click={handleClick}
 						class="sidebar-link discover"
-						class:is-active={activeLink === null}
+						class:is-active={$page.url.pathname === '/'}
 						href="/"
 					>
 						<svg viewBox="0 0 24 24" fill="currentColor">
@@ -140,7 +142,7 @@
 						data-sveltekit-replacestate
 						on:click={handleClick}
 						class="sidebar-link trending"
-						class:is-active={activeLink === null}
+						class:is-active={$page.url.pathname === '/browse' && currentAssetKind === 'Map'}
 						href="/browse?assetKind=Map"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
@@ -154,7 +156,8 @@
 						data-sveltekit-replacestate
 						on:click={handleClick}
 						class="sidebar-link"
-						class:is-active={activeLink === null}
+						class:is-active={$page.url.pathname === '/browse' &&
+							currentAssetKind === 'UgcGameVariant'}
 						href="/browse?assetKind=UgcGameVariant"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
@@ -168,7 +171,7 @@
 						data-sveltekit-replacestate
 						on:click={handleClick}
 						class="sidebar-link"
-						class:is-active={activeLink === null}
+						class:is-active={$page.url.pathname === '/browse' && currentAssetKind === 'Prefab'}
 						href="/browse?assetKind=Prefab"
 					>
 						<svg
@@ -190,7 +193,7 @@
 						data-sveltekit-replacestate
 						on:click={handleClick}
 						class="sidebar-link"
-						class:is-active={activeLink === null}
+						class:is-active={$page.url.pathname === '/browse/playlist'}
 						href="/browse/playlist"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
@@ -204,7 +207,7 @@
 						data-sveltekit-replacestate
 						on:click={handleClick}
 						class="sidebar-link"
-						class:is-active={activeLink === null}
+						class:is-active={$page.url.pathname === '/browse' && currentAssetKind === null}
 						href="/browse"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"

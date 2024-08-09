@@ -1,15 +1,12 @@
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
+import { ugcGet, type UgcData } from '$lib/api/ugc';
 
 export const ssr = true;
-export const load: PageLoad = async ({ fetch, url, params }) => {
-	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
-	// const assetId: string = url.searchParams.get('assetId');
+export const load: PageLoad = async ({ fetch, params }) => {
 	const assetId: string = params.slug;
-	const mapsEndpoint = endpoint + 'ugc/asset/' + assetId;
 
-	const response = await fetch(mapsEndpoint);
-	const data = await response.json();
+	const data: UgcData = await ugcGet({ assetId, svelteFetch: fetch });
 	const images: string[] = data.files.fileRelativePaths;
 	const jpgFiles = images.filter((image) => image.endsWith('.jpg'));
 	const pngFiles = images.filter((image) => image.endsWith('.png'));

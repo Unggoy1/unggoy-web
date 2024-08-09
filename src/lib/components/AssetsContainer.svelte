@@ -42,7 +42,7 @@
 <div class="assets-container browse">
 	<div class="browse-filter-container">
 		<div class="filter-container">
-			{#if browseData.filter}
+			{#if browseData.filter != undefined}
 				<select
 					bind:value={browseData.filter}
 					onchange={updateUrl}
@@ -59,18 +59,20 @@
 			{/if}
 		</div>
 		<div class="filter-container">
-			<div class="filter-group">
-				<p class="filter-text">Contributor:</p>
-				<div class="search-bar-filter">
-					<input
-						bind:value={browseData.gamertag}
-						onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-						type="text"
-						placeholder="gamertag"
-					/>
+			{#if browseData.gamertag != undefined}
+				<div class="filter-group">
+					<p class="filter-text">Contributor:</p>
+					<div class="search-bar-filter">
+						<input
+							bind:value={browseData.gamertag}
+							onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+							type="text"
+							placeholder="gamertag"
+						/>
+					</div>
 				</div>
-			</div>
-			{#if browseData.tag}
+			{/if}
+			{#if browseData.tag != undefined}
 				<div class="filter-group">
 					<p class="filter-text">Tags:</p>
 					<div class="search-bar-filter">
@@ -125,7 +127,7 @@
 	{:else}
 		<div class="no-results">
 			<div>
-				<img src="superintendent_sad.webp" alt="Superintendent Sad" />
+				<img src="/superintendent_sad.webp" alt="Superintendent Sad" />
 				<div>Sorry, no results.</div>
 				<div>Try searching for something else.</div>
 			</div>
