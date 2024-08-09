@@ -115,7 +115,7 @@
 <AddAssetModal bind:this={$addAssetModal}></AddAssetModal>
 <PlaylistModal bind:this={$playlistModal}></PlaylistModal>
 <Toaster></Toaster>
-{#if !$user && dev}
+{#if !$user && !dev}
 	<BetaLogin url={endpoint + 'login/azure?redirectUrl=' + escape($page.url.href)}></BetaLogin>
 {:else}
 	<div class="container">
