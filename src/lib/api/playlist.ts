@@ -27,7 +27,7 @@ export async function playlistCreate({
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistAddAsset({
@@ -47,7 +47,7 @@ export async function playlistAddAsset({
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistDeleteAsset({
@@ -66,7 +66,7 @@ export async function playlistDeleteAsset({
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistUpdate({
@@ -95,7 +95,7 @@ export async function playlistUpdate({
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
@@ -111,7 +111,7 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistGet({
@@ -167,6 +167,33 @@ export async function playlistBrowse({
 			offset,
 			count,
 			gamertag,
+			searchTerm
+		}
+	};
+	try {
+		const result = await request(context, svelteFetch);
+		return result.json();
+	} catch (error) {
+		//throw some error here about not being able to decode the data
+	}
+}
+
+export async function playlistMe({
+	sort,
+	order,
+	offset,
+	count,
+	searchTerm,
+	svelteFetch
+}: PlaylistBrowse) {
+	const context: RequestOpts = {
+		path: `/playlist/me`,
+		method: 'GET',
+		query: {
+			sort,
+			order,
+			offset,
+			count,
 			searchTerm
 		}
 	};

@@ -50,7 +50,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
-		sort: sort || 'publishedAt',
+		sort: sort || 'name',
 		order: order || 'desc',
 		gamertag: gamertag || ''
 	};
