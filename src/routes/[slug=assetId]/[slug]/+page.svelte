@@ -41,7 +41,7 @@
 		content="summary_large_image"
 	/><meta name="twitter:title" content={data.map.name} /><meta
 		name="twitter:description"
-		content={data.map.Description}
+		content={data.map.description}
 	/><meta property="og:image" content={data.map.thumbnailUrl} /><meta
 		property="og:image:alt"
 		content={'Thumbnail:' + data.map.name}
@@ -76,7 +76,7 @@
 					<div class="preview-img-container">
 						{#if data.map.files.fileRelativePaths.length > 0}
 							{#each data.map.files.fileRelativePaths as imageUrl}
-								<div class="asset-preview" on:click={() => updatePreview(imageUrl)}>
+								<button class="asset-preview" on:click={() => updatePreview(imageUrl)}>
 									<div class="asset-preview-wrapper">
 										<img
 											class="asset-preview-img"
@@ -85,7 +85,7 @@
 											class:active-img={imageUrl === previewImage}
 										/>
 									</div>
-								</div>
+								</button>
 							{/each}
 						{:else}
 							<div class="asset-preview">

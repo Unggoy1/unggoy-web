@@ -118,7 +118,7 @@ body {
 	fill: var(--button-color);
 }
 .sidebar.collapse {
-	width: 90px;
+	width: 85px;
 	border-right: 1px solid var(--border-color);
 }
 .sidebar.collapse .logo-expand,
@@ -132,7 +132,16 @@ body {
 	width: 30px;
 }
 .sidebar.collapse .side-menu svg {
-	margin-right: 30px;
+	/* margin-right: 30px; */
+}
+
+@media screen and (max-width: 1250px) {
+	.side-menu {
+		width: 56px !important;
+	}
+	.side-menu a p {
+		display: none;
+	}
 }
 
 @-webkit-keyframes bottom {
