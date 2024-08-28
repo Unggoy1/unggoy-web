@@ -60,7 +60,7 @@
 		</div>
 		<div class="filter-container">
 			{#if browseData.gamertag != undefined}
-				<div class="filter-group input">
+				<div class="filter-group" class:input={browseData.filter != undefined}>
 					<p class="filter-text">Contributor:</p>
 					<div class="search-bar-filter">
 						<input
