@@ -60,7 +60,7 @@
 		</div>
 		<div class="filter-container">
 			{#if browseData.gamertag != undefined}
-				<div class="filter-group">
+				<div class="filter-group input">
 					<p class="filter-text">Contributor:</p>
 					<div class="search-bar-filter">
 						<input
@@ -73,7 +73,7 @@
 				</div>
 			{/if}
 			{#if browseData.tag != undefined}
-				<div class="filter-group">
+				<div class="filter-group input">
 					<p class="filter-text">Tags:</p>
 					<div class="search-bar-filter">
 						<input
@@ -104,6 +104,36 @@
 		</div>
 	</div>
 
+	<div class="browse-filter-container small">
+		<div class="filter-container">
+			{#if browseData.gamertag != undefined}
+				<div class="filter-group">
+					<p class="filter-text">Contributor:</p>
+					<div class="search-bar-filter">
+						<input
+							bind:value={browseData.gamertag}
+							onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+							type="text"
+							placeholder="gamertag"
+						/>
+					</div>
+				</div>
+			{/if}
+			{#if browseData.tag != undefined}
+				<div class="filter-group">
+					<p class="filter-text">Tags:</p>
+					<div class="search-bar-filter">
+						<input
+							bind:value={browseData.tag}
+							onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+							type="text"
+							placeholder="tag"
+						/>
+					</div>
+				</div>
+			{/if}
+		</div>
+	</div>
 	{#if browseData.assets.length}
 		<div class="assets browse">
 			{#each browseData.assets as asset (asset.assetId)}
