@@ -305,5 +305,23 @@
 			</div>
 			<slot />
 		</div>
+		<div class="bottom-nav">
+			<a href="#home" class="bottom-nav-link">
+				<svg><!-- Home icon SVG --></svg>
+				<span>Home</span>
+			</a>
+			<a href="#search" class="bottom-nav-link">
+				<svg><!-- Search icon SVG --></svg>
+				<span>Search</span>
+			</a>
+			<a href="#favorites" class="bottom-nav-link">
+				<svg><!-- Favorites icon SVG --></svg>
+				<span>Favorites</span>
+			</a>
+			<a href="#profile" class="bottom-nav-link">
+				<svg><!-- Profile icon SVG --></svg>
+				<span>Profile</span>
+			</a>
+		</div>
 	</div>
 {/if}
