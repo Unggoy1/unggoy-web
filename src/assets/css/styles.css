@@ -148,7 +148,11 @@ body {
 		min-width: 300px !important;
 	}
 }
-
+@media screen and (max-width: 769px) {
+	.sidebar {
+		display: none;
+	}
+}
 @-webkit-keyframes bottom {
 	0% {
 		transform: translateY(100px);
@@ -425,26 +429,23 @@ body {
    * User input values.
    */
 	--grid-layout-gap: 16px;
-	--grid-row-gap: 20px !important;
-	--grid-column-count: 8; /* This gets overridden by an inline style. */
-	--grid-item--min-width: 320px; /* This gets overridden by an inline style. */
-
-	/**
-   * Calculated values.
-   */
+	--grid-row-gap: 20px;
+	--grid-column-count: 8;
+	--grid-item--min-width: 320px;
 	--gap-count: calc(var(--grid-column-count) - 1);
 	--total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
 	--grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
-
 	display: grid;
-	grid-template-columns: repeat(
-		auto-fill,
-		minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr)
-	);
+	grid-template-columns: repeat(auto-fill, minmax(var(--grid-item--min-width), 1fr));
 	grid-gap: var(--grid-layout-gap);
 	padding-bottom: 16px;
+	box-sizing: border-box;
 }
-
+@media (max-width: 400px) {
+	.assets {
+		--grid-item--min-width: 200px; /* Or any value that fits your design */
+	}
+}
 .browse {
 	/**
    * User input values.
@@ -487,7 +488,7 @@ body {
 	background-color: var(--video-bg);
 	border-radius: 20px;
 	/* max-height: 200px; */
-	min-height: 200px;
+	/* min-height: 200px; */
 	overflow: hidden;
 }
 .asset-wrapper {
