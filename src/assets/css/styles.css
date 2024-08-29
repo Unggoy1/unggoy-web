@@ -85,7 +85,6 @@ body {
 	color: var(--sidebar-color) !important;
 }
 
-/* TODO: FIX COLLAPSED SIDEBAR BECAUSE ITS BROKEN*/
 .sidebar .logo {
 	display: none;
 	width: 30px;
@@ -384,18 +383,9 @@ body {
 }
 .main-blog-bg {
 	filter: brightness(0.5);
+	height: 100%;
+	object-fit: cover;
 }
-/* @media screen and (max-width: 905px) { */
-/* 	.main-blog, */
-/* 	.main-blog + .main-blog { */
-/* 		width: 50%; */
-/* 		padding: 30px; */
-/* 	} */
-/* 	.main-blog { */
-/* 		background-size: cover; */
-/* 		background-position-x: center; */
-/* 		background-blend-mode: overlay; */
-/* 	} */
 
 .main-blog-text {
 	position: absolute;
@@ -413,6 +403,21 @@ body {
 	font-size: 14px;
 	max-width: 40%;
 	line-height: 180%;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	-webkit-line-clamp: 3; /* Show only 3 lines */
+}
+@media screen and (max-width: 769px) {
+	.main-blog-desc {
+		max-width: 55%;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.main-blog-desc {
+		max-width: 90%;
+	}
 }
 /* TODO: Fix text not appearing on top of image */
 
