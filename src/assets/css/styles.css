@@ -785,31 +785,6 @@ body {
 .asset-area {
 	display: flex;
 }
-@media screen and (max-width: 940px) {
-	.asset-area {
-		flex-direction: column;
-	}
-	.asset-area .asset-container {
-		width: 100%;
-		background: none;
-		color: inherit;
-		border: none;
-		padding: 0;
-		font: inherit;
-		cursor: pointer;
-		outline: inherit;
-	}
-	.stream-area .chat-stream {
-		margin-left: 0;
-		margin-top: 30px;
-	}
-	.stream-area .video-js.vjs-fluid {
-		min-height: 250px;
-	}
-	.stream-area .msg__content {
-		max-width: 100%;
-	}
-}
 
 /* TODO: SEE IF THIS IS NEEDED */
 .show .main-header,
@@ -1027,6 +1002,67 @@ body {
 	color: var(--container-color);
 }
 
+@media screen and (max-width: 1000px) {
+	.asset-area {
+		flex-direction: column;
+	}
+	.asset-area .asset-container {
+		width: 100%;
+		background: none;
+		color: inherit;
+		border: none;
+		padding: 0;
+		font: inherit;
+		cursor: pointer;
+		outline: inherit;
+	}
+	.asset-aside {
+		margin-left: 0 !important;
+		margin-top: 30px;
+		display: flex;
+		gap: 50px;
+		max-width: 100%;
+	}
+	.asset-details {
+		max-width: 350px;
+		width: 350px;
+	}
+
+	.aside-container-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 16px; /* Adds space between the two containers */
+	}
+}
+@media screen and (max-width: 740px) {
+	.asset-area {
+		flex-direction: column;
+	}
+	.asset-area .asset-container {
+		width: 100%;
+		background: none;
+		color: inherit;
+		border: none;
+		padding: 0;
+		font: inherit;
+		cursor: pointer;
+		outline: inherit;
+	}
+	.asset-aside {
+		margin-left: 0 !important;
+		margin-top: 30px;
+		max-width: 350px;
+		flex-direction: column;
+	}
+	.asset-details {
+		max-width: 350px;
+		width: 350px;
+	}
+
+	.aside-container-wrapper {
+		display: block;
+	}
+}
 /* BROWSE PAGE STYLES*/
 /*Filter section */
 .browse-filter-container {

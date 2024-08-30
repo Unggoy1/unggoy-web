@@ -276,9 +276,9 @@
 				<span>Playlists</span>
 			</a>
 			<a
-				href="#favorites"
+				href="/"
 				class="bottom-nav-link"
-				class:is-active={$page.url.pathname === '/browse/playlist' && currentAssetKind === null}
+				class:is-active={$page.url.pathname === '/browse/featured' && currentAssetKind === null}
 			>
 				<Star active={false}></Star>
 				<span>Featured</span>

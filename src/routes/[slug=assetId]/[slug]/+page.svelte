@@ -204,35 +204,36 @@
 					</div>
 				{/if}
 			</div>
-
-			{#if data.map.tags.length}
-				<div class="aside-container">
-					<div class="aside-title">Tags</div>
-					<div class="tag-wrapper">
-						{#each data.map.tags as tag}
-							<div class="tag">
-								<a href="/browse?tags={tag}">
-									<div class="tag-info">{tag}</div>
-								</a>
-							</div>
-						{/each}
-					</div>
-				</div>
-			{/if}
-
-			<div class="aside-container">
-				<div class="aside-title">Contributors</div>
-				{#each data.map.contributors as contributor}
-					<div class="contributor-container">
-						<div class="contributor-text">
-							<img class="contributor-img" alt="emblem name here" src={contributor.emblemPath} />
-							<a href="/browse?gamertag={contributor.gamertag}">
-								<div class="contributor-name">{contributor.gamertag}</div>
-								<div class="contributor-tag">{contributor.serviceTag}</div>
-							</a>
+			<div class="asside-container-wrapper">
+				{#if data.map.tags.length}
+					<div class="aside-container">
+						<div class="aside-title">Tags</div>
+						<div class="tag-wrapper">
+							{#each data.map.tags as tag}
+								<div class="tag">
+									<a href="/browse?tags={tag}">
+										<div class="tag-info">{tag}</div>
+									</a>
+								</div>
+							{/each}
 						</div>
 					</div>
-				{/each}
+				{/if}
+
+				<div class="aside-container">
+					<div class="aside-title">Contributors</div>
+					{#each data.map.contributors as contributor}
+						<div class="contributor-container">
+							<div class="contributor-text">
+								<img class="contributor-img" alt="emblem name here" src={contributor.emblemPath} />
+								<a href="/browse?gamertag={contributor.gamertag}">
+									<div class="contributor-name">{contributor.gamertag}</div>
+									<div class="contributor-tag">{contributor.serviceTag}</div>
+								</a>
+							</div>
+						</div>
+					{/each}
+				</div>
 			</div>
 		</div>
 	</div>
