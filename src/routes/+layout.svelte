@@ -20,6 +20,13 @@
 	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import { addAssetModal, playlistModal } from '../stores/modal';
+	import Compass from '$lib/components/icons/compass.svelte';
+	import Anvil from '$lib/components/icons/anvil.svelte';
+	import Gamepad from '$lib/components/icons/gamepad.svelte';
+	import Map from '$lib/components/icons/map.svelte';
+	import Home from '$lib/components/icons/home.svelte';
+	import Plus from '$lib/components/icons/Plus.svelte';
+	import Xbox from '$lib/components/icons/xbox.svelte';
 
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);
@@ -31,7 +38,7 @@
 	}
 	const groups = [
 		[
-			{ type: DropdownType.Button, icon: Play, text: `Create New Playlist`, function: test },
+			{ type: DropdownType.Button, icon: Plus, text: `Create New Playlist`, function: test },
 			{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '/playlist/me' },
 			{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
 			{
@@ -44,38 +51,11 @@
 	];
 
 	let isSidebarCollapsed = false;
-	let activeLink = null;
 	let searchTerm = '';
+	let isDrawerOpen = false;
+	let drawerRef;
 
 	$: currentAssetKind = new URLSearchParams($page.url.search).get('assetKind');
-
-	const handleClick = (event) => {
-		const clickedLink = event.currentTarget;
-
-		if (activeLink) {
-			activeLink.classList.remove('is-active');
-		}
-
-		clickedLink.classList.add('is-active');
-		activeLink = clickedLink;
-	};
-
-	const updateActiveLink = () => {
-		// Remove active class from the previously active link
-		if (activeLink) {
-			activeLink.classList.remove('is-active');
-		}
-
-		// Find the link corresponding to the current route and add the active class
-		const currentPath = $page.route.id;
-		const currentQuery = location.search;
-		const currentLink = document.querySelector(`[href="${currentPath}${currentQuery}"]`);
-
-		if (currentLink) {
-			currentLink.classList.add('is-active');
-			activeLink = currentLink;
-		}
-	};
 
 	const handleResize = () => {
 		isSidebarCollapsed = window.innerWidth <= 1250;
@@ -90,17 +70,30 @@
 		query.set('searchTerm', searchTerm);
 		goto(`/browse?${query.toString()}`);
 	};
+	function toggleDrawer(event) {
+		event.stopPropagation();
+		isDrawerOpen = !isDrawerOpen;
+	}
+	function closeDrawer() {
+		isDrawerOpen = false;
+	}
 
+	function handleClickOutside(event) {
+		if (drawerRef && !drawerRef.contains(event.target)) {
+			closeDrawer();
+		}
+	}
 	onMount(() => {
 		if (data.error) {
 			toast.error("Xbox user doesn't have Beta access");
 		}
 		//Add resize event listener on component mount
 		window.addEventListener('resize', handleResize);
+		window.addEventListener('click', handleClickOutside);
 		handleResize();
-		// updateActiveLink();
 		return () => {
 			window.removeEventListener('resize', handleResize);
+			window.removeEventListener('click', handleClickOutside);
 		};
 	});
 	const sidebarLinks = [
@@ -115,7 +108,7 @@
 <AddAssetModal bind:this={$addAssetModal}></AddAssetModal>
 <PlaylistModal bind:this={$playlistModal}></PlaylistModal>
 <Toaster></Toaster>
-{#if !$user && dev}
+{#if !$user && !dev}
 	<BetaLogin url={endpoint + 'login/azure?redirectUrl=' + escape($page.url.href)}></BetaLogin>
 {:else}
 	<div class="container">
@@ -126,96 +119,57 @@
 				<div class="side-menu">
 					<a
 						data-sveltekit-replacestate
-						on:click={handleClick}
 						class="sidebar-link discover"
 						class:is-active={$page.url.pathname === '/'}
 						href="/"
 					>
-						<svg viewBox="0 0 24 24" fill="currentColor">
-							<path
-								d="M9.135 20.773v-3.057c0-.78.637-1.414 1.423-1.414h2.875c.377 0 .74.15 1.006.414.267.265.417.625.417 1v3.057c-.002.325.126.637.356.867.23.23.544.36.87.36h1.962a3.46 3.46 0 002.443-1 3.41 3.41 0 001.013-2.422V9.867c0-.735-.328-1.431-.895-1.902l-6.671-5.29a3.097 3.097 0 00-3.949.072L3.467 7.965A2.474 2.474 0 002.5 9.867v8.702C2.5 20.464 4.047 22 5.956 22h1.916c.68 0 1.231-.544 1.236-1.218l.027-.009z"
-							/>
-						</svg>
+						<Home active={false}></Home>
 						<p>Featured</p>
 					</a>
 					<a
 						data-sveltekit-replacestate
-						on:click={handleClick}
 						class="sidebar-link trending"
 						class:is-active={$page.url.pathname === '/browse' && currentAssetKind === 'Map'}
 						href="/browse?assetKind=Map"
 					>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
-							><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
-								d="M384 476.1L192 421.2V35.9L384 90.8V476.1zm32-1.2V88.4L543.1 37.5c15.8-6.3 32.9 5.3 32.9 22.3V394.6c0 9.8-6 18.6-15.1 22.3L416 474.8zM15.1 95.1L160 37.2V423.6L32.9 474.5C17.1 480.8 0 469.2 0 452.2V117.4c0-9.8 6-18.6 15.1-22.3z"
-							/></svg
-						>
+						<Map active={false}></Map>
 						<p>Maps</p>
 					</a>
 					<a
 						data-sveltekit-replacestate
-						on:click={handleClick}
 						class="sidebar-link"
 						class:is-active={$page.url.pathname === '/browse' &&
 							currentAssetKind === 'UgcGameVariant'}
 						href="/browse?assetKind=UgcGameVariant"
 					>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
-							><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
-								d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0zM168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z"
-							/></svg
-						>
+						<Gamepad active={false}></Gamepad>
 						<p>Gamemodes</p>
 					</a>
 					<a
 						data-sveltekit-replacestate
-						on:click={handleClick}
 						class="sidebar-link"
 						class:is-active={$page.url.pathname === '/browse' && currentAssetKind === 'Prefab'}
 						href="/browse?assetKind=Prefab"
 					>
-						<svg
-							width="33"
-							height="33"
-							viewBox="0 0 33 33"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-							><g clip-path="url(#a)"
-								><path
-									d="M21.173 26.992c-.44-.88-1.65-2.6-4.37-2.6-2.86 0-4.11 1.72-4.55 2.6h-3.93v-3.18c.88-.16 3.51-1.56 4.62-2.53l.25-.22v-1c0-1.61-1.12-2.96-2.49-3.01h-.04c-7.23-.49-8.56-5.41-8.74-6.33h8.85v-1.73h21.15v2.4c-4.28.02-6.93 1.95-8.29 3.25-1.68 1.61-3.05 4.6-3.05 6.36v.19l.31.21c1.07.74 3.45 2.16 4.2 2.35v3.23h-3.93z"
-									fill="#fff"
-								/></g
-							><defs><clipPath id="a"><path fill="#fff" d="M.923.992h32v32h-32z" /></clipPath></defs
-							></svg
-						>
+						<Anvil active={false}></Anvil>
 						<p>Prefabs</p>
 					</a>
 					<a
 						data-sveltekit-replacestate
-						on:click={handleClick}
 						class="sidebar-link"
 						class:is-active={$page.url.pathname === '/browse/playlist'}
 						href="/browse/playlist"
 					>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
-							><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
-								d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
-							/></svg
-						>
+						<Play active={false}></Play>
 						<p>Playlists</p>
 					</a>
 					<a
 						data-sveltekit-replacestate
-						on:click={handleClick}
 						class="sidebar-link"
 						class:is-active={$page.url.pathname === '/browse' && currentAssetKind === null}
 						href="/browse"
 					>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-							><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
-								d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
-							/></svg
-						>
+						<Compass active={false}></Compass>
 						<p>Browse</p>
 					</a>
 				</div>
@@ -233,7 +187,7 @@
 			<!-- 			</svg> -->
 			<!-- 			Live Stream -->
 			<!-- 		</a> -->
-			<!-- 		<a class="sidebar-link" href="/"> -->
+			<!-- 		<a cla${endpoint}logout?redirectUrl=${escape($page.url.href)}ss="sidebar-link" href="/"> -->
 			<!-- 			<svg viewBox="0 0 24 24" fill="currentColor"> -->
 			<!-- 				<path -->
 			<!-- 					fill-rule="evenodd" -->
@@ -269,7 +223,7 @@
 		<div class="header-wrapper">
 			<div class="header">
 				<div class="search-bar">
-					<input bind:value={searchTerm} on:keydown={updateUrl} type="text" placeholder="Search" />
+					<input bind:value={searchTerm} onkeydown={updateUrl} type="text" placeholder="Search" />
 				</div>
 				{#if $user}
 					<!-- <div class="user-settings"> -->
@@ -289,7 +243,6 @@
 						<a
 							data-sveltekit-replacestate
 							class="user-signin"
-							class:is-active={$activeLink === null}
 							href={endpoint + 'login/azure?redirectUrl=' + escape($page.url.href)}
 						>
 							<!-- <svg xmlns="http://www.w3.org/2000/svg" class="xbox-signin" viewBox="0 0 512 512" -->
@@ -306,22 +259,76 @@
 			<slot />
 		</div>
 		<div class="bottom-nav">
-			<a href="#home" class="bottom-nav-link">
-				<svg><!-- Home icon SVG --></svg>
+			<a href="/" class="bottom-nav-link" class:is-active={$page.url.pathname === '/'}>
+				<Home active={false}></Home>
 				<span>Home</span>
 			</a>
-			<a href="#search" class="bottom-nav-link">
-				<svg><!-- Search icon SVG --></svg>
-				<span>Search</span>
+			<a href="/browse" class="bottom-nav-link" class:is-active={$page.url.pathname === '/browse'}>
+				<Compass active={false}></Compass>
+				<span>Browse</span>
 			</a>
-			<a href="#favorites" class="bottom-nav-link">
-				<svg><!-- Favorites icon SVG --></svg>
-				<span>Favorites</span>
+			<a
+				href="/browse/playlist"
+				class="bottom-nav-link"
+				class:is-active={$page.url.pathname === '/browse/playlist' && currentAssetKind === null}
+			>
+				<Play active={false}></Play>
+				<span>Playlists</span>
 			</a>
-			<a href="#profile" class="bottom-nav-link">
-				<svg><!-- Profile icon SVG --></svg>
-				<span>Profile</span>
+			<a
+				href="#favorites"
+				class="bottom-nav-link"
+				class:is-active={$page.url.pathname === '/browse/playlist' && currentAssetKind === null}
+			>
+				<Star active={false}></Star>
+				<span>Featured</span>
 			</a>
+			{#if $user}
+				<button onclick={toggleDrawer} class="bottom-nav-link">
+					<img alt="emblem name here" src={$user.emblemPath} />
+					<span>Profile</span>
+				</button>
+			{:else}
+				<a
+					href={endpoint + 'login/azure?redirectUrl=' + escape($page.url.href)}
+					class="bottom-nav-link"
+					class:is-active={$page.url.pathname === '/browse/playlist' && currentAssetKind === null}
+				>
+					<Xbox active={false}></Xbox>
+					<span>Login</span>
+				</a>
+			{/if}
 		</div>
+		{#if $user}
+			<div bind:this={drawerRef} class="slideup-drawer" class:open={isDrawerOpen}>
+				<div class="drawer-header">
+					<div class="drawer-header-text">
+						<img class="contributor-img" alt="emblem name here" src={$user.emblemPath} />
+						<a href="/browse?gamertag={$user.username}">
+							<div class="contributor-name">{$user.username}</div>
+							<div class="contributor-tag">{$user.serviceTag}</div>
+						</a>
+					</div>
+				</div>
+				<div class="drawer-options">
+					<a href="/" class="drawer-option">
+						<Plus active={false}></Plus>
+						<span>Create Playlist</span>
+					</a>
+					<a href="/playlist/me" class="drawer-option">
+						<Play active={false}></Play>
+						<span>My Playlists</span>
+					</a>
+					<a href="/playlist/favorites" class="drawer-option">
+						<Star active={false}></Star>
+						<span>Favorites</span>
+					</a>
+					<a href="${endpoint}logout?redirectUrl=${escape($page.url.href)}" class="drawer-option">
+						<LogOut active={false}></LogOut>
+						<span>Logout</span>
+					</a>
+				</div>
+			</div>
+		{/if}
 	</div>
 {/if}
