@@ -72,6 +72,7 @@ export interface Contributor {
 	xuid: string;
 	gamertag: string;
 	serviceTag: string;
+	emblemPath: string;
 }
 
 export interface UgcData {

@@ -4,13 +4,11 @@ import { DropdownType } from './enums';
 import Plus from './components/icons/Plus.svelte';
 import Duplicate from './components/icons/Duplicate.svelte';
 import Delete from './components/icons/Delete.svelte';
-import AddAssetModal from './components/AddAssetModal.svelte';
-import PlaylistModal from './components/PlaylistModal.svelte';
 import { user } from '../stores/user';
 import { addAssetModal, playlistModal } from '../stores/modal';
 import { get } from 'svelte/store';
 import { playlistDeleteAsset } from './api/playlist';
-import type { PlaylistData, UgcData } from './api';
+import type { PlaylistData } from './api/playlist';
 export async function getAssetLink({ assetId, assetKind }) {
 	const assetUrl =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';

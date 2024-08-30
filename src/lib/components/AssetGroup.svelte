@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { UgcData } from '$lib/api';
+	import type { UgcData } from '$lib/api/ugc';
 	import { getAssetCardGroups } from '$lib/functions';
 	import type { Snippet } from 'svelte';
 	import AssetCard from '../../components/assetCard.svelte';
