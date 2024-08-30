@@ -6,6 +6,13 @@
 	import { DropdownType } from '$lib/enums';
 	import Plus from '$lib/components/icons/Plus.svelte';
 	import { addAssetModal, playlistModal } from '../../../stores/modal';
+	import Carousel from '$lib/components/Carousel.svelte';
+	import { onMount } from 'svelte';
+	import LogOut from '../../../components/LogOut.svelte';
+	import Star from '../../../components/Star.svelte';
+	import Play from '$lib/components/icons/Play.svelte';
+	import Duplicate from '$lib/components/icons/Duplicate.svelte';
+	import { getAssetLink } from '$lib/functions';
 
 	export let data: PageData;
 	$: previewImage = data.map.files.fileRelativePaths[0];
@@ -31,6 +38,29 @@
 		]
 	];
 	let dropdown: DropdownCard;
+	let isDrawerOpen = false;
+	let drawerRef;
+
+	function toggleDrawer(event) {
+		event.stopPropagation();
+		isDrawerOpen = !isDrawerOpen;
+	}
+	function closeDrawer() {
+		isDrawerOpen = false;
+	}
+
+	function handleClickOutside(event) {
+		if (drawerRef && !drawerRef.contains(event.target)) {
+			closeDrawer();
+		}
+	}
+	onMount(() => {
+		//Add resize event listener on component mount
+		window.addEventListener('click', handleClickOutside);
+		return () => {
+			window.removeEventListener('click', handleClickOutside);
+		};
+	});
 </script>
 
 <svelte:head>
@@ -69,6 +99,23 @@
 				{/if}
 				<AssetKind assetKind={data.map.assetKind} lg={true} recommended={data.map.recommended}
 				></AssetKind>
+				<div class="asset-img-sm-wrapper">
+					{#if data.map.files.fileRelativePaths.length > 0}
+						<Carousel
+							images={data.map.files.fileRelativePaths}
+							imagePath={data.map.files.prefix}
+							assetInfo={{ kind: data.map.assetKind, recommended: data.map.recommended }}
+						></Carousel>
+					{:else}
+						<img
+							class="asset-img-sm"
+							width="640px"
+							height="267px"
+							src="/unknown.webp"
+							alt={data.map.name}
+						/>
+					{/if}
+				</div>
 			</div>
 
 			<div class="asset-detail">
@@ -76,7 +123,7 @@
 					<div class="preview-img-container">
 						{#if data.map.files.fileRelativePaths.length > 0}
 							{#each data.map.files.fileRelativePaths as imageUrl}
-								<button class="asset-preview" on:click={() => updatePreview(imageUrl)}>
+								<button class="asset-preview" onclick={() => updatePreview(imageUrl)}>
 									<div class="asset-preview-wrapper">
 										<img
 											class="asset-preview-img"
@@ -101,7 +148,15 @@
 						{/if}
 					</div>
 
-					<div class="asset-title">{data.map.name}</div>
+					<div class="title-button-wrapper">
+						<div class="asset-title">{data.map.name}</div>
+						{#if $user}
+							<button onclick={toggleDrawer} class="playlist-button mobile">
+								<Plus active={true}></Plus>
+							</button>
+							<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
+						{/if}
+					</div>
 					<div class="asset-description">
 						{data.map.description}
 					</div>
@@ -115,7 +170,9 @@
 				</div>
 				<div class="aside-text">
 					<div class="detail-icon">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
+						<svg
+							xmlns="http://www.w3.org/20() => $addAssetModal.create(data.map.assetId)00/svg"
+							viewBox="0 0 384 512"
 							><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
 								d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
 							/></svg
@@ -238,3 +295,27 @@
 		</div>
 	</div>
 </div>
+{#if $user}
+	<div bind:this={drawerRef} class="slideup-drawer z-top" class:open={isDrawerOpen}>
+		<div class="drawer-options">
+			<button onclick={() => $addAssetModal.create(data.map.assetId)} class="drawer-option">
+				<Plus active={false}></Plus>
+				<span>Add to playlist</span>
+			</button>
+			<button
+				onclick={() => $playlistModal.create({ assetId: data.map.assetId })}
+				class="drawer-option"
+			>
+				<Plus active={false}></Plus>
+				<span>Add to new playlist</span>
+			</button>
+			<button
+				onclick={() => getAssetLink({ assetId: data.map.assetId, assetKind: data.map.assetKind })}
+				class="drawer-option"
+			>
+				<Duplicate active={false}></Duplicate>
+				<span>Copy asset link</span>
+			</button>
+		</div>
+	</div>
+{/if}

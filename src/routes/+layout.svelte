@@ -70,6 +70,7 @@
 		query.set('searchTerm', searchTerm);
 		goto(`/browse?${query.toString()}`);
 	};
+
 	function toggleDrawer(event) {
 		event.stopPropagation();
 		isDrawerOpen = !isDrawerOpen;

@@ -37,6 +37,7 @@
   },
   "type": "module",
   "dependencies": {
+    "embla-carousel-svelte": "^8.2.0",
     "svelte-french-toast": "^1.2.0",
     "svelte-headlessui": "^0.0.38",
     "svelte-transition": "^0.0.17"

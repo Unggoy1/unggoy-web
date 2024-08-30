@@ -157,11 +157,13 @@ body {
 		width: 100%;
 		background-color: var(--container-bg);
 		box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-		border-top-left-radius: 12px;
-		border-top-right-radius: 12px;
+		border-top-left-radius: 16px;
+		border-top-right-radius: 16px;
 		padding: 20px;
 		transition: bottom 0.3s ease-in-out;
 		z-index: 99;
+	}
+	.slideup-drawer.top-z {
 	}
 
 	.drawer-header {
@@ -203,6 +205,8 @@ body {
 		background-color: var(--container-bg);
 		border-radius: 8px;
 		transition: background-color 0.3s ease-in-out;
+		font-size: 16px;
+		font-weight: 500;
 	}
 
 	.drawer-option:hover {
@@ -223,6 +227,11 @@ body {
 
 	.slideup-drawer.open {
 		bottom: 60px;
+	}
+	.slideup-drawer.open.z-top {
+		bottom: 0px;
+		z-index: 1001;
+		padding-bottom: 32px;
 	}
 }
 
@@ -808,7 +817,9 @@ body {
 	width: auto;
 	height: auto;
 }
-
+.asset-img-sm-wrapper {
+	display: none;
+}
 .asset-detail {
 	display: flex;
 	padding-top: 36px;
@@ -877,7 +888,68 @@ body {
 	font-weight: 300;
 	max-width: 80ch;
 }
+.playlist-button.mobile {
+	display: none;
+}
+@media screen and (max-width: 740px) {
+	.asset-img-sm-wrapper {
+		display: block;
+		position: relative;
+		margin-left: -24px;
+		margin-right: -24px;
+		width: calc(100% + 48px); /* Adjust to ensure full width */
+	}
 
+	.asset-img-sm {
+		border-radius: 0;
+		min-height: 0px;
+		width: 100vw;
+		height: auto;
+		max-width: 100%;
+	}
+	.asset-img-lg,
+	.preview-img-container,
+	.playlist-button,
+	.asset-type.lg {
+		display: none;
+	}
+	.asset-title {
+		padding-top: 0px;
+		flex-grow: 1; /* Allow the title to take up available space */
+		margin: 0; /* Reset margins */
+		min-width: 0; /* Allow the title to shrink if needed */
+		word-break: break-word; /* Allow the text to break into a new line */
+	}
+	.playlist-button.mobile {
+		position: static;
+		display: block !important;
+		margin-left: 12px;
+		margin-left: 12px; /* Add space between the title and button */
+		margin-top: 0; /* Ensure it aligns well with the title */
+		flex-shrink: 0; /* Prevent the button from shrinking */
+		width: 42px;
+		height: 42px;
+	}
+
+	.playlist-button:hover {
+		background-color: var(--button-bg-hover);
+		fill: var(--button-color-hover);
+	}
+	.playlist-button svg:hover {
+		fill: var(--button-color-hover);
+	}
+	.playlist-button svg {
+		width: 21px;
+		height: 42px;
+	}
+	.title-button-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start; /* Align items to the start */
+		gap: 8px; /* Add space between the title and button */
+		flex-direction: row;
+	}
+}
 /* ASSET VIEW PAGE SIDE SECTION*/
 .asset-aside {
 	margin-left: 92px;
@@ -1052,11 +1124,14 @@ body {
 		margin-left: 0 !important;
 		margin-top: 30px;
 		max-width: 350px;
+		min-width: 0px;
+		width: auto;
 		flex-direction: column;
 	}
 	.asset-details {
 		max-width: 350px;
-		width: 350px;
+		width: auto;
+		min-width: 0px;
 	}
 
 	.aside-container-wrapper {
