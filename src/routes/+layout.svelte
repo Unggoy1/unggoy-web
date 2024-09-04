@@ -10,7 +10,7 @@
 	import type { LayoutData } from './$types';
 	import { user } from '../stores/user';
 	import ChevronDown from '../components/ChevronDown.svelte';
-	import Play from '../components/Play.svelte';
+	import Play from '$lib/components/icons/Play.svelte';
 	import Star from '../components/Star.svelte';
 	import LogOut from '../components/LogOut.svelte';
 	import Dropdown from '$lib/components/Dropdown.svelte';

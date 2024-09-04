@@ -50,11 +50,11 @@ body {
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
-	/* filter: hue-rotate(45d-45g); */
+	/* filter: hue-rotate(45deg); */
 }
-/* img { */
-/* 	filter: hue-rotate(-45deg) !important; */
-/* } */
+img {
+	/* filter: hue-rotate(-45deg) !important; */
+}
 
 .container {
 	background-color: var(--theme-bg);

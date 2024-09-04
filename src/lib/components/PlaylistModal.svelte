@@ -70,6 +70,20 @@
 				<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
 			</div>
 
+			<label>
+				<div>Thumbnail</div>
+				<div class="form">
+					<div class="file-upload-wrapper" data-text={details.thumbnail}>
+						<input
+							name="file-upload-field"
+							type="file"
+							accept="image/png, image/jpeg, image/webp"
+							class="file-upload-field"
+							bind:files={details.thumbnail}
+						/>
+					</div>
+				</div>
+			</label>
 			<div class="mt-4"></div>
 		</div>
 	</div>
@@ -78,14 +92,14 @@
 		<button
 			type="button"
 			onclick={save}
-			class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+			class=" modal-button inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium"
 		>
 			{mode === 'create' ? 'Create' : 'Save'}
 		</button>
 		<button
 			type="button"
 			onclick={cancel}
-			class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+			class="inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium"
 		>
 			Cancel
 		</button>
@@ -96,31 +110,15 @@
 	button {
 		display: inline-flex;
 		flex-direction: row-reverse;
+		background-color: var(--button-bg);
+		color: var(--button-color);
+		margin: 0px 4px;
+	}
+	button:hover {
+		background-color: var(--button-bg-hover);
+		color: var(--button-color-hover);
 	}
 
-	.dialog-container {
-		background-color: var(--container-bg);
-		color: var(--container-color);
-		height: 500px;
-	}
-	.dialog-background {
-		background-color: #00000040;
-	}
-
-	ul {
-		padding-left: 0px;
-		scrollbar-color: var(--button-bg) var(--container-bg);
-	}
-	li {
-		padding-left: 8px;
-		border-radius: 8px;
-	}
-	.nothing {
-		color: var(--container-color);
-	}
-	.absolute {
-		position: absolute;
-	}
 	.input-container {
 		width: 100%;
 	}
@@ -147,33 +145,8 @@
 	label div {
 		padding-bottom: 8px;
 	}
-	.inset-y-0 {
-		top: 0px;
-		bottom: 0px;
-	}
-	.right-0 {
-		right: 0px;
-	}
-	.mt-1 {
-		margin-top: 0.25rem;
-	}
-	.block {
-		display: block;
-	}
 	.flex {
 		display: flex;
-	}
-	.contents {
-		display: contents;
-	}
-	.h-5 {
-		height: 1.25rem;
-	}
-	.max-h-60 {
-		max-height: 360px;
-	}
-	.w-5 {
-		width: 1.25rem;
 	}
 	.w-full {
 		width: 100%;
@@ -181,48 +154,15 @@
 	.cursor-default {
 		cursor: default;
 	}
-	.select-none {
-		-webkit-user-select: none;
-		user-select: none;
-	}
 	.items-center {
 		align-items: center;
-	}
-	.overflow-auto {
-		overflow: auto;
-	}
-	.overflow-hidden {
-		overflow: hidden;
-	}
-	.truncate {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-	.rounded-lg {
-		border-radius: 0.5rem;
 	}
 	.rounded-md {
 		border-radius: 0.375rem;
 	}
-	.border-none {
-		border-style: none;
-	}
-	.bg-teal-600 {
-		background-color: var(--button-bg);
-		color: var(--button-color);
-	}
-
-	.py-1 {
-		padding-top: 0.25rem;
-		padding-bottom: 0.25rem;
-	}
 	.py-2 {
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
-	}
-	.pl-10 {
-		padding-left: 2.5rem;
 	}
 	.pl-3 {
 		padding-left: 0.75rem;
@@ -230,23 +170,75 @@
 	.pr-10 {
 		padding-right: 2.5rem;
 	}
-	.pr-2 {
-		padding-right: 0.5rem;
-	}
-	.pr-4 {
-		padding-right: 1rem;
-	}
-	.text-left {
-		text-align: left;
-	}
 	.text-sm {
 		font-size: 0.875rem;
 		line-height: 1.25rem;
 	}
-	.font-normal {
-		font-weight: 400;
-	}
 	.leading-5 {
 		line-height: 1.25rem;
+	}
+
+	.file-upload-wrapper {
+		position: relative;
+		width: 100%;
+		height: 30px;
+	}
+	.file-upload-wrapper:after {
+		content: attr(data-text);
+		font-size: 14px;
+		position: absolute;
+		top: 2px;
+		left: 75px;
+		/* Adjusted left position to fit the text */
+		background: #303637;
+		padding: 8px 16px;
+		display: block;
+		width: calc(100% - 80px);
+		/* Adjusted width to fit within the container */
+		pointer-events: none;
+		z-index: 20;
+		height: 26px;
+		line-height: 10px;
+		color: #cdd1d2;
+		border-radius: 0 5px 5px 0;
+		font-weight: 300;
+		outline: #3f484b solid 2px !important;
+	}
+	.file-upload-wrapper:before {
+		content: 'Upload';
+		position: absolute;
+		top: 0;
+		left: 0;
+		/* Kept the button on the left */
+		transition: all 0.3s ease-in-out;
+		display: inline-block;
+		height: 30px;
+		background: var(--button-bg);
+		color: var(--button-color);
+		z-index: 25;
+		font-size: 14px;
+		line-height: 30px;
+		padding: 0 16px;
+		pointer-events: none;
+		border-radius: 5px 0 0 5px;
+	}
+	.file-upload-wrapper:hover:before {
+		background: var(--button-bg-hover);
+		color: var(--button-color-hover);
+	}
+	.file-upload-wrapper input {
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 99;
+		height: 30px;
+		margin: 0;
+		padding: 0;
+		display: block;
+		cursor: pointer;
+		width: 100%;
 	}
 </style>
