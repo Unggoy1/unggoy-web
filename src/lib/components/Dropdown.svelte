@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { createMenu } from 'svelte-headlessui';
 	import Transition from 'svelte-transition';
-	import ChevronDown from './ChevronDown.svelte';
-	import { user } from '../../stores/user';
 	import { DropdownType } from '$lib/enums';
 	import type { Snippet } from 'svelte';
 
@@ -33,8 +31,9 @@
 
 	// prettier-ignore
 </script>
+
 <div class="menu">
-<div use:menu.button>{@render children()}</div>
+	<div use:menu.button>{@render children()}</div>
 	<div class=" text-right">
 		<div class="  text-left">
 			<Transition show={$menu.expanded} unmount>
@@ -79,19 +78,19 @@
 			</Transition>
 		</div>
 	</div>
-	</div>
+</div>
 
 <style>
 	.shadow {
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	}
 	.menu {
-	display: flex;
-	align-items: center;
-	/* padding-left: 20px; */
-	flex-shrink: 0;
-	margin-left: auto;
-	float: right;
+		display: flex;
+		align-items: center;
+		/* padding-left: 20px; */
+		flex-shrink: 0;
+		margin-left: auto;
+		float: right;
 	}
 	.menu-button {
 		width: 64px;
