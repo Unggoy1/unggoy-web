@@ -2,10 +2,8 @@
 	import type { PageData } from './$types';
 	import { DropdownType } from '$lib/enums';
 	import { playlistDelete, playlistDeleteAsset, playlistUpdate } from '$lib/api/playlist';
-	import Delete from '../../../components/Delete.svelte';
+	import { Delete, Edit, Private } from '$lib/components/icons';
 	import Dropdown from '$lib/components/Dropdown.svelte';
-	import Edit from '../../../components/Edit.svelte';
-	import Private from '../../../components/Private.svelte';
 	import AssetsContainer from '$lib/components/AssetsContainer.svelte';
 	import { playlistModal } from '../../../stores/modal';
 	import { favoritesAdd, favoritesDelete } from '$lib/api/favorites';

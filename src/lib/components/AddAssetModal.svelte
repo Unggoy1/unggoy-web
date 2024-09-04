@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
 	import Combobox from './Combobox.svelte';
-	// import { emptyDetails, type Details } from './details';
 	import { playlistAddAsset } from '$lib/api/playlist';
 
 	let modal: Modal;

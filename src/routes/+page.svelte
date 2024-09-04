@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import AssetGroup from '$lib/components/AssetGroup.svelte';
-	import ChevronRight from '$lib/components/icons/ChevronRight.svelte';
+	import { ChevronRight } from '$lib/components/icons';
 	export let data: PageData;
 </script>
 

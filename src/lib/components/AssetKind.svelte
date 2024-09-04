@@ -1,7 +1,5 @@
 <script lang="ts">
-	import MapSvg from './mapSvg.svelte';
-	import ModeSvg from './modeSvg.svelte';
-	import PrefabSvg from './prefabSvg.svelte';
+	import { MapSvg, ModeSvg, PrefabSvg } from './icons';
 
 	export let assetKind: number;
 	export let lg: boolean = false;

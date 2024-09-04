@@ -9,10 +9,6 @@
 	import { dev } from '$app/environment';
 	import type { LayoutData } from './$types';
 	import { user } from '../stores/user';
-	import ChevronDown from '../components/ChevronDown.svelte';
-	import Play from '$lib/components/icons/Play.svelte';
-	import Star from '../components/Star.svelte';
-	import LogOut from '../components/LogOut.svelte';
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import { DropdownType } from '$lib/enums';
 	import BetaLogin from '$lib/components/BetaLogin.svelte';
@@ -20,13 +16,19 @@
 	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import { addAssetModal, playlistModal } from '../stores/modal';
-	import Compass from '$lib/components/icons/compass.svelte';
-	import Anvil from '$lib/components/icons/anvil.svelte';
-	import Gamepad from '$lib/components/icons/gamepad.svelte';
-	import Map from '$lib/components/icons/map.svelte';
-	import Home from '$lib/components/icons/home.svelte';
-	import Plus from '$lib/components/icons/Plus.svelte';
-	import Xbox from '$lib/components/icons/xbox.svelte';
+	import {
+		Compass,
+		Anvil,
+		Gamepad,
+		ChevronDown,
+		Star,
+		LogOut,
+		Play,
+		Map,
+		Home,
+		Plus,
+		Xbox
+	} from '$lib/components/icons';
 
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);

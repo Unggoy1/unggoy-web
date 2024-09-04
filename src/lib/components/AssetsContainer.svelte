@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { BrowseData } from '$lib/api';
 	import { getAssetCardGroups } from '$lib/functions';
-	import AssetCard from '../../components/assetCard.svelte';
+	import AssetCard from './AssetCard.svelte';
 
 	interface Props {
 		browseData: BrowseData;

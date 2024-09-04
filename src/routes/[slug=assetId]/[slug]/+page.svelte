@@ -1,17 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import AssetKind from '../../../components/assetKind.svelte';
 	import { user } from '../../../stores/user';
-	import DropdownCard from '$lib/components/DropdownCard.svelte';
-	import { DropdownType } from '$lib/enums';
-	import Plus from '$lib/components/icons/Plus.svelte';
 	import { addAssetModal, playlistModal } from '../../../stores/modal';
+	import AssetKind from '$lib/components/AssetKind.svelte';
+	import DropdownCard from '$lib/components/DropdownCard.svelte';
 	import Carousel from '$lib/components/Carousel.svelte';
+	import { DropdownType } from '$lib/enums';
 	import { onMount } from 'svelte';
-	import LogOut from '../../../components/LogOut.svelte';
-	import Star from '../../../components/Star.svelte';
-	import Play from '$lib/components/icons/Play.svelte';
-	import Duplicate from '$lib/components/icons/Duplicate.svelte';
+	import { Duplicate, Plus } from '$lib/components/icons';
 	import { getAssetLink } from '$lib/functions';
 
 	export let data: PageData;

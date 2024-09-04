@@ -2,7 +2,7 @@
 	import emblaCarouselSvelte from 'embla-carousel-svelte';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
-	import AssetKind from '../../components/assetKind.svelte';
+	import AssetKind from './AssetKind.svelte';
 
 	interface Props {
 		images: string[];
