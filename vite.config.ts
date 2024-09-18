@@ -6,4 +6,10 @@ export default defineConfig({
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
+	// optimizeDeps: {
+	// 	include: ['@tensorflow/tfjs', 'nsfwjs']
+	// },
+	// ssr: {
+	// 	noExternal: ['@tensorflow/tfjs', 'nsfwjs']
+	// }
 });

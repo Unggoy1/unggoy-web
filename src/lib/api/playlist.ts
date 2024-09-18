@@ -8,26 +8,38 @@ export async function playlistCreate({
 	thumbnail,
 	assetId
 }: PlaylistCreate): Promise<void> {
+	console.log('we started create function');
+	const formData = new FormData();
+	formData.append('name', name);
+	formData.append('description', description);
+	formData.append('isPrivate', String(isPrivate));
+	formData.append('assetId', assetId);
+	formData.append('thumbnail', thumbnail.item(0));
+	for (var key of formData.entries()) {
+		console.log(key[0] + ', ' + key[1]);
+	}
+	console.log('we made form data');
 	const context: RequestOpts = {
 		path: '/playlist',
 		method: 'POST',
-		body: {
-			name,
-			description,
-			isPrivate,
-			thumbnail,
-			assetId
-		}
+		body: formData
 	};
 	try {
+		console.log('just before making request function call');
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
-			success: (data) => `Removed asset from playlist`,
+			success: (data) => {
+				console.log(data.text());
+				return `Removed asset from playlist`;
+			},
 			error: (err: Error) => err.message
 		});
+		console.log('finished the thing');
 
-		invalidateAll();
-	} catch (error) { }
+		// invalidateAll();
+	} catch (error) {
+		console.log('we got an error somehow');
+	}
 }
 
 export async function playlistAddAsset({
@@ -47,7 +59,7 @@ export async function playlistAddAsset({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistDeleteAsset({
@@ -66,7 +78,7 @@ export async function playlistDeleteAsset({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistUpdate({
@@ -95,7 +107,7 @@ export async function playlistUpdate({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
@@ -111,7 +123,7 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistGet({
@@ -209,7 +221,7 @@ export interface PlaylistCreate {
 	name: string;
 	description: string;
 	isPrivate: boolean;
-	thumbnail: URL | string;
+	thumbnail: FileList;
 	assetId?: string;
 }
 

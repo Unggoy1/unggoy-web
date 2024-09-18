@@ -1,12 +1,13 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
-	import Combobox from './Combobox.svelte';
-	// import { emptyDetails, type Details } from './details';
 	import { playlistAddAsset, playlistCreate, playlistUpdate } from '$lib/api/playlist';
+	import * as nsfwjs from '../../../node_modules/nsfwjs/dist/esm/index.js';
+	import { onMount } from 'svelte';
 
 	let modal: Modal;
 	let details: any = $state({});
 	let mode = $state<'edit' | 'create'>('edit');
+	let model: nsfwjs.NSFWJS | null = null;
 
 	export function create({ assetId }: { assetId?: string }) {
 		mode = 'create';
@@ -33,17 +34,95 @@
 
 	async function save() {
 		details.isPrivate = false;
-		details.thumbnail =
-			'https://blobs-infiniteugc.svc.halowaypoint.com/ugcstorage/map/fa185860-98bd-4e63-bc3d-914b98e77330/37f416ca-b5f8-4b22-899d-6f0ff80cbdb9/images/thumbnail.jpg';
 		mode === 'create' ? await playlistCreate(details) : await playlistUpdate(details);
 		modal.close();
 		resolve(details);
 	}
 
 	function cancel() {
+		fileErrorMessage = '';
+		nameErrorMessage = '';
+		descErrorMessage = '';
 		modal.close();
 		reject();
 	}
+
+	let fileErrorMessage = $state('');
+	let nameErrorMessage = $state('');
+	let descErrorMessage = $state('');
+	let inputElement: HTMLInputElement | null = null;
+
+	async function classifyImage(event: Event) {
+		if (!model || !details.thumbnail) return;
+		if (details.thumbnail && details.thumbnail.length > 0) {
+			fileErrorMessage = ''; // Clear any previous error messages
+		}
+		const file: File = details.thumbnail.item(0);
+		const imageSrc = URL.createObjectURL(file);
+		const img = new Image();
+		img.src = imageSrc;
+		img.onload = async () => {
+			const predictions = await model.classify(img);
+			console.log(predictions);
+			const unsafeCategories = ['Porn', 'Hentai', 'Sexy'];
+
+			// Check if any unsafe categories have high probability
+			const isUnsafe = predictions.some(
+				(prediction) =>
+					unsafeCategories.includes(prediction.className) && prediction.probability > 0.31
+			);
+
+			if (isUnsafe) {
+				// Dispatch an event to notify the parent about the unsafe image
+				fileErrorMessage = 'Image is NSFW';
+
+				if (inputElement) inputElement.value = ''; // Clear the file input
+			}
+
+			// Clean up the object URL to prevent memory leaks
+			URL.revokeObjectURL(imageSrc);
+		};
+	}
+	function validateInput(event: any) {
+		const type = event.target.type;
+		const value: string = event.target.value;
+		const minValue = type === 'text' ? 4 : 10;
+		let error = '';
+
+		if (value == '') {
+			error = 'Please fill out this vield.';
+		} else {
+			if (value.length < minValue || value.length > 255) {
+				error = 'Input needs at least ' + minValue + ' characters.';
+			}
+		}
+
+		if (type === 'text') {
+			nameErrorMessage = error;
+		} else {
+			descErrorMessage = error;
+		}
+
+		console.log(event);
+	}
+
+	function isDisabled() {
+		if (nameErrorMessage || descErrorMessage || fileErrorMessage) {
+			return true;
+		}
+		if (!details.name || !details.description || !details.thumbnail) {
+			return true;
+		}
+		return false;
+	}
+
+	onMount(async () => {
+		model = await nsfwjs.load(
+			'https://nsfw-model-1.s3.us-west-2.amazonaws.com/nsfw-predict-model/',
+			// @ts-ignore
+			{ type: 'graph' }
+		);
+	});
 </script>
 
 <Modal bind:this={modal} onclose={cancel}>
@@ -51,40 +130,80 @@
 
 	<div class="flex w-full flex-col items-center justify-center">
 		<div class="input-container">
-			<div class="z-10 cursor-default input">
-				<label>
-					<div>Name</div>
-					<input bind:value={details.name} class="py-2 pl-3 pr-10 leading-5" />
-				</label>
-				<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
-			</div>
-			<div class="z-10 cursor-default input">
-				<label>
-					<div>Description</div>
-					<textarea
-						bind:value={details.description}
-						maxlength="255"
-						class="py-2 pl-3 pr-10 leading-5"
-					></textarea>
-				</label>
-				<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
-			</div>
+			<form onsubmit={save}>
+				<div class="z-10 cursor-default input">
+					<label>
+						<div>Name</div>
+						<input
+							type="text"
+							bind:value={details.name}
+							class="py-2 pl-3 pr-10 leading-5"
+							class:error={nameErrorMessage}
+							minLength="4"
+							maxLength="255"
+							onchange={validateInput}
+							required
+						/>
+					</label>
+					<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
+					{#if nameErrorMessage}
+						<div class="error-message">{nameErrorMessage}</div>
+					{/if}
+				</div>
+				<div class="z-10 cursor-default input">
+					<label>
+						<div>Description</div>
+						<textarea
+							bind:value={details.description}
+							maxlength="255"
+							class="py-2 pl-3 pr-10 leading-5"
+							class:error={descErrorMessage}
+							minLength="10"
+							maxLength="255"
+							onchange={validateInput}
+							required
+						></textarea>
+					</label>
+					<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
+					{#if descErrorMessage}
+						<div class="error-message">{descErrorMessage}</div>
+					{/if}
+				</div>
 
-			<label>
-				<div>Thumbnail</div>
+				<label for="file-upload-field">
+					<div class="input-label">
+						<div>Thumbnail</div>
+					</div>
+				</label>
 				<div class="form">
-					<div class="file-upload-wrapper" data-text={details.thumbnail}>
+					<div
+						class="file-upload-wrapper"
+						class:img-error={fileErrorMessage}
+						data-text={details.thumbnail ? details.thumbnail[0]?.name : ''}
+					>
 						<input
 							name="file-upload-field"
+							id="file-upload-field"
 							type="file"
 							accept="image/png, image/jpeg, image/webp"
 							class="file-upload-field"
 							bind:files={details.thumbnail}
+							bind:this={inputElement}
+							onchange={classifyImage}
+							required
 						/>
 					</div>
+
+					{#if fileErrorMessage}
+						<div class="error-message">{fileErrorMessage}</div>
+					{/if}
+					<!-- Conditionally use the NSFW checker when a file is selected -->
+					<!-- {#if details.thumbnail} -->
+					<!-- 	<NsfwChecker file={details.thumbnail.item(0)} on:unsafeImage={handleUnsafeImage} /> -->
+					<!-- {/if} -->
 				</div>
-			</label>
-			<div class="mt-4"></div>
+				<div class="mt-4"></div>
+			</form>
 		</div>
 	</div>
 
@@ -92,6 +211,7 @@
 		<button
 			type="button"
 			onclick={save}
+			disabled={isDisabled()}
 			class=" modal-button inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium"
 		>
 			{mode === 'create' ? 'Create' : 'Save'}
@@ -131,7 +251,7 @@
 	.input input,
 	.input textarea {
 		background-color: #303637;
-		outline: #3f484b solid 2px !important;
+		outline: #3f484b solid 2px;
 		color: var(--container-color);
 		border-radius: 8px;
 		width: 100%;
@@ -181,7 +301,7 @@
 	.file-upload-wrapper {
 		position: relative;
 		width: 100%;
-		height: 30px;
+		height: 35px;
 	}
 	.file-upload-wrapper:after {
 		content: attr(data-text);
@@ -197,7 +317,7 @@
 		/* Adjusted width to fit within the container */
 		pointer-events: none;
 		z-index: 20;
-		height: 26px;
+		height: 31px;
 		line-height: 10px;
 		color: #cdd1d2;
 		border-radius: 0 5px 5px 0;
@@ -212,12 +332,12 @@
 		/* Kept the button on the left */
 		transition: all 0.3s ease-in-out;
 		display: inline-block;
-		height: 30px;
+		height: 35px;
 		background: var(--button-bg);
 		color: var(--button-color);
 		z-index: 25;
 		font-size: 14px;
-		line-height: 30px;
+		line-height: 35px;
 		padding: 0 16px;
 		pointer-events: none;
 		border-radius: 5px 0 0 5px;
@@ -240,5 +360,19 @@
 		display: block;
 		cursor: pointer;
 		width: 100%;
+	}
+	.input-label {
+		display: flex;
+	}
+	.error-message {
+		padding-top: 8px;
+		color: #e23636;
+	}
+
+	.error {
+		outline: #e23636 solid 2px !important;
+	}
+	.file-upload-wrapper.img-error:after {
+		outline: #e23636 solid 2px !important;
 	}
 </style>
