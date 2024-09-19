@@ -6,6 +6,7 @@
 
 	let modal: Modal;
 	let details: any = $state({});
+	let ogDetails: any = {};
 	let mode = $state<'edit' | 'create'>('edit');
 	let model: nsfwjs.NSFWJS | null = null;
 
@@ -28,6 +29,7 @@
 			reject = reject_;
 
 			details = structuredClone($state.snapshot(value));
+			ogDetails = structuredClone($state.snapshot(value)); // Store a copy of original details
 			modal.open();
 		});
 	}
@@ -110,9 +112,17 @@
 		if (nameErrorMessage || descErrorMessage || fileErrorMessage) {
 			return true;
 		}
-		if (!details.name || !details.description || !details.thumbnail) {
+		if (
+			mode === 'edit' &&
+			details.name === ogDetails.name &&
+			details.thumbnail === ogDetails.thumbnail
+		) {
 			return true;
 		}
+		if (mode === 'create' && (!details.name || !details.description || !details.thumbnail)) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -142,7 +152,7 @@
 							minLength="4"
 							maxLength="255"
 							onchange={validateInput}
-							required
+							required={mode === 'create' ? true : false}
 						/>
 					</label>
 					<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
@@ -161,7 +171,7 @@
 							minLength="10"
 							maxLength="255"
 							onchange={validateInput}
-							required
+							required={mode === 'create' ? true : false}
 						></textarea>
 					</label>
 					<!-- <span class="block truncate">{people[$listbox.selected].name}</span> -->
@@ -190,7 +200,7 @@
 							bind:files={details.thumbnail}
 							bind:this={inputElement}
 							onchange={classifyImage}
-							required
+							required={mode === 'create' ? true : false}
 						/>
 					</div>
 
@@ -239,6 +249,10 @@
 		color: var(--button-color-hover);
 	}
 
+	button:disabled {
+		background-color: var(--button-disabled-bg);
+		color: var(--button-disabled-color);
+	}
 	.input-container {
 		width: 100%;
 	}

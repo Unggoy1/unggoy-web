@@ -35,7 +35,13 @@ a {
 	--container-color: #dee3e5;
 	--asset-card-bg: #334a50d9;
 	--top-container-bg: #303637;
+	--button-disabled-bg: #292d2f;
+	--button-disabled-color: #6d7274;
 	--delay: 0s;
+}
+button:disabled {
+	background-color: var(--button-disabled-bg);
+	colos: var(--button-disabled-color);
 }
 
 body {
