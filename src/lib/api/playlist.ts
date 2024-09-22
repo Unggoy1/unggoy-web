@@ -50,7 +50,7 @@ export async function playlistAddAsset({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistDeleteAsset({
@@ -69,7 +69,7 @@ export async function playlistDeleteAsset({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistUpdate({
@@ -104,6 +104,7 @@ export async function playlistUpdate({
 	};
 
 	try {
+		console.log(formData.get('thumbnail'));
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
 			success: (data) => `Updated playlist`,
@@ -111,7 +112,7 @@ export async function playlistUpdate({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
@@ -127,7 +128,7 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistGet({

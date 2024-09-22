@@ -3,6 +3,7 @@
 	import { playlistAddAsset, playlistCreate, playlistUpdate } from '$lib/api/playlist';
 	import * as nsfwjs from '../../../node_modules/nsfwjs/dist/esm/index.js';
 	import { onMount } from 'svelte';
+	import { removeSameValues } from '$lib/functions';
 
 	let modal: Modal;
 	let details: any = $state({});
@@ -36,7 +37,9 @@
 
 	async function save() {
 		details.isPrivate = false;
-		mode === 'create' ? await playlistCreate(details) : await playlistUpdate(details);
+		const diffDetails = removeSameValues(details, ogDetails);
+		console.log(diffDetails);
+		mode === 'create' ? await playlistCreate(diffDetails) : await playlistUpdate(diffDetails);
 		modal.close();
 		resolve(details);
 	}
@@ -59,7 +62,13 @@
 		if (details.thumbnail && details.thumbnail.length > 0) {
 			fileErrorMessage = ''; // Clear any previous error messages
 		}
+		const maxFileSize = 1 * 1024 * 1024; //1MB in bytes
 		const file: File = details.thumbnail.item(0);
+		if (file.size > maxFileSize) {
+			fileErrorMessage = 'Max image size is 1MB.';
+			if (inputElement) inputElement.value = ''; // Clear the file input
+			return;
+		}
 		const imageSrc = URL.createObjectURL(file);
 		const img = new Image();
 		img.src = imageSrc;
@@ -76,7 +85,7 @@
 
 			if (isUnsafe) {
 				// Dispatch an event to notify the parent about the unsafe image
-				fileErrorMessage = 'Image is NSFW';
+				fileErrorMessage = 'Image is NSFW.';
 
 				if (inputElement) inputElement.value = ''; // Clear the file input
 			}

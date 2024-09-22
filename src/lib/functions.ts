@@ -81,3 +81,12 @@ export function getAssetCardGroups({
 
 	return activeUser ? [authGroups, noAuthGroups] : [noAuthGroups];
 }
+
+export function removeSameValues<T extends object>(details: T, ogDetails: T): Partial<T> {
+	return Object.entries(details).reduce((acc, [key, value]) => {
+		if (key.toLowerCase().includes('id') || value !== ogDetails[key as keyof T]) {
+			acc[key as keyof T] = value;
+		}
+		return acc;
+	}, {} as Partial<T>);
+}
