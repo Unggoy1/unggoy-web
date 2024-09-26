@@ -50,7 +50,7 @@ export async function playlistAddAsset({
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistDeleteAsset({
@@ -69,7 +69,7 @@ export async function playlistDeleteAsset({
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistUpdate({
@@ -112,7 +112,7 @@ export async function playlistUpdate({
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
@@ -128,7 +128,7 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 		});
 
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function playlistGet({
@@ -222,11 +222,26 @@ export async function playlistMe({
 	}
 }
 
+export function isPlaylistCreate(details: Partial<PlaylistCreate>): details is PlaylistCreate {
+	return (
+		details.name !== undefined &&
+		details.description !== undefined &&
+		details.isPrivate !== undefined
+	);
+}
+
+// Type guard to check if the object is of type PlaylistUpdateData
+export function isPlaylistUpdateData(
+	details: Partial<PlaylistUpdateData>
+): details is PlaylistUpdateData {
+	return details.playlistId !== undefined;
+}
+
 export interface PlaylistCreate {
 	name: string;
 	description: string;
 	isPrivate: boolean;
-	thumbnail: FileList;
+	thumbnail?: FileList;
 	assetId?: string;
 }
 

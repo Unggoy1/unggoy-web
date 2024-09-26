@@ -1,12 +1,23 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
-	import { playlistAddAsset, playlistCreate, playlistUpdate } from '$lib/api/playlist';
+	import {
+		isPlaylistCreate,
+		isPlaylistUpdateData,
+		playlistCreate,
+		playlistUpdate,
+		type PlaylistCreate,
+		type PlaylistUpdateData
+	} from '$lib/api/playlist';
 	import * as nsfwjs from '../../../node_modules/nsfwjs/dist/esm/index.js';
 	import { onMount } from 'svelte';
 	import { removeSameValues } from '$lib/functions';
 
 	let modal: Modal;
-	let details: any = $state({});
+	let details: Partial<PlaylistUpdateData & PlaylistCreate> = $state({
+		name: '',
+		description: '',
+		isPrivate: false
+	});
 	let ogDetails: any = {};
 	let mode = $state<'edit' | 'create'>('edit');
 	let model: nsfwjs.NSFWJS | null = null;
@@ -23,7 +34,6 @@
 
 	let resolve: (value: any | PromiseLike<any>) => void;
 	let reject: (reason?: any) => void;
-
 	function show(value: any) {
 		return new Promise<any>((resolve_, reject_) => {
 			resolve = resolve_;
@@ -37,9 +47,24 @@
 
 	async function save() {
 		details.isPrivate = false;
-		const diffDetails = removeSameValues(details, ogDetails);
-		console.log(diffDetails);
-		mode === 'create' ? await playlistCreate(diffDetails) : await playlistUpdate(diffDetails);
+		const diffDetails: Partial<PlaylistUpdateData & PlaylistCreate> = removeSameValues(
+			details,
+			ogDetails
+		);
+		//jank typeguard stuff to get code to not complain about the data for each field not being 100% identical
+		if (mode === 'create') {
+			if (isPlaylistCreate(diffDetails)) {
+				await playlistCreate(diffDetails);
+			} else {
+				throw new Error('Invalid details for playlist creation');
+			}
+		} else {
+			if (isPlaylistUpdateData(diffDetails)) {
+				await playlistUpdate(diffDetails);
+			} else {
+				throw new Error('Invalid details for playlist update');
+			}
+		}
 		modal.close();
 		resolve(details);
 	}
@@ -143,6 +168,8 @@
 	}
 
 	onMount(async () => {
+		if (modal) {
+		}
 		model = await nsfwjs.load(
 			'https://nsfw-model-1.s3.us-west-2.amazonaws.com/nsfw-predict-model/',
 			// @ts-ignore

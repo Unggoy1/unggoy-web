@@ -35,27 +35,14 @@
 	let dropdown: Dropdown;
 
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
-	function test() {
-		console.log('lololol');
-	}
-	const groups = [
-		[
-			{ type: DropdownType.Button, icon: Plus, text: `Create New Playlist`, function: test },
-			{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '/playlist/me' },
-			{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
-			{
-				type: DropdownType.A,
-				icon: LogOut,
-				text: `Log Out`,
-				href: `${endpoint}logout?redirectUrl=${escape($page.url.href)}`
-			}
-		]
-	];
+	let groups;
 
 	let isSidebarCollapsed = false;
 	let searchTerm = '';
 	let isDrawerOpen = false;
 	let drawerRef;
+	let addAssetModalComponent: AddAssetModal;
+	let playlistModalComponent: PlaylistModal;
 
 	$: currentAssetKind = new URLSearchParams($page.url.search).get('assetKind');
 
@@ -94,11 +81,40 @@
 		window.addEventListener('resize', handleResize);
 		window.addEventListener('click', handleClickOutside);
 		handleResize();
+		// Initialize modals
+		if (addAssetModalComponent) {
+			$addAssetModal = addAssetModalComponent;
+		}
+		if (playlistModalComponent) {
+			$playlistModal = playlistModalComponent;
+		}
+
+		groups = [
+			[
+				{
+					type: DropdownType.Button,
+					icon: Plus,
+					text: `Create New Playlist`,
+					function: () => $playlistModal.create({})
+				},
+				{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '/playlist/me' },
+				{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
+				{
+					type: DropdownType.A,
+					icon: LogOut,
+					text: `Log Out`,
+					href: `${endpoint}logout?redirectUrl=${escape($page.url.href)}`
+				}
+			]
+		];
+
 		return () => {
 			window.removeEventListener('resize', handleResize);
 			window.removeEventListener('click', handleClickOutside);
 		};
 	});
+
+	//possible todo extract sidebar links into an object and use a loop to creaet them..
 	const sidebarLinks = [
 		{ text: 'Home', url: '/', icon: '' },
 		{ text: 'About', url: '/about', icon: '' }
@@ -108,8 +124,8 @@
 	// $: console.log('activLink:', activeLink);
 </script>
 
-<AddAssetModal bind:this={$addAssetModal}></AddAssetModal>
-<PlaylistModal bind:this={$playlistModal}></PlaylistModal>
+<AddAssetModal bind:this={addAssetModalComponent} />
+<PlaylistModal bind:this={playlistModalComponent} />
 <Toaster></Toaster>
 {#if !$user && !dev}
 	<BetaLogin url={endpoint + 'login/azure?redirectUrl=' + escape($page.url.href)}></BetaLogin>

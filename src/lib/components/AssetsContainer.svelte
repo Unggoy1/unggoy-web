@@ -4,6 +4,7 @@
 	import type { BrowseData } from '$lib/api';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
+	import { addAssetModal, playlistModal } from '../../stores/modal';
 
 	interface Props {
 		browseData: BrowseData;
@@ -142,7 +143,9 @@
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
 						assetKind: asset.assetKind,
-						playlist: browseData.playlist || undefined
+						playlist: browseData.playlist || undefined,
+						playlistModalVar: $playlistModal,
+						addAssetModalVar: $addAssetModal
 					})}
 					assetUrl="/{asset.assetKind == 2
 						? 'maps'
