@@ -62,8 +62,15 @@
 		if (details.thumbnail && details.thumbnail.length > 0) {
 			fileErrorMessage = ''; // Clear any previous error messages
 		}
+		const allowedFileTypes = ['image/png', 'image/jpeg'];
 		const maxFileSize = 1 * 1024 * 1024; //1MB in bytes
 		const file: File = details.thumbnail.item(0);
+
+		if (!allowedFileTypes.includes(file.type)) {
+			fileErrorMessage = 'Only png and jpeg are supported.';
+			if (inputElement) inputElement.value = ''; // Clear the file input
+			return;
+		}
 		if (file.size > maxFileSize) {
 			fileErrorMessage = 'Max image size is 1MB.';
 			if (inputElement) inputElement.value = ''; // Clear the file input
@@ -204,7 +211,7 @@
 							name="file-upload-field"
 							id="file-upload-field"
 							type="file"
-							accept="image/png, image/jpeg, image/webp"
+							accept="image/png, image/jpeg"
 							class="file-upload-field"
 							bind:files={details.thumbnail}
 							bind:this={inputElement}
