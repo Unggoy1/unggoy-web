@@ -17,5 +17,7 @@ export { default as Play } from './Play.svelte';
 export { default as Plus } from './Plus.svelte';
 export { default as PrefabSvg } from './PrefabSvg.svelte';
 export { default as Private } from './Private.svelte';
+export { default as Public } from './Public.svelte';
+export { default as Recommended } from './Recommended.svelte';
 export { default as Star } from './Star.svelte';
 export { default as Xbox } from './Xbox.svelte';

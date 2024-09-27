@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import { DropdownType } from '$lib/enums';
 	import { playlistDelete, playlistDeleteAsset, playlistUpdate } from '$lib/api/playlist';
-	import { Delete, Edit, Private } from '$lib/components/icons';
+	import { Delete, Edit, Private, Public } from '$lib/components/icons';
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import AssetsContainer from '$lib/components/AssetsContainer.svelte';
 	import { playlistModal } from '../../../stores/modal';
@@ -50,7 +50,7 @@
 								},
 								{
 									type: DropdownType.Button,
-									icon: Private,
+									icon: data.playlist.private === true ? Public : Private,
 									text: data.playlist.private === true ? 'Make Public' : 'Make Private',
 									function: () =>
 										playlistUpdate({

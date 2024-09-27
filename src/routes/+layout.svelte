@@ -27,9 +27,9 @@
 		Map,
 		Home,
 		Plus,
-		Xbox
+		Xbox,
+		Recommended
 	} from '$lib/components/icons';
-	import Recommended from '$lib/components/icons/Recommended.svelte';
 
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);
