@@ -95,12 +95,18 @@
 					name="SortFilter"
 					class="dropdown-el"
 				>
-					<option value="publishedAt" label="Date Published"></option>
-					<option value="name" label="Name"></option><option value="averageRating" label="Rating"
-					></option>
-					<option value="bookmarks" label="Bookmarks"></option>
-					<option value="playsRecent" label="Plays Recent"></option>
-					<option value="playsAllTime" label="Plays"></option>
+					{#if browseData.filter != undefined}
+						<option value="publishedAt" label="Date Published"></option>
+						<option value="name" label="Name"></option>
+						<option value="averageRating" label="Rating"></option>
+						<option value="bookmarks" label="Bookmarks"></option>
+						<option value="playsRecent" label="Plays Recent"></option>
+						<option value="playsAllTime" label="Plays"></option>
+					{:else}
+						<option value="updatedAt" label="Recently Updated"></option>
+						<option value="name" label="Name"></option>
+						<option value="favorites" label="Favorites"></option>
+					{/if}
 				</select>
 			</div>
 		</div>
