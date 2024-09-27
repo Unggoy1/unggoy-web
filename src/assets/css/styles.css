@@ -1365,26 +1365,38 @@ li.text-only {
 	width: 64px;
 	height: 64px;
 	float: right;
-	background-color: var(--body-color);
+	background-color: var(--button-bg);
 	border-radius: 100px;
 	margin-right: 16px;
 	text-align: center;
 	border: none;
 }
-.more {
-	background-color: var(--button-bg);
-}
-.more:hover {
-	background-color: var(--button-bg-hover);
-	fill: var(--button-color-hover);
-}
-.more svg:hover {
-	fill: var(--button-color-hover);
-}
-
 .favorite svg {
 	width: 32px;
 	height: 64px;
 	align-self: center;
 	flex-shrink: 0;
+	fill: var(--button-color);
+}
+
+.favorite:hover {
+	background-color: var(--button-bg-hover);
+	fill: var(--button-color-hover);
+}
+.favorite:hover svg {
+	fill: var(--button-color-hover);
+}
+
+.favorited {
+	background-color: #dfb759;
+}
+.favorited svg {
+	fill: #fff;
+}
+.favorited:hover {
+	background-color: #e23636;
+	/* fill: var(--button-color-hover); */
+}
+.favorited:hover svg {
+	fill: #fff;
 }

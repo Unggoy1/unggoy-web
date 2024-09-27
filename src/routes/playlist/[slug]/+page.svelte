@@ -28,7 +28,6 @@
 			<div class="playlist-title">{data.playlist.name}</div>
 			<div class="playlist-description">
 				{data.playlist.description}
-				{data.playlist.private}
 			</div>
 		</div>
 		{#if $user}
@@ -85,6 +84,7 @@
 				{/if}
 				<button
 					class="favorite"
+					class:favorited={data.playlist.favoritedBy && data.playlist.favoritedBy.length !== 0}
 					onclick={async () =>
 						!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
 							? favoritesAdd(data.playlist)
@@ -95,11 +95,10 @@
 						width="34"
 						height="32"
 						viewBox="0 0 34 32"
-						fill="none"
+						fill="#cee7ee"
 					>
 						<path
 							d="M16.9243 23.0266L22.6917 26.3733C23.7479 26.9866 25.0404 26.08 24.7624 24.9333L23.2337 18.64L28.334 14.4C29.2651 13.6266 28.7648 12.16 27.5419 12.0666L20.8295 11.52L18.2029 5.57331C17.7304 4.49331 16.1183 4.49331 15.6458 5.57331L13.0192 11.5066L6.30679 12.0533C5.08383 12.1466 4.58353 13.6133 5.51465 14.3866L10.615 18.6266L9.08626 24.92C8.80831 26.0666 10.1008 26.9733 11.157 26.36L16.9243 23.0266Z"
-							fill="#212121"
 						/>
 					</svg>
 				</button>
