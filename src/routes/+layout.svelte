@@ -29,6 +29,7 @@
 		Plus,
 		Xbox
 	} from '$lib/components/icons';
+	import Recommended from '$lib/components/icons/Recommended.svelte';
 
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);
@@ -143,7 +144,7 @@
 						href="/"
 					>
 						<Home active={false}></Home>
-						<p>Featured</p>
+						<p>Home</p>
 					</a>
 					<a
 						data-sveltekit-replacestate
@@ -190,6 +191,15 @@
 					>
 						<Compass active={false}></Compass>
 						<p>Browse</p>
+					</a>
+					<a
+						data-sveltekit-replacestate
+						class="sidebar-link"
+						class:is-active={$page.url.pathname === '/recommended'}
+						href="/recommended"
+					>
+						<Recommended active={false}></Recommended>
+						<p>343 Featured</p>
 					</a>
 				</div>
 			</div>
@@ -295,11 +305,11 @@
 				<span>Playlists</span>
 			</a>
 			<a
-				href="/"
+				href="/recommended"
 				class="bottom-nav-link"
-				class:is-active={$page.url.pathname === '/browse/featured' && currentAssetKind === null}
+				class:is-active={$page.url.pathname === '/recommended'}
 			>
-				<Star active={false}></Star>
+				<Recommended active={false}></Recommended>
 				<span>Featured</span>
 			</a>
 			{#if $user}

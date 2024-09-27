@@ -12,34 +12,6 @@
 
 	export let data: PageData;
 
-	const groups = [
-		[
-			{
-				type: DropdownType.Button,
-				icon: Edit,
-				text: 'Edit Playlist',
-				function: () =>
-					$playlistModal.edit({
-						playlistId: data.playlist.assetId,
-						name: data.playlist.name,
-						description: data.playlist.description
-					})
-			},
-			{
-				type: DropdownType.Button,
-				icon: Private,
-				text: `Private Playlist`,
-				function: () =>
-					playlistUpdate({ playlistId: data.playlist.assetId, isPrivate: !data.playlist.private })
-			},
-			{
-				type: DropdownType.Button,
-				icon: Delete,
-				text: `Delete Playlist`,
-				function: () => playlistDelete({ playlistId: data.playlist.assetId })
-			}
-		]
-	];
 	onMount(() => {
 		console.log('on mount');
 		console.log(data.playlist);
@@ -56,26 +28,61 @@
 			<div class="playlist-title">{data.playlist.name}</div>
 			<div class="playlist-description">
 				{data.playlist.description}
+				{data.playlist.private}
 			</div>
 		</div>
 		{#if $user}
 			<div>
-				<Dropdown {groups}>
-					<button class="favorite more">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="35"
-							height="32"
-							viewBox="0 0 35 32"
-							fill="none"
-						>
-							<path
-								d="M7.91838 13.3333C6.38967 13.3333 5.13892 14.5333 5.13892 16C5.13892 17.4666 6.38967 18.6666 7.91838 18.6666C9.44708 18.6666 10.6978 17.4666 10.6978 16C10.6978 14.5333 9.44708 13.3333 7.91838 13.3333ZM27.3746 13.3333C25.8459 13.3333 24.5951 14.5333 24.5951 16C24.5951 17.4666 25.8459 18.6666 27.3746 18.6666C28.9033 18.6666 30.1541 17.4666 30.1541 16C30.1541 14.5333 28.9033 13.3333 27.3746 13.3333ZM17.6465 13.3333C16.1178 13.3333 14.867 14.5333 14.867 16C14.867 17.4666 16.1178 18.6666 17.6465 18.6666C19.1752 18.6666 20.426 17.4666 20.426 16C20.426 14.5333 19.1752 13.3333 17.6465 13.3333Z"
-								fill="#CEE7EE"
-							/>
-						</svg>
-					</button>
-				</Dropdown>
+				{#if $user.id === data.playlist.userId}
+					<Dropdown
+						groups={[
+							[
+								{
+									type: DropdownType.Button,
+									icon: Edit,
+									text: 'Edit Details',
+									function: () =>
+										$playlistModal.edit({
+											playlistId: data.playlist.assetId,
+											name: data.playlist.name,
+											description: data.playlist.description
+										})
+								},
+								{
+									type: DropdownType.Button,
+									icon: Private,
+									text: data.playlist.private === true ? 'Make Public' : 'Make Private',
+									function: () =>
+										playlistUpdate({
+											playlistId: data.playlist.assetId,
+											isPrivate: !data.playlist.private
+										})
+								},
+								{
+									type: DropdownType.Button,
+									icon: Delete,
+									text: `Delete Playlist`,
+									function: () => playlistDelete({ playlistId: data.playlist.assetId })
+								}
+							]
+						]}
+					>
+						<button class="favorite more">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="35"
+								height="32"
+								viewBox="0 0 35 32"
+								fill="none"
+							>
+								<path
+									d="M7.91838 13.3333C6.38967 13.3333 5.13892 14.5333 5.13892 16C5.13892 17.4666 6.38967 18.6666 7.91838 18.6666C9.44708 18.6666 10.6978 17.4666 10.6978 16C10.6978 14.5333 9.44708 13.3333 7.91838 13.3333ZM27.3746 13.3333C25.8459 13.3333 24.5951 14.5333 24.5951 16C24.5951 17.4666 25.8459 18.6666 27.3746 18.6666C28.9033 18.6666 30.1541 17.4666 30.1541 16C30.1541 14.5333 28.9033 13.3333 27.3746 13.3333ZM17.6465 13.3333C16.1178 13.3333 14.867 14.5333 14.867 16C14.867 17.4666 16.1178 18.6666 17.6465 18.6666C19.1752 18.6666 20.426 17.4666 20.426 16C20.426 14.5333 19.1752 13.3333 17.6465 13.3333Z"
+									fill="#CEE7EE"
+								/>
+							</svg>
+						</button>
+					</Dropdown>
+				{/if}
 				<button
 					class="favorite"
 					onclick={async () =>

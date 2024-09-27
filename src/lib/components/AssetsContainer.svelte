@@ -8,9 +8,10 @@
 
 	interface Props {
 		browseData: BrowseData;
+		filterTitle?: string;
 	}
 
-	let { browseData }: Props = $props();
+	let { browseData, filterTitle }: Props = $props();
 
 	const changePage = (page: number) => {
 		if (page < 1) {
@@ -56,7 +57,7 @@
 					<option value="Prefab" label="Prefabs"></option>
 				</select>
 			{:else}
-				<div class="dropdown-asset">Playlists</div>
+				<div class="dropdown-asset">{filterTitle ?? 'Playlists'}</div>
 			{/if}
 		</div>
 		<div class="filter-container">

@@ -7,5 +7,5 @@
 
 <div class="main-container">
 	<!-- <div class="main-header anim" style="--delay: 0s">Discover</div> -->
-	<AssetsContainer browseData={data}></AssetsContainer>
+	<AssetsContainer browseData={data} filterTitle={'Favorites'}></AssetsContainer>
 </div>
