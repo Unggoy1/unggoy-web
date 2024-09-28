@@ -1079,6 +1079,11 @@ img {
 	margin-left: 15px;
 	color: var(--container-color);
 }
+.asset-owner {
+	width: 16px;
+	height: 16px;
+	margin-right: 1px;
+}
 
 @media screen and (max-width: 1000px) {
 	.asset-area {

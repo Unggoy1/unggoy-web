@@ -3,6 +3,7 @@ export { default as Anvil } from './Anvil.svelte';
 export { default as ChevronDown } from './ChevronDown.svelte';
 export { default as ChevronRight } from './ChevronRight.svelte';
 export { default as Compass } from './Compass.svelte';
+export { default as Crown } from './Crown.svelte';
 export { default as Delete } from './Delete.svelte';
 export { default as Duplicate } from './Duplicate.svelte';
 export { default as Edit } from './Edit.svelte';

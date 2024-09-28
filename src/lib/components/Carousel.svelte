@@ -7,10 +7,11 @@
 	interface Props {
 		images: string[];
 		imagePath: string;
-		assetInfo: any;
+		cssClass: string;
+		assetInfo?: any;
 	}
 
-	let { images, imagePath, assetInfo }: Props = $props();
+	let { images, imagePath, cssClass, assetInfo }: Props = $props();
 	let emblaApi;
 	let options = { loop: true };
 	let selectedIndex = writable(0);
@@ -32,13 +33,14 @@
 	<div class="embla__container">
 		{#each images as src, imageIndex (src)}
 			<div class="embla__slide">
-				<img class="asset-img-sm" height="267px" src={imagePath + src} alt="nature" />
+				<img class={cssClass} height="267px" src={imagePath + src} alt="nature" />
 			</div>
 		{/each}
 	</div>
 </div>
-<AssetKind assetKind={assetInfo.kind} lg={false} recommended={assetInfo.recommended}></AssetKind>
-
+{#if assetInfo}
+	<AssetKind assetKind={assetInfo.kind} lg={false} recommended={assetInfo.recommended}></AssetKind>
+{/if}
 <div class="dots">
 	{#each images as _, index}
 		<span class="dot" class:active={$selectedIndex === index}></span>

@@ -2,6 +2,7 @@
 	import type { PageData } from './$types';
 	import AssetGroup from '$lib/components/AssetGroup.svelte';
 	import { ChevronRight } from '$lib/components/icons';
+	import Carousel from '$lib/components/Carousel.svelte';
 	export let data: PageData;
 </script>
 
@@ -13,7 +14,12 @@
 <div class="main-container">
 	<div class="main-blogs">
 		<div class="main-blog">
-			<img class="main-blog-bg" src="Tenrai_IV.webp" alt="Tenrai blog key art" />
+			<!-- <img class="main-blog-bg" src="Tenrai_IV.webp" alt="Tenrai blog key art" /> -->
+			<Carousel
+				cssClass="main-blog-bg"
+				images={['Tenrai_IV.webp', 'OneShotSlayer.webp']}
+				imagePath={''}
+			></Carousel>
 			<div class="main-blog-text">
 				<div class="main-blog-title">Launch of Unggoy to celebrate Tenrai IV</div>
 				<div class="main-blog-desc">
