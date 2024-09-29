@@ -126,6 +126,7 @@
 			URL.revokeObjectURL(imageSrc);
 		};
 	}
+
 	function validateInput(event: any) {
 		const type = event.target.type;
 		const value: string = event.target.value;
@@ -149,15 +150,18 @@
 		console.log(event);
 	}
 
-	function isDisabled() {
+	function disableButton() {
+		console.log('we ball');
 		if (nameErrorMessage || descErrorMessage || fileErrorMessage) {
 			return true;
 		}
 		if (
 			mode === 'edit' &&
 			details.name === ogDetails.name &&
+			details.description === ogDetails.description &&
 			details.thumbnail === ogDetails.thumbnail
 		) {
+			console.log('checking details', details.thumbnail === ogDetails.thumbnail);
 			return true;
 		}
 		if (mode === 'create' && (!details.name || !details.description || !details.thumbnail)) {
@@ -264,7 +268,7 @@
 		<button
 			type="button"
 			onclick={save}
-			disabled={isDisabled()}
+			disabled={disableButton()}
 			class=" modal-button inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium"
 		>
 			{mode === 'create' ? 'Create' : 'Save'}

@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import AssetGroup from '$lib/components/AssetGroup.svelte';
 	import { ChevronRight } from '$lib/components/icons';
-	import Carousel from '$lib/components/Carousel.svelte';
+	import BlogCarousel from '$lib/components/BlogCarousel.svelte';
 	export let data: PageData;
 </script>
 
@@ -15,20 +15,7 @@
 	<div class="main-blogs">
 		<div class="main-blog">
 			<!-- <img class="main-blog-bg" src="Tenrai_IV.webp" alt="Tenrai blog key art" /> -->
-			<Carousel
-				cssClass="main-blog-bg"
-				images={['Tenrai_IV.webp', 'OneShotSlayer.webp']}
-				imagePath={''}
-			></Carousel>
-			<div class="main-blog-text">
-				<div class="main-blog-title">Launch of Unggoy to celebrate Tenrai IV</div>
-				<div class="main-blog-desc">
-					Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-					unknown printer took a galley of type and scrambled it to make a type specimen book. It
-					has survived not only five centuries, but also the leap into electronic typesetting,
-					remaining essentially unchanged.
-				</div>
-			</div>
+			<BlogCarousel images={['Tenrai_IV.webp', 'OneShotSlayer.webp']} imagePath={''}></BlogCarousel>
 		</div>
 	</div>
 	<AssetGroup assets={data.newMaps}>

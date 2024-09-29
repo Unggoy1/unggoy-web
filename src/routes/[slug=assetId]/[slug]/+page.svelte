@@ -98,7 +98,6 @@
 				<div class="asset-img-sm-wrapper">
 					{#if data.map.files.fileRelativePaths.length > 0}
 						<Carousel
-							cssClass="asset-img-sm"
 							images={data.map.files.fileRelativePaths}
 							imagePath={data.map.files.prefix}
 							assetInfo={{ kind: data.map.assetKind, recommended: data.map.recommended }}

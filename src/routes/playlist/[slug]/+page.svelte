@@ -24,10 +24,34 @@
 
 <div class="main-container">
 	<div class="playlist-container">
-		<div>
-			<div class="playlist-title">{data.playlist.name}</div>
-			<div class="playlist-description">
-				{data.playlist.description}
+		<div class="playlist-metadata-wrapper">
+			<div class="playlist-image-wrapper">
+				<img
+					class="playlist-image"
+					src={data.playlist.thumbnailUrl || '/placeholder.webp'}
+					alt="thumbnail"
+				/>
+			</div>
+			<div>
+				<div class="playlist-title">
+					{#if data.playlist.private === true}
+						<Private active={false}></Private>
+					{:else}
+						<Public active={false}></Public>
+					{/if}
+					{data.playlist.name}
+				</div>
+				<div class="playlist-description">
+					{data.playlist.description}
+				</div>
+				<div class="user-settings">
+					<img class="user-img" src={data.playlist.user.emblemPath} alt="profile emblem" />
+					<a href="/browse?gamertag={data.playlist.user.username}">
+						<div class="playlist-author">
+							{data.playlist.user.username}
+						</div>
+					</a>
+				</div>
 			</div>
 		</div>
 		{#if $user}

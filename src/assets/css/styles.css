@@ -19,6 +19,9 @@ button {
 a {
 	transition: all 0.2s ease-in-out;
 }
+a:hover {
+	text-decoration: underline;
+}
 :root {
 	--body-font: 'Inter', sans-serif;
 	--theme-bg: #171d1e;
@@ -479,7 +482,6 @@ img {
 .user-settings {
 	display: flex;
 	align-items: center;
-	padding-left: 20px;
 	flex-shrink: 0;
 	margin-left: auto;
 }
@@ -561,6 +563,7 @@ img {
 	filter: brightness(0.5);
 	height: 100%;
 	object-fit: cover;
+	width: 100%;
 }
 
 .main-blog-text {
@@ -1305,12 +1308,12 @@ li {
 
 li:hover a,
 li.active a {
-	color: #ffffff;
-	background-color: #32a7e2;
+	color: var(--button-color-hover);
+	background-color: var(--button-bg-hover);
 }
 
 li a {
-	background: var();
+	background: var(--button-bg);
 	border-radius: 8px;
 	color: var(--button-color);
 	text-decoration: none;
@@ -1323,8 +1326,8 @@ li a {
 
 li:hover button,
 li.active button {
-	color: #ffffff;
-	background-color: #32a7e2;
+	color: var(--button-color-hover);
+	background-color: var(--button-bg-hover);
 }
 
 li button {
@@ -1352,17 +1355,47 @@ li.text-only {
 	display: flex;
 	justify-content: space-between;
 }
+.playlist-metadata-wrapper {
+	display: flex;
+	justify-content: row;
+}
+.playlist-image-wrapper {
+	max-width: 275px;
+	height: 100%;
+	border-radius: 20px;
+	margin-right: 20px;
+}
+.playlist-image {
+	border-radius: 20px;
+}
 .playlist-title {
 	font-size: 48px;
-	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
 	padding-bottom: 16px;
 }
+.playlist-title svg {
+	height: 32px;
+	width: 32px;
+	fill: var(--body-color);
+}
+
 .playlist-description {
 	font-size: 24px;
 	font-style: normal;
 	font-weight: 400;
+	line-height: 140%; /* 33.6px */
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	-webkit-line-clamp: 1;
+	padding-bottom: 4px;
+	max-width: 90%;
+}
+.playlist-author {
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
 	line-height: 140%; /* 33.6px */
 }
 

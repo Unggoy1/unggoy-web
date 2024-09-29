@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import AssetKind from './AssetKind.svelte';
+	import Autoplay from 'embla-carousel-autoplay';
 
 	interface Props {
 		images: string[];
@@ -13,6 +14,7 @@
 	let { images, imagePath, assetInfo }: Props = $props();
 	let emblaApi;
 	let options = { loop: true };
+	let plugins: any[] = [Autoplay({ playOnInit: true, delay: 10000 })];
 	let selectedIndex = writable(0);
 	function onInit(event) {
 		emblaApi = event.detail;
@@ -28,11 +30,20 @@
 	});
 </script>
 
-<div class="embla" on:emblaInit={onInit} use:emblaCarouselSvelte={{ options, plugins: undefined }}>
+<div class="embla" on:emblaInit={onInit} use:emblaCarouselSvelte={{ options, plugins }}>
 	<div class="embla__container">
 		{#each images as src, imageIndex (src)}
 			<div class="embla__slide">
-				<img class="asset-img-sm" height="267px" src={imagePath + src} alt="nature" />
+				<img class="main-blog-bg" src={imagePath + src} alt="nature" />
+				<div class="main-blog-text">
+					<div class="main-blog-title">Launch of Unggoy to celebrate Tenrai IV</div>
+					<div class="main-blog-desc">
+						Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+						unknown printer took a galley of type and scrambled it to make a type specimen book. It
+						has survived not only five centuries, but also the leap into electronic typesetting,
+						remaining essentially unchanged.
+					</div>
+				</div>
 			</div>
 		{/each}
 	</div>
@@ -53,6 +64,7 @@
 	}
 	.embla__container {
 		display: flex;
+		height: 390px;
 	}
 	.embla__slide {
 		flex: 0 0 100%;

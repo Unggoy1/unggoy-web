@@ -307,4 +307,10 @@ export interface PlaylistData {
 	private: boolean;
 	userId: string;
 	recommended?: boolean;
+	user?: UserData;
+}
+
+interface UserData {
+	username: string;
+	emblemPath: string;
 }
