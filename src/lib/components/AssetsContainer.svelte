@@ -36,6 +36,9 @@
 		browseData.gamertag !== ''
 			? query.set('gamertag', browseData.gamertag)
 			: query.delete('gamertag');
+		browseData.gamertag !== undefined && browseData.gamertag !== ''
+			? query.set('ownerOnly', browseData.ownerOnly)
+			: query.delete('ownerOnly');
 		query.set('sort', browseData.sort);
 		goto(`?${query.toString()}`);
 	};
@@ -72,6 +75,16 @@
 							placeholder="gamertag"
 						/>
 					</div>
+					{#if browseData.gamertag !== ''}
+						<!-- Toggle Input with Label -->
+						<div class="toggle-group">
+							<p class="filter-text">Owner Only:</p>
+							<label class="toggle">
+								<input type="checkbox" bind:checked={browseData.ownerOnly} onchange={updateUrl} />
+								<span class="slider"></span>
+							</label>
+						</div>
+					{/if}
 				</div>
 			{/if}
 			{#if browseData.tag != undefined}

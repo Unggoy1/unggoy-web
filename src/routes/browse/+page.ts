@@ -47,8 +47,9 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	}
 
 	const ownerOnlyString = url.searchParams.get('ownerOnly');
+	let ownerOnly;
 	if (ownerOnlyString) {
-		const ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
+		ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
 		fetchParams.ownerOnly = ownerOnly;
 	}
 
@@ -64,6 +65,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		sort: sort || 'publishedAt',
 		order: order || 'desc',
 		gamertag: gamertag || '',
+		ownerOnly: ownerOnly || false,
 		tag: tags ? tags[0] : ''
 	};
 };

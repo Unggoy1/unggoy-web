@@ -28,7 +28,9 @@
 		Home,
 		Plus,
 		Xbox,
-		Recommended
+		Recommended,
+		Github,
+		Discord
 	} from '$lib/components/icons';
 
 	export let data: LayoutData;
@@ -201,6 +203,25 @@
 						<Recommended active={false}></Recommended>
 						<p>343 Featured</p>
 					</a>
+				</div>
+			</div>
+			<!-- Footer Section -->
+			<div class="sidebar-footer">
+				<!-- Line 2: Social Icons -->
+				<div class="footer-socials">
+					<a href="https://discord.gg/xnwFA4z2HA" target="_blank">
+						<Discord class="social-icon"></Discord>
+					</a>
+					<a href="https://github.com/Unggoy1" target="_blank">
+						<Github class="social-icon"></Github>
+					</a>
+					<!-- Add more social icons as needed -->
+				</div>
+
+				<!-- Line 1: Text Links -->
+				<div class="footer-links">
+					<a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+					<a href="/terms-of-service" class="footer-link">Terms</a>
 				</div>
 			</div>
 			<!-- <div class="side-wrapper"> -->

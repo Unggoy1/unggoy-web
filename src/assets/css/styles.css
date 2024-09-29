@@ -401,6 +401,61 @@ img {
 /* 	z-index: -1; */
 /* } */
 
+/* Footer Styles */
+.sidebar-footer {
+	margin-top: auto;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+/* Line 1: Text Links */
+.footer-links {
+	display: flex;
+	gap: 16px; /* Spacing between text links */
+}
+
+.footer-link {
+	text-decoration: none;
+	color: var(--body-color);
+	font-size: 12px;
+	transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+	color: var(--button-color);
+}
+
+/* Line 2: Social Icons */
+.footer-socials {
+	margin-bottom: 8px; /* Add some space between text links and icons */
+	display: flex;
+	gap: 16px; /* Space between social icons */
+}
+
+.social-icon {
+	width: 24px;
+	height: 24px;
+	fill: var(--body-color);
+	transition: filter 0.3s ease;
+}
+
+.social-icon:hover {
+	fill: var(--button-color-hover); /* Add hover effect for icons */
+}
+
+/* Sidebar Collapse */
+.sidebar.collapse .sidebar-footer {
+	display: none; /* Hide footer when collapsed */
+}
+
+/* Adjustments for smaller screens */
+@media screen and (max-width: 1250px) {
+	.sidebar-footer {
+		padding-left: 16px;
+	}
+}
 /* HEADER CSS */
 
 .header-wrapper {
@@ -1279,6 +1334,60 @@ img {
 	color: #dee3e5bf;
 }
 
+/* Toggle Group */
+.toggle-group {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-left: 10px;
+}
+
+/* Toggle Switch */
+.toggle {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 20px;
+}
+
+.toggle input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--body-color);
+	transition: 0.4s;
+	border-radius: 20px;
+}
+
+.slider:before {
+	position: absolute;
+	content: '';
+	height: 12px;
+	width: 12px;
+	left: 4px;
+	bottom: 4px;
+	background-color: #f5fafc;
+	transition: 0.4s;
+	border-radius: 50%;
+}
+
+input:checked + .slider {
+	background-color: var(--button-bg);
+}
+
+input:checked + .slider:before {
+	transform: translateX(20px);
+}
+
 /* PAGINATION */
 .pagination-container {
 	margin: 2rem auto;
@@ -1390,7 +1499,7 @@ li.text-only {
 	overflow: hidden;
 	-webkit-line-clamp: 1;
 	padding-bottom: 4px;
-	max-width: 90%;
+	max-width: 100%;
 }
 .playlist-author {
 	font-size: 16px;

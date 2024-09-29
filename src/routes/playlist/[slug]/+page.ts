@@ -47,11 +47,18 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		fetchParams.gamertag = gamertag;
 	}
 
+	const ownerOnlyString = url.searchParams.get('ownerOnly');
+	let ownerOnly;
+	if (ownerOnlyString) {
+		ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
+		fetchParams.ownerOnly = ownerOnly;
+	}
+
 	const data = await playlistGet(fetchParams);
 	return {
 		playlist: data.playlist,
 		assets: data.assets,
-		totalPages: data.totalCount / data.pageSize + 1,
+		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
@@ -59,6 +66,7 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		sort: sort || 'publishedAt',
 		order: order || 'desc',
 		gamertag: gamertag || '',
+		ownerOnly: ownerOnly || false,
 		tag: tags ? tags[0] : ''
 	};
 };

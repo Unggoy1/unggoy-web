@@ -12,5 +12,6 @@ export interface BrowseData {
 	order: string;
 	filter?: string;
 	gamertag: string;
+	ownerOnly?: boolean;
 	tag?: string;
 }

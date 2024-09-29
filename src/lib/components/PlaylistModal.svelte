@@ -164,7 +164,7 @@
 			console.log('checking details', details.thumbnail === ogDetails.thumbnail);
 			return true;
 		}
-		if (mode === 'create' && (!details.name || !details.description || !details.thumbnail)) {
+		if (mode === 'create' && (!details.name || !details.description)) {
 			return true;
 		}
 
@@ -190,7 +190,10 @@
 			<form onsubmit={save}>
 				<div class="z-10 cursor-default input">
 					<label>
-						<div>Name</div>
+						<div>
+							{#if mode === 'create'}<span class="required-asterisk">*</span>
+							{/if}Name
+						</div>
 						<input
 							type="text"
 							bind:value={details.name}
@@ -209,7 +212,10 @@
 				</div>
 				<div class="z-10 cursor-default input">
 					<label>
-						<div>Description</div>
+						<div>
+							{#if mode === 'create'}<span class="required-asterisk">*</span>
+							{/if}Description
+						</div>
 						<textarea
 							bind:value={details.description}
 							maxlength="255"
@@ -435,5 +441,10 @@
 	}
 	.file-upload-wrapper.img-error:after {
 		outline: #e23636 solid 2px !important;
+	}
+	.required-asterisk {
+		color: red;
+		font-weight: bold;
+		/* margin-left: 4px; */
 	}
 </style>
