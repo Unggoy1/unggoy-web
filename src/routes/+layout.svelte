@@ -220,7 +220,8 @@
 
 				<!-- Line 1: Text Links -->
 				<div class="footer-links">
-					<a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+					<a href="https://github.com/Unggoy1" target="_blank" class="footer-link">v0.5.0</a>
+					<a href="/privacy-policy" class="footer-link">Privacy</a>
 					<a href="/terms-of-service" class="footer-link">Terms</a>
 				</div>
 			</div>

@@ -13,7 +13,9 @@ export async function playlistCreate({
 	formData.append('description', description);
 	formData.append('isPrivate', String(isPrivate));
 	formData.append('assetId', assetId);
-	formData.append('thumbnail', thumbnail.item(0));
+	if (thumbnail && thumbnail.item(0)) {
+		formData.append('thumbnail', thumbnail.item(0));
+	}
 	const context: RequestOpts = {
 		path: '/playlist',
 		method: 'POST',
