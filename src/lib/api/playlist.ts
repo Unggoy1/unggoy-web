@@ -52,7 +52,7 @@ export async function playlistAddAsset({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistDeleteAsset({
@@ -71,7 +71,7 @@ export async function playlistDeleteAsset({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistUpdate({
@@ -114,7 +114,7 @@ export async function playlistUpdate({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
@@ -130,7 +130,7 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistGet({
@@ -276,6 +276,9 @@ export interface PlaylistGet extends Fetch {
 	gamertag?: string;
 	ownerOnly?: boolean; // "boolean"
 	searchTerm?: string;
+	_count: {
+		favoritedBy: number;
+	};
 }
 export interface PlaylistBrowse extends Fetch {
 	sort?: string;

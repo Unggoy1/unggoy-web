@@ -51,6 +51,10 @@
 							{data.playlist.user.username}
 						</div>
 					</a>
+					<div>
+						&nbsp;&nbsp;•&nbsp;&nbsp;{data.playlist._count.favoritedBy} favorites&nbsp;&nbsp;•&nbsp;&nbsp;{data
+							.assets.length} assets
+					</div>
 				</div>
 			</div>
 		</div>

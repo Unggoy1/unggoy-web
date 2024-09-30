@@ -39,8 +39,6 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	}
 
 	const data: FavoritesGetResponse = await favoritesGet(fetchParams);
-	console.log('we in here');
-	console.log(data);
 	return {
 		assets: data.assets,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),
