@@ -362,10 +362,16 @@
 					</div>
 				</div>
 				<div class="drawer-options">
-					<a href="/" class="drawer-option">
+					<button
+						onclick={() => {
+							closeDrawer();
+							$playlistModal.create({});
+						}}
+						class="drawer-option"
+					>
 						<Plus active={false}></Plus>
 						<span>Create Playlist</span>
-					</a>
+					</button>
 					<a href="/playlist/me" class="drawer-option">
 						<Play active={false}></Play>
 						<span>My Playlists</span>
