@@ -4,13 +4,14 @@ const apiEndpoint = `${PUBLIC_API_URL}` || 'http://localhost:3200';
 export async function request(context: RequestOpts, svelteFetch?: typeof fetch): Promise<Response> {
 	const { url, body } = await createFetchUrl(context);
 	const fetchFunction = svelteFetch ?? fetch;
-
+	const isFormData = body instanceof FormData;
 	const response = await fetchFunction(url, {
 		method: context.method,
 		credentials: 'include',
 		body: body,
 		headers: {
-			'Content-Type': 'application/json',
+			// Only set Content-Type if it's not FormData
+			...(isFormData ? {} : { 'Content-Type': 'application/json' }),
 			...context.headers
 		}
 	});
@@ -20,6 +21,7 @@ export async function request(context: RequestOpts, svelteFetch?: typeof fetch):
 		console.log(await response.text());
 		throw new Error('temporary error message');
 	}
+	console.log(response.status);
 	return response;
 }
 
@@ -32,8 +34,11 @@ async function createFetchUrl(context: RequestOpts) {
 		url += '?' + queryParamsStringify(context.query);
 	}
 	let body;
-	if (context.body) {
+	const isFormData = context.body instanceof FormData;
+	if (context.body && !isFormData) {
 		body = JSON.stringify(context.body);
+	} else {
+		body = context.body;
 	}
 	return { url, body };
 }
@@ -97,7 +102,7 @@ export interface RequestOpts {
 	method: HTTPMethod;
 	headers?: HTTPHeaders;
 	query?: HTTPQuery;
-	body?: Json;
+	body?: Json | FormData;
 }
 
 export interface Fetch {

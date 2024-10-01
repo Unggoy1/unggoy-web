@@ -19,6 +19,9 @@ button {
 a {
 	transition: all 0.2s ease-in-out;
 }
+a:hover {
+	text-decoration: underline;
+}
 :root {
 	--body-font: 'Inter', sans-serif;
 	--theme-bg: #171d1e;
@@ -35,7 +38,13 @@ a {
 	--container-color: #dee3e5;
 	--asset-card-bg: #334a50d9;
 	--top-container-bg: #303637;
+	--button-disabled-bg: #292d2f;
+	--button-disabled-color: #6d7274;
 	--delay: 0s;
+}
+button:disabled {
+	background-color: var(--button-disabled-bg);
+	colos: var(--button-disabled-color);
 }
 
 body {
@@ -392,6 +401,61 @@ img {
 /* 	z-index: -1; */
 /* } */
 
+/* Footer Styles */
+.sidebar-footer {
+	margin-top: auto;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+/* Line 1: Text Links */
+.footer-links {
+	display: flex;
+	gap: 16px; /* Spacing between text links */
+}
+
+.footer-link {
+	text-decoration: none;
+	color: var(--body-color);
+	font-size: 12px;
+	transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+	color: var(--button-color);
+}
+
+/* Line 2: Social Icons */
+.footer-socials {
+	margin-bottom: 8px; /* Add some space between text links and icons */
+	display: flex;
+	gap: 16px; /* Space between social icons */
+}
+
+.social-icon {
+	width: 24px;
+	height: 24px;
+	fill: var(--body-color);
+	transition: filter 0.3s ease;
+}
+
+.social-icon:hover {
+	fill: var(--button-color-hover); /* Add hover effect for icons */
+}
+
+/* Sidebar Collapse */
+.sidebar.collapse .sidebar-footer {
+	display: none; /* Hide footer when collapsed */
+}
+
+/* Adjustments for smaller screens */
+@media screen and (max-width: 1250px) {
+	.sidebar-footer {
+		padding-left: 16px;
+	}
+}
 /* HEADER CSS */
 
 .header-wrapper {
@@ -473,7 +537,6 @@ img {
 .user-settings {
 	display: flex;
 	align-items: center;
-	padding-left: 20px;
 	flex-shrink: 0;
 	margin-left: auto;
 }
@@ -555,6 +618,7 @@ img {
 	filter: brightness(0.5);
 	height: 100%;
 	object-fit: cover;
+	width: 100%;
 }
 
 .main-blog-text {
@@ -1073,6 +1137,11 @@ img {
 	margin-left: 15px;
 	color: var(--container-color);
 }
+.asset-owner {
+	width: 16px;
+	height: 16px;
+	margin-right: 1px;
+}
 
 @media screen and (max-width: 1000px) {
 	.asset-area {
@@ -1265,6 +1334,60 @@ img {
 	color: #dee3e5bf;
 }
 
+/* Toggle Group */
+.toggle-group {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-left: 10px;
+}
+
+/* Toggle Switch */
+.toggle {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 20px;
+}
+
+.toggle input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--body-color);
+	transition: 0.4s;
+	border-radius: 20px;
+}
+
+.slider:before {
+	position: absolute;
+	content: '';
+	height: 12px;
+	width: 12px;
+	left: 4px;
+	bottom: 4px;
+	background-color: #f5fafc;
+	transition: 0.4s;
+	border-radius: 50%;
+}
+
+input:checked + .slider {
+	background-color: var(--button-bg);
+}
+
+input:checked + .slider:before {
+	transform: translateX(20px);
+}
+
 /* PAGINATION */
 .pagination-container {
 	margin: 2rem auto;
@@ -1294,12 +1417,12 @@ li {
 
 li:hover a,
 li.active a {
-	color: #ffffff;
-	background-color: #32a7e2;
+	color: var(--button-color-hover);
+	background-color: var(--button-bg-hover);
 }
 
 li a {
-	background: var();
+	background: var(--button-bg);
 	border-radius: 8px;
 	color: var(--button-color);
 	text-decoration: none;
@@ -1312,8 +1435,8 @@ li a {
 
 li:hover button,
 li.active button {
-	color: #ffffff;
-	background-color: #32a7e2;
+	color: var(--button-color-hover);
+	background-color: var(--button-bg-hover);
 }
 
 li button {
@@ -1341,17 +1464,47 @@ li.text-only {
 	display: flex;
 	justify-content: space-between;
 }
+.playlist-metadata-wrapper {
+	display: flex;
+	justify-content: row;
+}
+.playlist-image-wrapper {
+	max-width: 275px;
+	height: 100%;
+	border-radius: 20px;
+	margin-right: 20px;
+}
+.playlist-image {
+	border-radius: 20px;
+}
 .playlist-title {
 	font-size: 48px;
-	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
 	padding-bottom: 16px;
 }
+.playlist-title svg {
+	height: 32px;
+	width: 32px;
+	fill: var(--body-color);
+}
+
 .playlist-description {
 	font-size: 24px;
 	font-style: normal;
 	font-weight: 400;
+	line-height: 140%; /* 33.6px */
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	-webkit-line-clamp: 1;
+	padding-bottom: 4px;
+	max-width: 100%;
+}
+.playlist-author {
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
 	line-height: 140%; /* 33.6px */
 }
 
@@ -1359,26 +1512,38 @@ li.text-only {
 	width: 64px;
 	height: 64px;
 	float: right;
-	background-color: var(--body-color);
+	background-color: var(--button-bg);
 	border-radius: 100px;
 	margin-right: 16px;
 	text-align: center;
 	border: none;
 }
-.more {
-	background-color: var(--button-bg);
-}
-.more:hover {
-	background-color: var(--button-bg-hover);
-	fill: var(--button-color-hover);
-}
-.more svg:hover {
-	fill: var(--button-color-hover);
-}
-
 .favorite svg {
 	width: 32px;
 	height: 64px;
 	align-self: center;
 	flex-shrink: 0;
+	fill: var(--button-color);
+}
+
+.favorite:hover {
+	background-color: var(--button-bg-hover);
+	fill: var(--button-color-hover);
+}
+.favorite:hover svg {
+	fill: var(--button-color-hover);
+}
+
+.favorited {
+	background-color: #dfb759;
+}
+.favorited svg {
+	fill: #fff;
+}
+.favorited:hover {
+	background-color: #e23636;
+	/* fill: var(--button-color-hover); */
+}
+.favorited:hover svg {
+	fill: #fff;
 }

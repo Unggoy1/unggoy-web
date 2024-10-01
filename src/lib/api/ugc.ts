@@ -8,6 +8,7 @@ export async function ugcBrowse({
 	count,
 	gamertag,
 	ownerOnly,
+	recommendedOnly,
 	tags,
 	searchTerm,
 	svelteFetch
@@ -23,6 +24,7 @@ export async function ugcBrowse({
 			count,
 			gamertag,
 			ownerOnly,
+			recommendedOnly,
 			tags,
 			searchTerm
 		}
@@ -55,6 +57,7 @@ export interface UgcBrowse extends Fetch {
 	tags?: string;
 	gamertag?: string;
 	ownerOnly?: boolean; // "boolean"
+	recommendedOnly?: boolean;
 	searchTerm?: string;
 }
 

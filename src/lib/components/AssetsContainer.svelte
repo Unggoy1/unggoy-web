@@ -4,12 +4,14 @@
 	import type { BrowseData } from '$lib/api';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
+	import { addAssetModal, playlistModal } from '../../stores/modal';
 
 	interface Props {
 		browseData: BrowseData;
+		filterTitle?: string;
 	}
 
-	let { browseData }: Props = $props();
+	let { browseData, filterTitle }: Props = $props();
 
 	const changePage = (page: number) => {
 		if (page < 1) {
@@ -34,6 +36,9 @@
 		browseData.gamertag !== ''
 			? query.set('gamertag', browseData.gamertag)
 			: query.delete('gamertag');
+		browseData.gamertag !== undefined && browseData.gamertag !== ''
+			? query.set('ownerOnly', browseData.ownerOnly)
+			: query.delete('ownerOnly');
 		query.set('sort', browseData.sort);
 		goto(`?${query.toString()}`);
 	};
@@ -55,7 +60,7 @@
 					<option value="Prefab" label="Prefabs"></option>
 				</select>
 			{:else}
-				<div class="dropdown-asset">Playlists</div>
+				<div class="dropdown-asset">{filterTitle ?? 'Playlists'}</div>
 			{/if}
 		</div>
 		<div class="filter-container">
@@ -70,6 +75,16 @@
 							placeholder="gamertag"
 						/>
 					</div>
+					{#if browseData.gamertag !== ''}
+						<!-- Toggle Input with Label -->
+						<div class="toggle-group">
+							<p class="filter-text">Owner Only:</p>
+							<label class="toggle">
+								<input type="checkbox" bind:checked={browseData.ownerOnly} onchange={updateUrl} />
+								<span class="slider"></span>
+							</label>
+						</div>
+					{/if}
 				</div>
 			{/if}
 			{#if browseData.tag != undefined}
@@ -93,12 +108,18 @@
 					name="SortFilter"
 					class="dropdown-el"
 				>
-					<option value="publishedAt" label="Date Published"></option>
-					<option value="name" label="Name"></option><option value="averageRating" label="Rating"
-					></option>
-					<option value="bookmarks" label="Bookmarks"></option>
-					<option value="playsRecent" label="Plays Recent"></option>
-					<option value="playsAllTime" label="Plays"></option>
+					{#if browseData.filter != undefined}
+						<option value="publishedAt" label="Date Published"></option>
+						<option value="name" label="Name"></option>
+						<option value="averageRating" label="Rating"></option>
+						<option value="bookmarks" label="Bookmarks"></option>
+						<option value="playsRecent" label="Plays Recent"></option>
+						<option value="playsAllTime" label="Plays"></option>
+					{:else}
+						<option value="updatedAt" label="Date Updated"></option>
+						<option value="name" label="Name"></option>
+						<option value="favorites" label="Favorites"></option>
+					{/if}
 				</select>
 			</div>
 		</div>
@@ -142,7 +163,9 @@
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
 						assetKind: asset.assetKind,
-						playlist: browseData.playlist || undefined
+						playlist: browseData.playlist || undefined,
+						playlistModalVar: $playlistModal,
+						addAssetModalVar: $addAssetModal
 					})}
 					assetUrl="/{asset.assetKind == 2
 						? 'maps'

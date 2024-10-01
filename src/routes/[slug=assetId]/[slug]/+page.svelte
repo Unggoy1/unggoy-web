@@ -7,7 +7,7 @@
 	import Carousel from '$lib/components/Carousel.svelte';
 	import { DropdownType } from '$lib/enums';
 	import { onMount } from 'svelte';
-	import { Duplicate, Plus } from '$lib/components/icons';
+	import { Duplicate, Plus, Crown } from '$lib/components/icons';
 	import { getAssetLink } from '$lib/functions';
 
 	export let data: PageData;
@@ -280,7 +280,12 @@
 							<div class="contributor-text">
 								<img class="contributor-img" alt="emblem name here" src={contributor.emblemPath} />
 								<a href="/browse?gamertag={contributor.gamertag}">
-									<div class="contributor-name">{contributor.gamertag}</div>
+									<div class="contributor-name">
+										{#if contributor.xuid === data.map.authorId}
+											<Crown class="asset-owner"></Crown>
+										{/if}
+										{contributor.gamertag}
+									</div>
 									<div class="contributor-tag">{contributor.serviceTag}</div>
 								</a>
 							</div>

@@ -5,7 +5,8 @@ import { type UgcBrowseResponse, type UgcBrowse, ugcBrowse } from '$lib/api/ugc'
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
 	const fetchParams: UgcBrowse = {
-		svelteFetch: fetch
+		svelteFetch: fetch,
+		recommendedOnly: true
 	};
 
 	const page = url.searchParams.get('page');
@@ -47,9 +48,8 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	}
 
 	const ownerOnlyString = url.searchParams.get('ownerOnly');
-	let ownerOnly;
 	if (ownerOnlyString) {
-		ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
+		const ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
 		fetchParams.ownerOnly = ownerOnly;
 	}
 
@@ -65,7 +65,6 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		sort: sort || 'publishedAt',
 		order: order || 'desc',
 		gamertag: gamertag || '',
-		ownerOnly: ownerOnly || false,
 		tag: tags ? tags[0] : ''
 	};
 };

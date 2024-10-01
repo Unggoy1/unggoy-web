@@ -24,15 +24,19 @@ export async function getAssetLink({ assetId, assetKind }) {
 export function getAssetCardGroups({
 	assetId,
 	assetKind,
-	playlist
+	playlist,
+	addAssetModalVar,
+	playlistModalVar
 }: {
 	assetId: string;
 	assetKind: number;
 	playlist?: PlaylistData;
+	addAssetModalVar: any;
+	playlistModalVar: any;
 }) {
 	const activeUser = get(user);
-	const addAssetModalVar = get(addAssetModal);
-	const playlistModalVar = get(playlistModal);
+	// const addAssetModalVar = get(addAssetModal);
+	// const playlistModalVar = get(playlistModal);
 	let authGroups;
 	if (assetKind === 5) {
 		authGroups = [
@@ -80,4 +84,12 @@ export function getAssetCardGroups({
 	];
 
 	return activeUser ? [authGroups, noAuthGroups] : [noAuthGroups];
+}
+export function removeSameValues<T extends object>(details: T, ogDetails: T): Partial<T> {
+	return Object.entries(details).reduce((acc, [key, value]) => {
+		if (key.toLowerCase().includes('id') || value !== ogDetails[key as keyof T]) {
+			acc[key as keyof T] = value;
+		}
+		return acc;
+	}, {} as Partial<T>);
 }

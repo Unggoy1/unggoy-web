@@ -27,7 +27,10 @@
 		Map,
 		Home,
 		Plus,
-		Xbox
+		Xbox,
+		Recommended,
+		Github,
+		Discord
 	} from '$lib/components/icons';
 
 	export let data: LayoutData;
@@ -35,27 +38,14 @@
 	let dropdown: Dropdown;
 
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
-	function test() {
-		console.log('lololol');
-	}
-	const groups = [
-		[
-			{ type: DropdownType.Button, icon: Plus, text: `Create New Playlist`, function: test },
-			{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '/playlist/me' },
-			{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
-			{
-				type: DropdownType.A,
-				icon: LogOut,
-				text: `Log Out`,
-				href: `${endpoint}logout?redirectUrl=${escape($page.url.href)}`
-			}
-		]
-	];
+	let groups;
 
 	let isSidebarCollapsed = false;
 	let searchTerm = '';
 	let isDrawerOpen = false;
 	let drawerRef;
+	let addAssetModalComponent: AddAssetModal;
+	let playlistModalComponent: PlaylistModal;
 
 	$: currentAssetKind = new URLSearchParams($page.url.search).get('assetKind');
 
@@ -94,11 +84,40 @@
 		window.addEventListener('resize', handleResize);
 		window.addEventListener('click', handleClickOutside);
 		handleResize();
+		// Initialize modals
+		if (addAssetModalComponent) {
+			$addAssetModal = addAssetModalComponent;
+		}
+		if (playlistModalComponent) {
+			$playlistModal = playlistModalComponent;
+		}
+
+		groups = [
+			[
+				{
+					type: DropdownType.Button,
+					icon: Plus,
+					text: `Create New Playlist`,
+					function: () => $playlistModal.create({})
+				},
+				{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '/playlist/me' },
+				{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
+				{
+					type: DropdownType.A,
+					icon: LogOut,
+					text: `Log Out`,
+					href: `${endpoint}logout?redirectUrl=${escape($page.url.href)}`
+				}
+			]
+		];
+
 		return () => {
 			window.removeEventListener('resize', handleResize);
 			window.removeEventListener('click', handleClickOutside);
 		};
 	});
+
+	//possible todo extract sidebar links into an object and use a loop to creaet them..
 	const sidebarLinks = [
 		{ text: 'Home', url: '/', icon: '' },
 		{ text: 'About', url: '/about', icon: '' }
@@ -108,8 +127,8 @@
 	// $: console.log('activLink:', activeLink);
 </script>
 
-<AddAssetModal bind:this={$addAssetModal}></AddAssetModal>
-<PlaylistModal bind:this={$playlistModal}></PlaylistModal>
+<AddAssetModal bind:this={addAssetModalComponent} />
+<PlaylistModal bind:this={playlistModalComponent} />
 <Toaster></Toaster>
 {#if !$user && !dev}
 	<BetaLogin url={endpoint + 'login/azure?redirectUrl=' + escape($page.url.href)}></BetaLogin>
@@ -127,7 +146,7 @@
 						href="/"
 					>
 						<Home active={false}></Home>
-						<p>Featured</p>
+						<p>Home</p>
 					</a>
 					<a
 						data-sveltekit-replacestate
@@ -175,6 +194,35 @@
 						<Compass active={false}></Compass>
 						<p>Browse</p>
 					</a>
+					<a
+						data-sveltekit-replacestate
+						class="sidebar-link"
+						class:is-active={$page.url.pathname === '/recommended'}
+						href="/recommended"
+					>
+						<Recommended active={false}></Recommended>
+						<p>343 Featured</p>
+					</a>
+				</div>
+			</div>
+			<!-- Footer Section -->
+			<div class="sidebar-footer">
+				<!-- Line 2: Social Icons -->
+				<div class="footer-socials">
+					<a href="https://discord.gg/xnwFA4z2HA" target="_blank">
+						<Discord class="social-icon"></Discord>
+					</a>
+					<a href="https://github.com/Unggoy1" target="_blank">
+						<Github class="social-icon"></Github>
+					</a>
+					<!-- Add more social icons as needed -->
+				</div>
+
+				<!-- Line 1: Text Links -->
+				<div class="footer-links">
+					<a href="https://github.com/Unggoy1" target="_blank" class="footer-link">v0.5.0</a>
+					<a href="/privacy-policy" class="footer-link">Privacy</a>
+					<a href="/terms-of-service" class="footer-link">Terms</a>
 				</div>
 			</div>
 			<!-- <div class="side-wrapper"> -->
@@ -279,11 +327,11 @@
 				<span>Playlists</span>
 			</a>
 			<a
-				href="/"
+				href="/recommended"
 				class="bottom-nav-link"
-				class:is-active={$page.url.pathname === '/browse/featured' && currentAssetKind === null}
+				class:is-active={$page.url.pathname === '/recommended'}
 			>
-				<Star active={false}></Star>
+				<Recommended active={false}></Recommended>
 				<span>Featured</span>
 			</a>
 			{#if $user}
@@ -314,10 +362,16 @@
 					</div>
 				</div>
 				<div class="drawer-options">
-					<a href="/" class="drawer-option">
+					<button
+						onclick={() => {
+							closeDrawer();
+							$playlistModal.create({});
+						}}
+						class="drawer-option"
+					>
 						<Plus active={false}></Plus>
 						<span>Create Playlist</span>
-					</a>
+					</button>
 					<a href="/playlist/me" class="drawer-option">
 						<Play active={false}></Play>
 						<span>My Playlists</span>

@@ -2,6 +2,7 @@
 	import Modal from './Modal.svelte';
 	import Combobox from './Combobox.svelte';
 	import { playlistAddAsset } from '$lib/api/playlist';
+	import { onMount } from 'svelte';
 
 	let modal: Modal;
 	let assetId: string = $state('');
@@ -39,6 +40,11 @@
 		modal.close();
 		reject();
 	}
+	onMount(() => {
+		if (modal) {
+			// Any additional initialization for the modal
+		}
+	});
 </script>
 
 <Modal bind:this={modal} onclose={cancel}>

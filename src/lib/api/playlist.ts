@@ -8,26 +8,31 @@ export async function playlistCreate({
 	thumbnail,
 	assetId
 }: PlaylistCreate): Promise<void> {
+	const formData = new FormData();
+	formData.append('name', name);
+	formData.append('description', description);
+	formData.append('isPrivate', String(isPrivate));
+	formData.append('assetId', assetId);
+	if (thumbnail && thumbnail.item(0)) {
+		formData.append('thumbnail', thumbnail.item(0));
+	}
 	const context: RequestOpts = {
 		path: '/playlist',
 		method: 'POST',
-		body: {
-			name,
-			description,
-			isPrivate,
-			thumbnail,
-			assetId
-		}
+		body: formData
 	};
 	try {
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
-			success: (data) => `Removed asset from playlist`,
+			success: (data) => {
+				return `Created new playlist`;
+			},
 			error: (err: Error) => err.message
 		});
-
-		invalidateAll();
-	} catch (error) { }
+		// invalidateAll();
+	} catch (error) {
+		console.log('we got an error somehow');
+	}
 }
 
 export async function playlistAddAsset({
@@ -47,7 +52,7 @@ export async function playlistAddAsset({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistDeleteAsset({
@@ -66,7 +71,7 @@ export async function playlistDeleteAsset({
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistUpdate({
@@ -76,26 +81,40 @@ export async function playlistUpdate({
 	isPrivate,
 	thumbnail
 }: PlaylistUpdateData): Promise<void> {
+	const formData = new FormData();
+	if (name) {
+		formData.append('name', name);
+	}
+
+	if (description) {
+		formData.append('description', description);
+	}
+
+	if (isPrivate !== undefined) {
+		console.log(isPrivate);
+		formData.append('isPrivate', String(isPrivate));
+	}
+
+	if (thumbnail && thumbnail.item(0)) {
+		formData.append('thumbnail', thumbnail.item(0));
+	}
+
 	const context: RequestOpts = {
 		path: `/playlist/${playlistId}`,
 		method: 'PUT',
-		body: {
-			name,
-			description,
-			isPrivate,
-			thumbnail
-		}
+		body: formData
 	};
 
 	try {
+		console.log(formData.get('thumbnail'));
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
-			success: (data) => `Removed asset from playlist`,
+			success: (data) => `Updated playlist`,
 			error: (err: Error) => err.message
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
@@ -111,7 +130,7 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 		});
 
 		invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function playlistGet({
@@ -205,11 +224,26 @@ export async function playlistMe({
 	}
 }
 
+export function isPlaylistCreate(details: Partial<PlaylistCreate>): details is PlaylistCreate {
+	return (
+		details.name !== undefined &&
+		details.description !== undefined &&
+		details.isPrivate !== undefined
+	);
+}
+
+// Type guard to check if the object is of type PlaylistUpdateData
+export function isPlaylistUpdateData(
+	details: Partial<PlaylistUpdateData>
+): details is PlaylistUpdateData {
+	return details.playlistId !== undefined;
+}
+
 export interface PlaylistCreate {
 	name: string;
 	description: string;
 	isPrivate: boolean;
-	thumbnail: URL | string;
+	thumbnail?: FileList;
 	assetId?: string;
 }
 
@@ -218,7 +252,7 @@ export interface PlaylistUpdateData {
 	name?: string;
 	description?: string;
 	isPrivate?: boolean;
-	thumbnail?: URL | string;
+	thumbnail?: FileList;
 }
 
 export interface PlaylistAssetData {
@@ -242,6 +276,9 @@ export interface PlaylistGet extends Fetch {
 	gamertag?: string;
 	ownerOnly?: boolean; // "boolean"
 	searchTerm?: string;
+	_count: {
+		favoritedBy: number;
+	};
 }
 export interface PlaylistBrowse extends Fetch {
 	sort?: string;
@@ -275,4 +312,10 @@ export interface PlaylistData {
 	private: boolean;
 	userId: string;
 	recommended?: boolean;
+	user?: UserData;
+}
+
+interface UserData {
+	username: string;
+	emblemPath: string;
 }
