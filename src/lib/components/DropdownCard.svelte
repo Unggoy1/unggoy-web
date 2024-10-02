@@ -37,7 +37,7 @@
 								? 'menu-item-active'
 								: 'menu-item-inactive'}"
 						>
-							<svelte:component this={option.icon} class="mr-2 h-5 w-5" {active} />
+							<option.icon class="mr-2 h-5 w-5" {active} />
 							{option.text}
 						</a>
 					{:else if option.type === DropdownType.Button}
@@ -51,7 +51,7 @@
 								? 'menu-item-active'
 								: 'menu-item-inactive'}"
 						>
-							<svelte:component this={option.icon} class="mr-2 h-5 w-5" {active} />
+							<option.icon class="mr-2 h-5 w-5" {active} />
 							{option.text}
 						</button>
 					{/if}
@@ -65,24 +65,24 @@
 	.shadow {
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	}
-	.menu {
-		display: flex;
-		align-items: center;
-		padding-left: 20px;
-		flex-shrink: 0;
-		margin-left: auto;
-	}
-	.menu-button {
-		width: 64px;
-		height: 64px;
-		border-radius: 100px;
-		background-color: var(--button-bg);
-		color: var(--button-color);
-	}
-	.menu-button svg {
-		width: 32px;
-		height: 64px;
-	}
+	/* .menu { */
+	/* 	display: flex; */
+	/* 	align-items: center; */
+	/* 	padding-left: 20px; */
+	/* 	flex-shrink: 0; */
+	/* 	margin-left: auto; */
+	/* } */
+	/* .menu-button { */
+	/* 	width: 64px; */
+	/* 	height: 64px; */
+	/* 	border-radius: 100px; */
+	/* 	background-color: var(--button-bg); */
+	/* 	color: var(--button-color); */
+	/* } */
+	/* .menu-button svg { */
+	/* 	width: 32px; */
+	/* 	height: 64px; */
+	/* } */
 
 	.menu-item {
 		padding: 8px;
@@ -91,7 +91,7 @@
 		font-weight: 500;
 		line-height: 140%; /* 22.4px */
 	}
-	.mt-2 {
-		margin-top: 20px;
-	}
+	/* .mt-2 { */
+	/* 	margin-top: 20px; */
+	/* } */
 </style>

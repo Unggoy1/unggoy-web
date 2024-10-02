@@ -22,7 +22,7 @@
 			<a href={assetUrl} class="asset-name">
 				{asset.name}
 			</a>
-			<button use:dropdown.button class="elipsis">
+			<button use:dropdown.button class="elipsis" aria-label="More button">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"

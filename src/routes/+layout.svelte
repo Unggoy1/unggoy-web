@@ -32,7 +32,9 @@
 		Github,
 		Discord
 	} from '$lib/components/icons';
+	import { pwaInfo } from 'virtual:pwa-info';
 
+	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 	export let data: LayoutData;
 	data?.user ? user.set(data.user) : user.set(undefined);
 	let dropdown: Dropdown;
@@ -127,6 +129,9 @@
 	// $: console.log('activLink:', activeLink);
 </script>
 
+<svelte:head>
+	{@html webManifestLink}
+</svelte:head>
 <AddAssetModal bind:this={addAssetModalComponent} />
 <PlaylistModal bind:this={playlistModalComponent} />
 <Toaster></Toaster>

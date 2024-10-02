@@ -76,9 +76,9 @@
 	.nothing {
 		color: var(--container-color);
 	}
-	.absolute {
-		position: absolute;
-	}
+	/* .absolute { */
+	/* 	position: absolute; */
+	/* } */
 	.input-container {
 		width: 100%;
 	}
@@ -90,13 +90,13 @@
 		border-radius: 8px;
 		width: 100%;
 	}
-	.inset-y-0 {
-		top: 0px;
-		bottom: 0px;
-	}
-	.right-0 {
-		right: 0px;
-	}
+	/* .inset-y-0 { */
+	/* 	top: 0px; */
+	/* 	bottom: 0px; */
+	/* } */
+	/* .right-0 { */
+	/* 	right: 0px; */
+	/* } */
 	.mt-1 {
 		margin-top: 0.25rem;
 	}
@@ -106,18 +106,18 @@
 	.flex {
 		display: flex;
 	}
-	.contents {
-		display: contents;
-	}
-	.h-5 {
-		height: 1.25rem;
-	}
+	/* .contents { */
+	/* 	display: contents; */
+	/* } */
+	/* .h-5 { */
+	/* 	height: 1.25rem; */
+	/* } */
 	.max-h-60 {
 		max-height: 360px;
 	}
-	.w-5 {
-		width: 1.25rem;
-	}
+	/* .w-5 { */
+	/* 	width: 1.25rem; */
+	/* } */
 	.w-full {
 		width: 100%;
 	}
@@ -134,23 +134,23 @@
 	.overflow-auto {
 		overflow: auto;
 	}
-	.overflow-hidden {
-		overflow: hidden;
-	}
+	/* .overflow-hidden { */
+	/* 	overflow: hidden; */
+	/* } */
 	.truncate {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-	.rounded-lg {
-		border-radius: 0.5rem;
-	}
-	.rounded-md {
-		border-radius: 0.375rem;
-	}
-	.border-none {
-		border-style: none;
-	}
+	/* .rounded-lg { */
+	/* 	border-radius: 0.5rem; */
+	/* } */
+	/* .rounded-md { */
+	/* 	border-radius: 0.375rem; */
+	/* } */
+	/* .border-none { */
+	/* 	border-style: none; */
+	/* } */
 	.bg-teal-600 {
 		background-color: var(--button-bg);
 		color: var(--button-color);
@@ -173,19 +173,19 @@
 	.pr-10 {
 		padding-right: 2.5rem;
 	}
-	.pr-2 {
-		padding-right: 0.5rem;
-	}
+	/* .pr-2 { */
+	/* 	padding-right: 0.5rem; */
+	/* } */
 	.pr-4 {
 		padding-right: 1rem;
 	}
-	.text-left {
-		text-align: left;
-	}
-	.text-sm {
-		font-size: 0.875rem;
-		line-height: 1.25rem;
-	}
+	/* .text-left { */
+	/* 	text-align: left; */
+	/* } */
+	/* .text-sm { */
+	/* 	font-size: 0.875rem; */
+	/* 	line-height: 1.25rem; */
+	/* } */
 	.font-normal {
 		font-weight: 400;
 	}
