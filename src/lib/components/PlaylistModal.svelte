@@ -8,9 +8,11 @@
 		type PlaylistCreate,
 		type PlaylistUpdateData
 	} from '$lib/api/playlist';
-	import * as nsfwjs from '../../../node_modules/nsfwjs/dist/esm/index.js';
+	import { load, NSFWJS } from '../../../node_modules/nsfwjs/dist/esm/index.js';
+	import * as tf from '@tensorflow/tfjs';
 	import { onMount } from 'svelte';
 	import { removeSameValues } from '$lib/functions';
+	tf.enableProdMode();
 
 	let modal: Modal;
 	let details: Partial<PlaylistUpdateData & PlaylistCreate> = $state({
@@ -20,7 +22,10 @@
 	});
 	let ogDetails: any = {};
 	let mode = $state<'edit' | 'create'>('edit');
-	let model: nsfwjs.NSFWJS | null = null;
+	let nsfwModel: NSFWJS | null = null;
+	const MODEL_URL = 'https://nsfw-model-1.s3.us-west-2.amazonaws.com/nsfw-predict-model/';
+	const INDEXEDDB_KEY = 'indexeddb://nsfwjs-model';
+	let isModelLoading = false;
 
 	export function create({ assetId }: { assetId?: string }) {
 		mode = 'create';
@@ -83,7 +88,14 @@
 	let inputElement: HTMLInputElement | null = null;
 
 	async function classifyImage(event: Event) {
-		if (!model || !details.thumbnail) return;
+		if (!details.thumbnail) return;
+		if (!nsfwModel) {
+			await loadModel();
+		}
+
+		if (!nsfwModel) {
+			throw new Error('Failed to load NSFW model');
+		}
 		if (details.thumbnail && details.thumbnail.length > 0) {
 			fileErrorMessage = ''; // Clear any previous error messages
 		}
@@ -105,7 +117,7 @@
 		const img = new Image();
 		img.src = imageSrc;
 		img.onload = async () => {
-			const predictions = await model.classify(img);
+			const predictions = await nsfwModel.classify(img);
 			console.log(predictions);
 			const unsafeCategories = ['Porn', 'Hentai', 'Sexy'];
 
@@ -170,16 +182,33 @@
 
 		return false;
 	}
-
-	onMount(async () => {
-		if (modal) {
+	async function loadModel(): Promise<void> {
+		if (nsfwModel) return;
+		if (isModelLoading) {
+			while (isModelLoading) {
+				await new Promise((resolve) => setTimeout(resolve, 100));
+			}
+			return;
 		}
-		model = await nsfwjs.load(
-			'https://nsfw-model-1.s3.us-west-2.amazonaws.com/nsfw-predict-model/',
-			// @ts-ignore
-			{ type: 'graph' }
-		);
-	});
+
+		isModelLoading = true;
+		try {
+			// Try to load the model from IndexedDB
+			try {
+				nsfwModel = await load(INDEXEDDB_KEY, { type: 'graph' });
+				console.log('Model loaded from IndexedDB');
+			} catch (error) {
+				console.log(error);
+				// If loading from IndexedDB fails, load from URL and then save to IndexedDB
+				nsfwModel = await load(MODEL_URL, { type: 'graph' });
+				await nsfwModel.model.save(INDEXEDDB_KEY);
+				console.log('Model loaded from URL and saved to IndexedDB');
+			}
+		} finally {
+			isModelLoading = false;
+		}
+	}
+	onMount(async () => {});
 </script>
 
 <Modal bind:this={modal} onclose={cancel}>
@@ -253,6 +282,7 @@
 							bind:files={details.thumbnail}
 							bind:this={inputElement}
 							onchange={classifyImage}
+							onclick={loadModel}
 							required={mode === 'create' ? true : false}
 						/>
 					</div>
