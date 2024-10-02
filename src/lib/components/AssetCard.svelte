@@ -20,7 +20,7 @@
 					class="asset-image"
 					src={asset?.thumbnailUrl
 						? import.meta.env.MODE === 'production'
-							? `/cdn-cgi/image/width=560/${asset.thumbnailUrl}`
+							? `/cdn-cgi/image/format=auto,fit=scale-down,width=560/${asset.thumbnailUrl}`
 							: asset.thumbnailUrl
 						: '/placeholder.webp'}
 					alt="thumbnail"
