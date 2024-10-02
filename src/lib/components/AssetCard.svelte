@@ -3,9 +3,10 @@
 	import type { UgcData } from '$lib/api/ugc';
 	import AssetKind from './AssetKind.svelte';
 	import DropdownCard from './DropdownCard.svelte';
+	import { dev } from '$app/environment';
 	export let asset: UgcData | PlaylistData = undefined;
 	export let assetUrl: string;
-
+	import.meta.env.PROD;
 	let dropdown: DropdownCard;
 	export let groups;
 </script>
@@ -15,7 +16,15 @@
 		<!-- <div class="video-time">{ugc.likes}</div> -->
 		<div class="asset-image-wrapper">
 			<a href={assetUrl} class="">
-				<img class="asset-image" src={asset?.thumbnailUrl || '/placeholder.webp'} alt="thumbnail" />
+				<img
+					class="asset-image"
+					src={asset?.thumbnailUrl
+						? import.meta.env.MODE === 'production'
+							? `/cdn-cgi/image/width=560/${asset.thumbnailUrl}`
+							: asset.thumbnailUrl
+						: '/placeholder.webp'}
+					alt="thumbnail"
+				/>
 			</a>
 
 			<AssetKind assetKind={asset.assetKind} recommended={asset?.recommended || false}></AssetKind>
