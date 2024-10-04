@@ -125,8 +125,6 @@
 		{ text: 'About', url: '/about', icon: '' }
 		// Add more links as needed
 	];
-
-	// $: console.log('activLink:', activeLink);
 </script>
 
 <svelte:head>

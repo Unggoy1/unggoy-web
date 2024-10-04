@@ -30,9 +30,7 @@ export async function playlistCreate({
 			error: (err: Error) => err.message
 		});
 		// invalidateAll();
-	} catch (error) {
-		console.log('we got an error somehow');
-	}
+	} catch (error) {}
 }
 
 export async function playlistAddAsset({
@@ -91,7 +89,6 @@ export async function playlistUpdate({
 	}
 
 	if (isPrivate !== undefined) {
-		console.log(isPrivate);
 		formData.append('isPrivate', String(isPrivate));
 	}
 
@@ -106,7 +103,6 @@ export async function playlistUpdate({
 	};
 
 	try {
-		console.log(formData.get('thumbnail'));
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
 			success: (data) => `Updated playlist`,
@@ -276,9 +272,6 @@ export interface PlaylistGet extends Fetch {
 	gamertag?: string;
 	ownerOnly?: boolean; // "boolean"
 	searchTerm?: string;
-	_count: {
-		favoritedBy: number;
-	};
 }
 export interface PlaylistBrowse extends Fetch {
 	sort?: string;
@@ -313,6 +306,9 @@ export interface PlaylistData {
 	userId: string;
 	recommended?: boolean;
 	user?: UserData;
+	_count: {
+		favoritedBy: number;
+	};
 }
 
 interface UserData {

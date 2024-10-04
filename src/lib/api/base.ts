@@ -18,10 +18,8 @@ export async function request(context: RequestOpts, svelteFetch?: typeof fetch):
 
 	if (!response.ok) {
 		//do error handling here
-		console.log(await response.text());
 		throw new Error('temporary error message');
 	}
-	console.log(response.status);
 	return response;
 }
 

@@ -12,10 +12,7 @@
 
 	export let data: PageData;
 
-	onMount(() => {
-		console.log('on mount');
-		console.log(data.playlist);
-	});
+	onMount(() => {});
 </script>
 
 <svelte:head>

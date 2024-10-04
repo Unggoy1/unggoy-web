@@ -118,7 +118,6 @@
 		img.src = imageSrc;
 		img.onload = async () => {
 			const predictions = await nsfwModel.classify(img);
-			console.log(predictions);
 			const unsafeCategories = ['Porn', 'Hentai', 'Sexy'];
 
 			// Check if any unsafe categories have high probability
@@ -158,12 +157,9 @@
 		} else {
 			descErrorMessage = error;
 		}
-
-		console.log(event);
 	}
 
 	function disableButton() {
-		console.log('we ball');
 		if (nameErrorMessage || descErrorMessage || fileErrorMessage) {
 			return true;
 		}
@@ -173,7 +169,6 @@
 			details.description === ogDetails.description &&
 			details.thumbnail === ogDetails.thumbnail
 		) {
-			console.log('checking details', details.thumbnail === ogDetails.thumbnail);
 			return true;
 		}
 		if (mode === 'create' && (!details.name || !details.description)) {
@@ -196,13 +191,10 @@
 			// Try to load the model from IndexedDB
 			try {
 				nsfwModel = await load(INDEXEDDB_KEY, { type: 'graph' });
-				console.log('Model loaded from IndexedDB');
 			} catch (error) {
-				console.log(error);
 				// If loading from IndexedDB fails, load from URL and then save to IndexedDB
 				nsfwModel = await load(MODEL_URL, { type: 'graph' });
 				await nsfwModel.model.save(INDEXEDDB_KEY);
-				console.log('Model loaded from URL and saved to IndexedDB');
 			}
 		} finally {
 			isModelLoading = false;
