@@ -173,7 +173,7 @@
 							? 'modes'
 							: asset.assetKind == 4
 								? 'prefabs'
-								: 'playlist'}/{asset.assetId}"
+								: 'playlist'}/{asset.assetId}/{asset.versionId}"
 				/>
 			{/each}
 		</div>

@@ -36,9 +36,9 @@ export async function ugcBrowse({
 		//throw some error here about not being able to decode the data
 	}
 }
-export async function ugcGet({ assetId, svelteFetch }: UgcGet): Promise<UgcData> {
+export async function ugcGet({ assetId, versionId, svelteFetch }: UgcGet): Promise<UgcData> {
 	const context: RequestOpts = {
-		path: `/ugc/asset/${assetId}`,
+		path: `/ugc/asset/${assetId}/${versionId}`,
 		method: 'GET'
 	};
 	try {
@@ -69,6 +69,7 @@ export interface UgcBrowseResponse {
 
 export interface UgcGet extends Fetch {
 	assetId: string;
+	versionId: string;
 }
 
 export interface Contributor {
@@ -80,7 +81,7 @@ export interface Contributor {
 
 export interface UgcData {
 	assetId: string;
-	version: number;
+	versionId: number;
 	name: string;
 	description: string;
 	assetKind: number;

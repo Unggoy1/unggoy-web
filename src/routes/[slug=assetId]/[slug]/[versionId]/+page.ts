@@ -5,8 +5,9 @@ import { ugcGet, type UgcData } from '$lib/api/ugc';
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, params }) => {
 	const assetId: string = params.slug;
+	const versionId: string = params.versionId;
 
-	const data: UgcData = await ugcGet({ assetId, svelteFetch: fetch });
+	const data: UgcData = await ugcGet({ assetId, versionId, svelteFetch: fetch });
 	const images: string[] = data.files.fileRelativePaths;
 	const jpgFiles = images.filter((image) => image.endsWith('.jpg'));
 	const pngFiles = images.filter((image) => image.endsWith('.png'));

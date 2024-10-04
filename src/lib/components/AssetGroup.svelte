@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { UgcData } from '$lib/api/ugc';
 	import { getAssetCardGroups } from '$lib/functions';
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import AssetCard from './AssetCard.svelte';
 	import { addAssetModal, playlistModal } from '../../stores/modal';
 
@@ -11,6 +11,9 @@
 	}
 
 	let { children, assets }: Props = $props();
+	onMount(() => {
+		console.log(assets[0]);
+	});
 </script>
 
 <div class="assets-container">
@@ -30,7 +33,7 @@
 						? 'maps'
 						: asset.assetKind == 6
 							? 'modes'
-							: 'prefabs'}/{asset.assetId}"
+							: 'prefabs'}/{asset.assetId}/{asset.versionId}"
 				/>
 			</div>
 		{/each}
