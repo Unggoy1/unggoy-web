@@ -16,7 +16,7 @@ export async function favoritesAdd({ assetId }): Promise<void> {
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await invalidateAll();
 	} catch (error) {}
 }
 
@@ -32,7 +32,7 @@ export async function favoritesDelete({ assetId }): Promise<void> {
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await invalidateAll();
 	} catch (error) {}
 }
 

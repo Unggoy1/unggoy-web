@@ -1,4 +1,4 @@
-import { invalidateAll } from '$app/navigation';
+import { goto, invalidateAll } from '$app/navigation';
 import toast from 'svelte-french-toast';
 import { request, type Fetch, type RequestOpts } from './base';
 export async function playlistCreate({
@@ -49,7 +49,7 @@ export async function playlistAddAsset({
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await invalidateAll();
 	} catch (error) {}
 }
 
@@ -68,7 +68,7 @@ export async function playlistDeleteAsset({
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await invalidateAll();
 	} catch (error) {}
 }
 
@@ -109,7 +109,7 @@ export async function playlistUpdate({
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await invalidateAll();
 	} catch (error) {}
 }
 
@@ -125,7 +125,8 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await goto('/playlist/me');
+		await invalidateAll();
 	} catch (error) {}
 }
 
