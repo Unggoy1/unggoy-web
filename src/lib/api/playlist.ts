@@ -23,7 +23,7 @@ export async function playlistCreate({
 	};
 	try {
 		const result = await toast.promise(request(context), {
-			loading: 'Removing...',
+			loading: 'Uploading..',
 			success: (data) => {
 				return `Created new playlist`;
 			},
@@ -104,7 +104,7 @@ export async function playlistUpdate({
 
 	try {
 		const result = await toast.promise(request(context), {
-			loading: 'Removing...',
+			loading: 'Uploading...',
 			success: (data) => `Updated playlist`,
 			error: (err: Error) => err.message
 		});
@@ -121,7 +121,7 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 	try {
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
-			success: (data) => `Removed asset from playlist`,
+			success: (data) => `Successfully deleted Playlist`,
 			error: (err: Error) => err.message
 		});
 
@@ -162,7 +162,7 @@ export async function playlistGet({
 		const result = await request(context, svelteFetch);
 		return result.json();
 	} catch (error) {
-		//throw some error here about not being able to decode the data
+		throw error;
 	}
 }
 export async function playlistBrowse({

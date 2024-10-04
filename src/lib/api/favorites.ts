@@ -11,7 +11,7 @@ export async function favoritesAdd({ assetId }): Promise<void> {
 
 	try {
 		const result = await toast.promise(request(context), {
-			loading: 'Removing...',
+			loading: 'Adding...',
 			success: (data) => `Added to your favorites`,
 			error: (err: Error) => err.message
 		});

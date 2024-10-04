@@ -53,8 +53,14 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
 		fetchParams.ownerOnly = ownerOnly;
 	}
-
-	const data = await playlistGet(fetchParams);
+	let data;
+	try {
+		data = await playlistGet(fetchParams);
+	} catch (error) {
+		console.log('we have not found error but it throw 500?');
+		console.log(error);
+		throw error;
+	}
 	return {
 		playlist: data.playlist,
 		assets: data.assets,
