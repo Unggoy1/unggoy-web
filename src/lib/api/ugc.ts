@@ -33,7 +33,7 @@ export async function ugcBrowse({
 		const result = await request(context, svelteFetch);
 		return result.json();
 	} catch (error) {
-		//throw some error here about not being able to decode the data
+		throw error;
 	}
 }
 export async function ugcGet({ assetId, versionId, svelteFetch }: UgcGet): Promise<UgcData> {
@@ -45,7 +45,7 @@ export async function ugcGet({ assetId, versionId, svelteFetch }: UgcGet): Promi
 		const result = await request(context, svelteFetch);
 		return result.json();
 	} catch (error) {
-		//throw some error here about not being able to decode the data
+		throw error;
 	}
 }
 export interface UgcBrowse extends Fetch {
