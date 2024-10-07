@@ -12,10 +12,7 @@
 
 	export let data: PageData;
 
-	onMount(() => {
-		console.log('on mount');
-		console.log(data.playlist);
-	});
+	onMount(() => {});
 </script>
 
 <svelte:head>
@@ -94,7 +91,7 @@
 							]
 						]}
 					>
-						<button class="favorite more">
+						<button class="favorite more" aria-label="dropdown more menu">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="35"
@@ -117,6 +114,9 @@
 						!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
 							? favoritesAdd(data.playlist)
 							: favoritesDelete(data.playlist)}
+					aria-label={!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
+						? 'favorite button'
+						: 'unfavorite button'}
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

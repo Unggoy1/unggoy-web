@@ -1,4 +1,4 @@
-import { invalidateAll } from '$app/navigation';
+import { goto, invalidateAll } from '$app/navigation';
 import toast from 'svelte-french-toast';
 import { request, type Fetch, type RequestOpts } from './base';
 export async function playlistCreate({
@@ -23,16 +23,14 @@ export async function playlistCreate({
 	};
 	try {
 		const result = await toast.promise(request(context), {
-			loading: 'Removing...',
+			loading: 'Uploading..',
 			success: (data) => {
 				return `Created new playlist`;
 			},
 			error: (err: Error) => err.message
 		});
 		// invalidateAll();
-	} catch (error) {
-		console.log('we got an error somehow');
-	}
+	} catch (error) {}
 }
 
 export async function playlistAddAsset({
@@ -51,7 +49,7 @@ export async function playlistAddAsset({
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await invalidateAll();
 	} catch (error) {}
 }
 
@@ -70,7 +68,7 @@ export async function playlistDeleteAsset({
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await invalidateAll();
 	} catch (error) {}
 }
 
@@ -91,7 +89,6 @@ export async function playlistUpdate({
 	}
 
 	if (isPrivate !== undefined) {
-		console.log(isPrivate);
 		formData.append('isPrivate', String(isPrivate));
 	}
 
@@ -106,14 +103,13 @@ export async function playlistUpdate({
 	};
 
 	try {
-		console.log(formData.get('thumbnail'));
 		const result = await toast.promise(request(context), {
-			loading: 'Removing...',
+			loading: 'Uploading...',
 			success: (data) => `Updated playlist`,
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await invalidateAll();
 	} catch (error) {}
 }
 
@@ -125,11 +121,12 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 	try {
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
-			success: (data) => `Removed asset from playlist`,
+			success: (data) => `Successfully deleted Playlist`,
 			error: (err: Error) => err.message
 		});
 
-		invalidateAll();
+		await goto('/playlist/me');
+		await invalidateAll();
 	} catch (error) {}
 }
 
@@ -165,7 +162,7 @@ export async function playlistGet({
 		const result = await request(context, svelteFetch);
 		return result.json();
 	} catch (error) {
-		//throw some error here about not being able to decode the data
+		throw error;
 	}
 }
 export async function playlistBrowse({
@@ -276,9 +273,6 @@ export interface PlaylistGet extends Fetch {
 	gamertag?: string;
 	ownerOnly?: boolean; // "boolean"
 	searchTerm?: string;
-	_count: {
-		favoritedBy: number;
-	};
 }
 export interface PlaylistBrowse extends Fetch {
 	sort?: string;
@@ -313,6 +307,9 @@ export interface PlaylistData {
 	userId: string;
 	recommended?: boolean;
 	user?: UserData;
+	_count: {
+		favoritedBy: number;
+	};
 }
 
 interface UserData {

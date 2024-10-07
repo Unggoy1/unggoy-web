@@ -1,5 +1,6 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 const apiEndpoint = `${PUBLIC_API_URL}` || 'http://localhost:3200';
+import { error } from '@sveltejs/kit';
 
 export async function request(context: RequestOpts, svelteFetch?: typeof fetch): Promise<Response> {
 	const { url, body } = await createFetchUrl(context);
@@ -17,11 +18,16 @@ export async function request(context: RequestOpts, svelteFetch?: typeof fetch):
 	});
 
 	if (!response.ok) {
-		//do error handling here
-		console.log(await response.text());
-		throw new Error('temporary error message');
+		let errorMessage;
+		try {
+			errorMessage = await response.json();
+		} catch {
+			errorMessage = await response.text();
+		}
+
+		// Create a custom error object
+		throw error(response.status, errorMessage);
 	}
-	console.log(response.status);
 	return response;
 }
 

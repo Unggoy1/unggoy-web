@@ -25,7 +25,6 @@
 		img.src = imageSrc;
 		img.onload = async () => {
 			const predictions = await model.classify(img);
-			console.log(predictions);
 			const unsafeCategories = ['Porn', 'Hentai', 'Sexy'];
 
 			// Check if any unsafe categories have high probability

@@ -27,17 +27,17 @@
 	const updateUrl = () => {
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('page', String(browseData.currentPage));
-		if (browseData.filter !== '') {
+		if (browseData.filter) {
 			query.set('assetKind', browseData.filter);
 		} else {
 			query.delete('assetKind');
 		}
-		browseData.tag !== '' ? query.set('tags', browseData.tag) : query.delete('tags');
-		browseData.gamertag !== ''
-			? query.set('gamertag', browseData.gamertag)
-			: query.delete('gamertag');
-		browseData.gamertag !== undefined && browseData.gamertag !== ''
-			? query.set('ownerOnly', browseData.ownerOnly)
+		browseData.tag ? query.set('tags', browseData.tag) : query.delete('tags');
+		browseData.gamertag ? query.set('gamertag', browseData.gamertag) : query.delete('gamertag');
+		browseData.gamertag !== undefined &&
+		browseData.gamertag !== '' &&
+		browseData.filter !== undefined
+			? query.set('ownerOnly', browseData.ownerOnly.toString())
 			: query.delete('ownerOnly');
 		query.set('sort', browseData.sort);
 		goto(`?${query.toString()}`);

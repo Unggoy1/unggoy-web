@@ -6,7 +6,7 @@
 	import '../assets/css/styles.css';
 	import '../assets/css/app.css';
 	import { PUBLIC_API_URL } from '$env/static/public';
-	import { dev } from '$app/environment';
+	import { dev, version } from '$app/environment';
 	import type { LayoutData } from './$types';
 	import { user } from '../stores/user';
 	import Dropdown from '$lib/components/Dropdown.svelte';
@@ -125,8 +125,6 @@
 		{ text: 'About', url: '/about', icon: '' }
 		// Add more links as needed
 	];
-
-	// $: console.log('activLink:', activeLink);
 </script>
 
 <svelte:head>
@@ -225,7 +223,7 @@
 
 				<!-- Line 1: Text Links -->
 				<div class="footer-links">
-					<a href="https://github.com/Unggoy1" target="_blank" class="footer-link">v0.5.0</a>
+					<a href="https://github.com/Unggoy1" target="_blank" class="footer-link">v{version}</a>
 					<a href="/privacy-policy" class="footer-link">Privacy</a>
 					<a href="/terms-of-service" class="footer-link">Terms</a>
 				</div>

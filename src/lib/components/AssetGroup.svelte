@@ -11,9 +11,7 @@
 	}
 
 	let { children, assets }: Props = $props();
-	onMount(() => {
-		console.log(assets[0]);
-	});
+	onMount(() => {});
 </script>
 
 <div class="assets-container">

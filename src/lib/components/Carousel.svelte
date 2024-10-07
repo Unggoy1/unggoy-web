@@ -16,7 +16,6 @@
 	let selectedIndex = writable(0);
 	function onInit(event) {
 		emblaApi = event.detail;
-		console.log(emblaApi.slideNodes()); // Access API
 		emblaApi.on('select', () => {
 			selectedIndex.set(emblaApi.selectedScrollSnap());
 		});
