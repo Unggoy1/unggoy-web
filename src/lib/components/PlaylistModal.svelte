@@ -145,7 +145,7 @@
 		let error = '';
 
 		if (value == '') {
-			error = 'Please fill out this vield.';
+			error = 'Please fill out this field.';
 		} else {
 			if (value.length < minValue || value.length > 255) {
 				error = 'Input needs at least ' + minValue + ' characters.';
@@ -160,7 +160,15 @@
 	}
 
 	function disableButton() {
-		if (nameErrorMessage || descErrorMessage || fileErrorMessage) {
+		if (
+			nameErrorMessage ||
+			descErrorMessage ||
+			fileErrorMessage ||
+			!details.name ||
+			details.name.length < 4 ||
+			!details.description ||
+			details.description.length < 10
+		) {
 			return true;
 		}
 		if (
