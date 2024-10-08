@@ -12,11 +12,11 @@ export async function favoritesAdd({ assetId }): Promise<void> {
 		const result = await toast.promise(request(context), {
 			loading: 'Adding...',
 			success: (data) => `Added to your favorites`,
-			error: (err: Error) => err.message
+			error: (err: any) => err.body.message
 		});
 
 		await invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function favoritesDelete({ assetId }): Promise<void> {
@@ -28,11 +28,11 @@ export async function favoritesDelete({ assetId }): Promise<void> {
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
 			success: (data) => `Removed from your favorites`,
-			error: (err: Error) => err.message
+			error: (err: any) => err.body.message
 		});
 
 		await invalidateAll();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export async function favoritesGet({
@@ -63,7 +63,7 @@ export async function favoritesGet({
 	try {
 		const result = await request(context, svelteFetch);
 		return result.json();
-	} catch (error) { }
+	} catch (error) {}
 }
 
 export interface FavoritesGet extends Fetch {

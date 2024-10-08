@@ -123,7 +123,7 @@
 			// Check if any unsafe categories have high probability
 			const isUnsafe = predictions.some(
 				(prediction) =>
-					unsafeCategories.includes(prediction.className) && prediction.probability > 0.31
+					unsafeCategories.includes(prediction.className) && prediction.probability > 0.75
 			);
 
 			if (isUnsafe) {

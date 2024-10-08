@@ -27,7 +27,7 @@ export async function playlistCreate({
 			success: (data) => {
 				return `Created new playlist`;
 			},
-			error: (err: Error) => err.message
+			error: (err: any) => err.body.message
 		});
 		// invalidateAll();
 	} catch (error) {}
@@ -46,7 +46,7 @@ export async function playlistAddAsset({
 		const result = await toast.promise(request(context), {
 			loading: 'Adding...',
 			success: (data) => `Added asset to ${name}`,
-			error: (err: Error) => err.message
+			error: (err: any) => err.body.message
 		});
 
 		await invalidateAll();
@@ -65,7 +65,7 @@ export async function playlistDeleteAsset({
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
 			success: (data) => `Removed asset from playlist`,
-			error: (err: Error) => err.message
+			error: (err: any) => err.body.message
 		});
 
 		await invalidateAll();
@@ -106,7 +106,7 @@ export async function playlistUpdate({
 		const result = await toast.promise(request(context), {
 			loading: 'Uploading...',
 			success: (data) => `Updated playlist`,
-			error: (err: Error) => err.message
+			error: (err: any) => err.body.message
 		});
 
 		await invalidateAll();
@@ -122,7 +122,7 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 		const result = await toast.promise(request(context), {
 			loading: 'Removing...',
 			success: (data) => `Successfully deleted Playlist`,
-			error: (err: Error) => err.message
+			error: (err: any) => err.body.message
 		});
 
 		await goto('/playlist/me');
