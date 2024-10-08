@@ -6,6 +6,7 @@ export async function request(context: RequestOpts, svelteFetch?: typeof fetch):
 	const { url, body } = await createFetchUrl(context);
 	const fetchFunction = svelteFetch ?? fetch;
 	const isFormData = body instanceof FormData;
+	console.log(isFormData);
 	const response = await fetchFunction(url, {
 		method: context.method,
 		credentials: 'include',
@@ -94,13 +95,13 @@ export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 export type HTTPHeaders = { [key: string]: string };
 export type HTTPQuery = {
 	[key: string]:
-	| string
-	| number
-	| null
-	| boolean
-	| Array<string | number | null | boolean>
-	| Set<string | number | null | boolean>
-	| HTTPQuery;
+		| string
+		| number
+		| null
+		| boolean
+		| Array<string | number | null | boolean>
+		| Set<string | number | null | boolean>
+		| HTTPQuery;
 };
 
 export interface RequestOpts {

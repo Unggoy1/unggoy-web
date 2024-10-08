@@ -11,8 +11,12 @@ export async function playlistCreate({
 	const formData = new FormData();
 	formData.append('name', name);
 	formData.append('description', description);
-	formData.append('isPrivate', String(isPrivate));
-	formData.append('assetId', assetId);
+	if (isPrivate) {
+		formData.append('isPrivate', String(isPrivate));
+	}
+	if (assetId) {
+		formData.append('assetId', assetId);
+	}
 	if (thumbnail && thumbnail.item(0)) {
 		formData.append('thumbnail', thumbnail.item(0));
 	}
@@ -29,7 +33,7 @@ export async function playlistCreate({
 			},
 			error: (err: any) => err.body.message
 		});
-		// invalidateAll();
+		invalidateAll();
 	} catch (error) {}
 }
 

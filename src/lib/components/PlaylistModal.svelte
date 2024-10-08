@@ -51,6 +51,7 @@
 	}
 
 	async function save() {
+		details.isPrivate = details.isPrivate ?? false;
 		const diffDetails: Partial<PlaylistUpdateData & PlaylistCreate> = removeSameValues(
 			details,
 			ogDetails
