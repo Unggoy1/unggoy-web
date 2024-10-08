@@ -13,6 +13,7 @@ export async function getAssetLink({ assetId, assetKind, versionId }) {
 	const assetUrl =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';
 
+	console.log(versionId);
 	await toast.promise(
 		navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}/${versionId}`),
 		{
@@ -21,7 +22,7 @@ export async function getAssetLink({ assetId, assetKind, versionId }) {
 			error: 'Failed to copy link to clipboard'
 		}
 	);
-	navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}`);
+	navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}/${versionId}`);
 }
 
 export function getAssetCardGroups({
