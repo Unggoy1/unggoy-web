@@ -10,19 +10,18 @@ import { get } from 'svelte/store';
 import { playlistDeleteAsset } from './api/playlist';
 import type { PlaylistData } from './api/playlist';
 export async function getAssetLink({ assetId, assetKind, versionId }) {
-	const assetUrl =
+	const assetType =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';
 
+	const assetUrl = `${PUBLIC_URL}/${assetType}/${assetId}`;
+	const copyUrl = versionId ? assetUrl + `/${versionId}` : assetUrl;
 	console.log(versionId);
-	await toast.promise(
-		navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}/${versionId}`),
-		{
-			loading: 'Copying...',
-			success: 'Link copied to clipboard',
-			error: 'Failed to copy link to clipboard'
-		}
-	);
-	navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}/${versionId}`);
+	await toast.promise(navigator.clipboard.writeText(copyUrl), {
+		loading: 'Copying...',
+		success: 'Link copied to clipboard',
+		error: 'Failed to copy link to clipboard'
+	});
+	// navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}/${versionId}`);
 }
 
 export function getAssetCardGroups({
