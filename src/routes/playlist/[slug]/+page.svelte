@@ -17,6 +17,17 @@
 
 <svelte:head>
 	<title>{data.playlist.name}</title>
+	<meta name="description" content={data.playlist.description} />
+	<meta property="og:title" content={data.playlist.name} /><meta
+		name="twitter:card"
+		content="summary_large_image"
+	/><meta name="twitter:title" content={data.playlist.name} /><meta
+		name="twitter:description"
+		content={data.playlist.description}
+	/><meta property="og:image" content={data.playlist.thumbnailUrl} /><meta
+		property="og:image:alt"
+		content={'Thumbnail:' + data.playlist.name}
+	/><meta name="twitter:img:src" content={data.playlist.thumbnailUrl} />
 </svelte:head>
 
 <div class="main-container">
