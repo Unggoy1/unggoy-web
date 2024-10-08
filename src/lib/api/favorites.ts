@@ -8,7 +8,6 @@ export async function favoritesAdd({ assetId }): Promise<void> {
 		path: '/favorites/' + assetId,
 		method: 'POST'
 	};
-
 	try {
 		const result = await toast.promise(request(context), {
 			loading: 'Adding...',
@@ -17,7 +16,7 @@ export async function favoritesAdd({ assetId }): Promise<void> {
 		});
 
 		await invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function favoritesDelete({ assetId }): Promise<void> {
@@ -33,7 +32,7 @@ export async function favoritesDelete({ assetId }): Promise<void> {
 		});
 
 		await invalidateAll();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export async function favoritesGet({
@@ -64,7 +63,7 @@ export async function favoritesGet({
 	try {
 		const result = await request(context, svelteFetch);
 		return result.json();
-	} catch (error) {}
+	} catch (error) { }
 }
 
 export interface FavoritesGet extends Fetch {

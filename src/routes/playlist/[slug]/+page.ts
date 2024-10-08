@@ -57,8 +57,6 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 	try {
 		data = await playlistGet(fetchParams);
 	} catch (error) {
-		console.log('we have not found error but it throw 500?');
-		console.log(error);
 		throw error;
 	}
 	return {

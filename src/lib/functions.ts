@@ -39,13 +39,13 @@ export function getAssetCardGroups({
 	// const playlistModalVar = get(playlistModal);
 	let authGroups;
 	if (assetKind === 5) {
-		authGroups = [
-			{
-				type: DropdownType.Button,
-				icon: Plus,
-				text: `Add to favorites`
-			}
-		];
+		// authGroups = [
+		// 	{
+		// 		type: DropdownType.Button,
+		// 		icon: Plus,
+		// 		text: `Add to favorites`
+		// 	}
+		// ];
 	} else {
 		authGroups = [
 			{
@@ -83,7 +83,7 @@ export function getAssetCardGroups({
 		}
 	];
 
-	return activeUser ? [authGroups, noAuthGroups] : [noAuthGroups];
+	return activeUser && authGroups ? [authGroups, noAuthGroups] : [noAuthGroups];
 }
 export function removeSameValues<T extends object>(details: T, ogDetails: T): Partial<T> {
 	return Object.entries(details).reduce((acc, [key, value]) => {

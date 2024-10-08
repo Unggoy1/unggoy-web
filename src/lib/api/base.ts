@@ -12,7 +12,7 @@ export async function request(context: RequestOpts, svelteFetch?: typeof fetch):
 		body: body,
 		headers: {
 			// Only set Content-Type if it's not FormData
-			...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+			...(!body || isFormData ? {} : { 'Content-Type': 'application/json' }),
 			...context.headers
 		}
 	});
@@ -94,13 +94,13 @@ export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 export type HTTPHeaders = { [key: string]: string };
 export type HTTPQuery = {
 	[key: string]:
-		| string
-		| number
-		| null
-		| boolean
-		| Array<string | number | null | boolean>
-		| Set<string | number | null | boolean>
-		| HTTPQuery;
+	| string
+	| number
+	| null
+	| boolean
+	| Array<string | number | null | boolean>
+	| Set<string | number | null | boolean>
+	| HTTPQuery;
 };
 
 export interface RequestOpts {
