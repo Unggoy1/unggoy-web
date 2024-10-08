@@ -24,6 +24,7 @@
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
 						assetKind: asset.assetKind,
+						versionId: asset.versionId,
 						playlistModalVar: $playlistModal,
 						addAssetModalVar: $addAssetModal
 					})}

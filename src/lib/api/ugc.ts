@@ -82,6 +82,7 @@ export interface Contributor {
 export interface UgcData {
 	assetId: string;
 	versionId: number;
+	version: number;
 	name: string;
 	description: string;
 	assetKind: number;

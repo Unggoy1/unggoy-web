@@ -198,7 +198,7 @@
 							/></svg
 						>
 					</div>
-					<div class="detail-text">{data.map.favorites} Favorites</div>
+					<div class="detail-text">{data.map.favorites} Bookmarks</div>
 				</div>
 				<div class="aside-text">
 					<div class="detail-icon">
@@ -311,7 +311,12 @@
 				<span>Add to new playlist</span>
 			</button>
 			<button
-				onclick={() => getAssetLink({ assetId: data.map.assetId, assetKind: data.map.assetKind })}
+				onclick={() =>
+					getAssetLink({
+						assetId: data.map.assetId,
+						assetKind: data.map.assetKind,
+						versionId: data.map.versionId
+					})}
 				class="drawer-option"
 			>
 				<Duplicate active={false}></Duplicate>

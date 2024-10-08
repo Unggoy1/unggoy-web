@@ -9,27 +9,32 @@ import { addAssetModal, playlistModal } from '../stores/modal';
 import { get } from 'svelte/store';
 import { playlistDeleteAsset } from './api/playlist';
 import type { PlaylistData } from './api/playlist';
-export async function getAssetLink({ assetId, assetKind }) {
+export async function getAssetLink({ assetId, assetKind, versionId }) {
 	const assetUrl =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';
 
-	await toast.promise(navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}`), {
-		loading: 'Copying...',
-		success: 'Link copied to clipboard',
-		error: 'Failed to copy link to clipboard'
-	});
+	await toast.promise(
+		navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}/${versionId}`),
+		{
+			loading: 'Copying...',
+			success: 'Link copied to clipboard',
+			error: 'Failed to copy link to clipboard'
+		}
+	);
 	navigator.clipboard.writeText(`${PUBLIC_URL}/${assetUrl}/${assetId}`);
 }
 
 export function getAssetCardGroups({
 	assetId,
 	assetKind,
+	versionId,
 	playlist,
 	addAssetModalVar,
 	playlistModalVar
 }: {
 	assetId: string;
 	assetKind: number;
+	versionId?: string | undefined;
 	playlist?: PlaylistData;
 	addAssetModalVar: any;
 	playlistModalVar: any;
@@ -79,7 +84,7 @@ export function getAssetCardGroups({
 			type: DropdownType.Button,
 			icon: Duplicate,
 			text: `Copy asset link`,
-			function: () => getAssetLink({ assetId: assetId, assetKind: assetKind })
+			function: () => getAssetLink({ assetId: assetId, assetKind: assetKind, versionId: versionId })
 		}
 	];
 

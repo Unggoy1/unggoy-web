@@ -54,7 +54,7 @@
 					name="AssetFilter"
 					class="dropdown-asset"
 				>
-					<option value="" label="Game Type"></option>
+					<option value="" label="All Types"></option>
 					<option value="Map" label="Maps"></option>
 					<option value="UgcGameVariant" label="Modes"></option>
 					<option value="Prefab" label="Prefabs"></option>
@@ -163,6 +163,7 @@
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
 						assetKind: asset.assetKind,
+						versionId: asset.versionId,
 						playlist: browseData.playlist || undefined,
 						playlistModalVar: $playlistModal,
 						addAssetModalVar: $addAssetModal
