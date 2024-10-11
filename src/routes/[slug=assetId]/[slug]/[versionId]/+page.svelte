@@ -7,7 +7,7 @@
 	import Carousel from '$lib/components/Carousel.svelte';
 	import { DropdownType } from '$lib/enums';
 	import { onMount } from 'svelte';
-	import { Duplicate, Plus, Crown } from '$lib/components/icons';
+	import { Duplicate, Plus, Crown, Star } from '$lib/components/icons';
 	import { getAssetLink } from '$lib/functions';
 
 	export let data: PageData;
@@ -188,6 +188,14 @@
 					</div>
 					<div class="detail-text">
 						{data.map.playsRecent} Recent Plays
+					</div>
+				</div>
+				<div class="aside-text">
+					<div class="detail-icon">
+						<Star active={false}></Star>
+					</div>
+					<div class="detail-text">
+						{data.map.averageRating}/5 Rating
 					</div>
 				</div>
 				<div class="aside-text">

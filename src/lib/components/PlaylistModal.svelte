@@ -12,6 +12,7 @@
 	import * as tf from '@tensorflow/tfjs';
 	import { onMount } from 'svelte';
 	import { removeSameValues } from '$lib/functions';
+	import validator from 'validator';
 	tf.enableProdMode();
 
 	let modal: Modal;
@@ -138,16 +139,47 @@
 		};
 	}
 
+	function validateInput2(input, minLength) {
+		// Trim leading and trailing whitespace
+		let sanitized = validator.trim(input);
+
+		// Remove invisible and non-printable characters
+		sanitized = sanitized.replace(
+			/[\u0000-\u001F\u007F-\u009F\u200B-\u200D\uFEFF\u2028\u2029]/g,
+			''
+		);
+
+		// Replace multiple spaces (including Unicode spaces) with a single space
+		sanitized = sanitized.replace(/\s+/g, ' ');
+
+		// Count characters that are not spaces (including Unicode spaces)
+		let nonSpaceCount = sanitized.replace(/\s/g, '').length;
+
+		return {
+			sanitized,
+			valid: nonSpaceCount >= minLength,
+			nonSpaceCount
+		};
+	}
+
 	function validateInput(event: any) {
 		const type = event.target.type;
 		const value: string = event.target.value;
+
+		let sanitized = validator.trim(value);
+		sanitized = sanitized.replace(
+			/[\u0000-\u001F\u007F-\u009F\u200B-\u200D\uFEFF\u2028\u2029]/g,
+			''
+		);
+		sanitized = sanitized.replace(/\s+/g, ' ');
+
 		const minValue = type === 'text' ? 4 : 10;
 		let error = '';
 
-		if (value == '') {
+		if (sanitized == '') {
 			error = 'Please fill out this field.';
 		} else {
-			if (value.length < minValue || value.length > 255) {
+			if (sanitized.length < minValue || sanitized.length > 255) {
 				error = 'Input needs at least ' + minValue + ' characters.';
 			}
 		}

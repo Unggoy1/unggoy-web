@@ -44,6 +44,7 @@
 		"nsfwjs": "^4.2.0",
 		"svelte-french-toast": "^1.2.0",
 		"svelte-headlessui": "^0.0.38",
-		"svelte-transition": "^0.0.17"
+		"svelte-transition": "^0.0.17",
+		"validator": "^13.12.0"
 	}
 }
