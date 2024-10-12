@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { createCombobox } from 'svelte-headlessui';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { user } from '../../stores/user';
+	import { playlistStore } from '../../stores/playlist';
 	const dispatcher = createEventDispatcher();
 
 	// prettier-ignore
-	export let playlists = $user.Playlist
-
+	export let playlists = []
 	const combobox = createCombobox({ label: 'Playlists', selected: '' });
 
 	function onChange(e: Event) {
@@ -25,6 +25,14 @@
 			.replace(/\s+/g, '')
 			.includes($combobox.filter.toLowerCase().replace(/\s+/g, ''))
 	);
+
+	onMount(() => {
+		const unsubscribe = playlistStore.subscribe((value) => {
+			playlists = value;
+		});
+
+		return unsubscribe;
+	});
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">

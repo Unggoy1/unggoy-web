@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
-	import * as nsfwjs from '../../../node_modules/nsfwjs/dist/esm/index.js';
+	import * as nsfwjs from 'nsfwjs';
 
 	export let file: File | null = null;
 	const dispatch = createEventDispatcher();

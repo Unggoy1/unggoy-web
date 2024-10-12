@@ -15,7 +15,6 @@ export async function getAssetLink({ assetId, assetKind, versionId }) {
 
 	const assetUrl = `${PUBLIC_URL}/${assetType}/${assetId}`;
 	const copyUrl = versionId ? assetUrl + `/${versionId}` : assetUrl;
-	console.log(versionId);
 	await toast.promise(navigator.clipboard.writeText(copyUrl), {
 		loading: 'Copying...',
 		success: 'Link copied to clipboard',

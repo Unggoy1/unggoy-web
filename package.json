@@ -1,6 +1,6 @@
 {
 	"name": "unngoy-frontend",
-	"version": "0.7.6",
+	"version": "0.7.7",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -41,9 +41,10 @@
 		"@tensorflow/tfjs": "^4.21.0",
 		"embla-carousel-autoplay": "^8.3.0",
 		"embla-carousel-svelte": "^8.3.0",
-		"nsfwjs": "^4.1.0",
+		"nsfwjs": "^4.2.0",
 		"svelte-french-toast": "^1.2.0",
 		"svelte-headlessui": "^0.0.38",
-		"svelte-transition": "^0.0.17"
+		"svelte-transition": "^0.0.17",
+		"validator": "^13.12.0"
 	}
 }

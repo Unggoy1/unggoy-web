@@ -6,7 +6,6 @@ export async function request(context: RequestOpts, svelteFetch?: typeof fetch):
 	const { url, body } = await createFetchUrl(context);
 	const fetchFunction = svelteFetch ?? fetch;
 	const isFormData = body instanceof FormData;
-	console.log(isFormData);
 	const response = await fetchFunction(url, {
 		method: context.method,
 		credentials: 'include',
