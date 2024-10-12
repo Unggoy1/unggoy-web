@@ -44,7 +44,7 @@ a:hover {
 }
 button:disabled {
 	background-color: var(--button-disabled-bg);
-	colos: var(--button-disabled-color);
+	color: var(--button-disabled-color);
 }
 
 body {
