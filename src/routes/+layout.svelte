@@ -9,9 +9,9 @@
 	import { dev, version } from '$app/environment';
 	import type { LayoutData } from './$types';
 	import { user } from '../stores/user';
+	import { playlistStore } from '../stores/playlist';
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import { DropdownType } from '$lib/enums';
-	import BetaLogin from '$lib/components/BetaLogin.svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
@@ -36,7 +36,6 @@
 
 	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 	export let data: LayoutData;
-	data?.user ? user.set(data.user) : user.set(undefined);
 	let dropdown: Dropdown;
 
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3200/';
@@ -79,8 +78,9 @@
 		}
 	}
 	onMount(() => {
-		if (data.error) {
-			toast.error("Xbox user doesn't have Beta access");
+		data?.user ? user.set(data.user) : user.set(undefined);
+		if (data.user) {
+			playlistStore.set(data.user.Playlist);
 		}
 		//Add resize event listener on component mount
 		window.addEventListener('resize', handleResize);

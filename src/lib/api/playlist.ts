@@ -1,6 +1,7 @@
 import { goto, invalidateAll } from '$app/navigation';
 import toast from 'svelte-french-toast';
 import { request, type Fetch, type RequestOpts } from './base';
+import { playlistStore } from '../../stores/playlist';
 export async function playlistCreate({
 	name,
 	description,
@@ -26,15 +27,26 @@ export async function playlistCreate({
 		body: formData
 	};
 	try {
-		const result = await toast.promise(request(context), {
-			loading: 'Uploading..',
-			success: (data) => {
-				return `Created new playlist`;
-			},
-			error: (err: any) => err.body.message
-		});
+		const result = await toast.promise(
+			request(context).then(async (response) => {
+				const data = await response.json();
+				// Add the new playlist to the store
+				playlistStore.add({ assetId: data.assetId, name: data.name });
+				return data;
+			}),
+			{
+				loading: 'Uploading..',
+				success: (data) => {
+					return `Created new playlist: ${data.name}`;
+				},
+				error: (err: any) => err.body.message
+			}
+		);
+
 		invalidateAll();
-	} catch (error) {}
+	} catch (error) {
+		console.error('Error creating playlist:', error);
+	}
 }
 
 export async function playlistAddAsset({
@@ -107,14 +119,24 @@ export async function playlistUpdate({
 	};
 
 	try {
-		const result = await toast.promise(request(context), {
-			loading: 'Uploading...',
-			success: (data) => `Updated playlist`,
-			error: (err: any) => err.body.message
-		});
+		const result = await toast.promise(
+			request(context).then(async (response) => {
+				const data = await response.json();
+				// Update the playlist in the store
+				playlistStore.updatePlaylist(data.assetId, { assetId: data.assetId, name: data.name });
+				return data;
+			}),
+			{
+				loading: 'Uploading...',
+				success: (data) => `Updated playlist: ${data.name}`,
+				error: (err: any) => err.body.message
+			}
+		);
 
 		await invalidateAll();
-	} catch (error) {}
+	} catch (error) {
+		console.error('Error updating playlist:', error);
+	}
 }
 
 export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
@@ -123,15 +145,27 @@ export async function playlistDelete({ playlistId }: PlaylistDeleteData) {
 		method: 'DELETE'
 	};
 	try {
-		const result = await toast.promise(request(context), {
-			loading: 'Removing...',
-			success: (data) => `Successfully deleted Playlist`,
-			error: (err: any) => err.body.message
-		});
+		const result = await toast.promise(
+			request(context).then(async (response) => {
+				if (!response.ok) {
+					throw new Error('Failed to delete playlist');
+				}
+				// Remove the playlist from the store
+				playlistStore.remove(playlistId);
+				return response;
+			}),
+			{
+				loading: 'Removing...',
+				success: () => `Successfully deleted Playlist`,
+				error: (err: any) => err.body?.message || 'Error deleting playlist'
+			}
+		);
 
 		await goto('/playlist/me');
 		await invalidateAll();
-	} catch (error) {}
+	} catch (error) {
+		console.error('Error deleting playlist:', error);
+	}
 }
 
 export async function playlistGet({

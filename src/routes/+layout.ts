@@ -13,7 +13,6 @@ export const load: LayoutLoad = async ({ fetch, url }) => {
 			user: undefined
 		};
 	}
-
 	const user = await response.json();
 	return {
 		user: user
