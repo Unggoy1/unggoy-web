@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { user } from '../../../../stores/user';
-	import { addAssetModal, playlistModal } from '../../../../stores/modal';
+	import { user } from '../../../stores/user';
+	import { addAssetModal, playlistModal } from '../../../stores/modal';
 	import AssetKind from '$lib/components/AssetKind.svelte';
 	import DropdownCard from '$lib/components/DropdownCard.svelte';
 	import Carousel from '$lib/components/Carousel.svelte';
