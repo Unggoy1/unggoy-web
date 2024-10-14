@@ -36,9 +36,9 @@ export async function ugcBrowse({
 		throw error;
 	}
 }
-export async function ugcGet({ assetId, versionId, svelteFetch }: UgcGet): Promise<UgcData> {
+export async function ugcGet({ assetId, svelteFetch }: UgcGet): Promise<UgcData> {
 	const context: RequestOpts = {
-		path: `/ugc/asset/${assetId}/${versionId}`,
+		path: `/ugc/asset/${assetId}`,
 		method: 'GET'
 	};
 	try {

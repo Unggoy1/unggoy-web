@@ -322,8 +322,7 @@
 				onclick={() =>
 					getAssetLink({
 						assetId: data.map.assetId,
-						assetKind: data.map.assetKind,
-						versionId: data.map.versionId
+						assetKind: data.map.assetKind
 					})}
 				class="drawer-option"
 			>

@@ -24,7 +24,6 @@
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
 						assetKind: asset.assetKind,
-						versionId: asset.versionId,
 						playlistModalVar: $playlistModal,
 						addAssetModalVar: $addAssetModal
 					})}
@@ -32,7 +31,7 @@
 						? 'maps'
 						: asset.assetKind == 6
 							? 'modes'
-							: 'prefabs'}/{asset.assetId}/{asset.versionId}"
+							: 'prefabs'}/{asset.assetId}"
 				/>
 			</div>
 		{/each}

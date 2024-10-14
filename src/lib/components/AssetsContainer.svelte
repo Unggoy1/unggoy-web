@@ -163,7 +163,6 @@
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
 						assetKind: asset.assetKind,
-						versionId: asset.versionId,
 						playlist: browseData.playlist || undefined,
 						playlistModalVar: $playlistModal,
 						addAssetModalVar: $addAssetModal
@@ -174,7 +173,7 @@
 							? 'modes'
 							: asset.assetKind == 4
 								? 'prefabs'
-								: 'playlist'}/{asset.assetId}/{asset.versionId}"
+								: 'playlist'}/{asset.assetId}"
 				/>
 			{/each}
 		</div>
