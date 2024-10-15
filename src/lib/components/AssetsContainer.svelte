@@ -5,6 +5,7 @@
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
 	import { addAssetModal, playlistModal } from '../../stores/modal';
+	import { SortOrder } from './icons';
 
 	interface Props {
 		browseData: BrowseData;
@@ -23,8 +24,14 @@
 		}
 		updateUrl();
 	};
-
+	const updateSortOrder = () => {
+		console.log('HEY<YEY');
+		browseData.order = browseData.order === 'desc' ? 'asc' : 'desc';
+		console.log('OIARESZX?>I<');
+		updateUrl();
+	};
 	const updateUrl = () => {
+		console.log('why we no run baby');
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('page', String(browseData.currentPage));
 		if (browseData.filter) {
@@ -39,7 +46,11 @@
 		browseData.filter !== undefined
 			? query.set('ownerOnly', browseData.ownerOnly.toString())
 			: query.delete('ownerOnly');
+		browseData.filter !== undefined
+			? query.set('hide343Assets', browseData.hide343Assets.toString())
+			: query.delete('hide343Assets');
 		query.set('sort', browseData.sort);
+		query.set('order', browseData.order);
 		goto(`?${query.toString()}`);
 	};
 </script>
@@ -87,6 +98,7 @@
 					{/if}
 				</div>
 			{/if}
+
 			{#if browseData.tag != undefined}
 				<div class="filter-group input">
 					<p class="filter-text">Tags:</p>
@@ -101,6 +113,17 @@
 				</div>
 			{/if}
 			<div class="filter-group">
+				{#if browseData.hide343Assets !== undefined}
+					<!-- Toggle Input with Label -->
+					<div class="toggle-group front">
+						<p class="filter-text">Hide 343 Ugc:</p>
+						<label class="toggle">
+							<input type="checkbox" bind:checked={browseData.hide343Assets} onchange={updateUrl} />
+							<span class="slider"></span>
+						</label>
+					</div>
+				{/if}
+
 				<p class="filter-text">Sort:</p>
 				<select
 					bind:value={browseData.sort}
@@ -121,6 +144,9 @@
 						<option value="favorites" label="Favorites"></option>
 					{/if}
 				</select>
+				<button class="order-button" onclick={updateSortOrder}
+					><SortOrder desc={browseData.order === 'desc'}></SortOrder></button
+				>
 			</div>
 		</div>
 	</div>

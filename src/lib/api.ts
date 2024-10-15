@@ -13,5 +13,6 @@ export interface BrowseData {
 	filter?: string;
 	gamertag: string;
 	ownerOnly?: boolean;
+	hide343Assets?: boolean;
 	tag?: string;
 }

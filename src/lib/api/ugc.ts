@@ -9,6 +9,7 @@ export async function ugcBrowse({
 	gamertag,
 	ownerOnly,
 	recommendedOnly,
+	hide343Assets,
 	tags,
 	searchTerm,
 	svelteFetch
@@ -25,6 +26,7 @@ export async function ugcBrowse({
 			gamertag,
 			ownerOnly,
 			recommendedOnly,
+			hide343Assets,
 			tags,
 			searchTerm
 		}
@@ -58,6 +60,7 @@ export interface UgcBrowse extends Fetch {
 	gamertag?: string;
 	ownerOnly?: boolean; // "boolean"
 	recommendedOnly?: boolean;
+	hide343Assets?: boolean;
 	searchTerm?: string;
 }
 

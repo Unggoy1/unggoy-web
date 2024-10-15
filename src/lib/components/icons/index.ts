@@ -23,4 +23,5 @@ export { default as Private } from './Private.svelte';
 export { default as Public } from './Public.svelte';
 export { default as Recommended } from './Recommended.svelte';
 export { default as Star } from './Star.svelte';
+export { default as SortOrder } from './SortOrder.svelte';
 export { default as Xbox } from './Xbox.svelte';

@@ -1277,6 +1277,9 @@ img {
 	flex-shrink: 0;
 	padding-right: 20px;
 }
+.filter-group:last-child {
+	padding-right: 0px;
+}
 
 .filter-text {
 	font-size: 14px;
@@ -1295,6 +1298,28 @@ img {
 	background: var(--top-container-bg);
 	backdrop-filter: blur(15px);
 	padding: 14px 40px 14px 14px;
+}
+.order-button {
+	background-color: var(--button-bg);
+	border-radius: 6px;
+	/* padding: 10px 16px; */
+	width: 48px;
+	height: 48px;
+	transition: all 0.2s ease-in-out;
+}
+
+.order-button:hover {
+	background-color: var(--button-bg-hover);
+}
+
+.order-button svg {
+	height: 24px;
+	width: 24px;
+	fill: var(--button-color);
+	transition: all 0.2s ease-in-out;
+}
+.order-button:hover svg {
+	fill: var(--button-color-hover);
 }
 
 .dropdown-asset {
@@ -1340,6 +1365,9 @@ img {
 	align-items: center;
 	gap: 10px;
 	margin-left: 10px;
+}
+.toggle-group.front {
+	margin-left: 0px;
 }
 
 /* Toggle Switch */

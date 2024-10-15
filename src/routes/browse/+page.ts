@@ -53,6 +53,13 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		fetchParams.ownerOnly = ownerOnly;
 	}
 
+	const hide343AssetsString = url.searchParams.get('hide343Assets');
+	let hide343Assets;
+	if (hide343AssetsString) {
+		hide343Assets = hide343AssetsString?.toLowerCase() === 'true';
+		fetchParams.hide343Assets = hide343Assets;
+	}
+
 	const data: UgcBrowseResponse = await ugcBrowse(fetchParams);
 
 	return {
@@ -66,6 +73,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		order: order || 'desc',
 		gamertag: gamertag || '',
 		ownerOnly: ownerOnly || false,
+		hide343Assets: hide343Assets || false,
 		tag: tags ? tags[0] : ''
 	};
 };
