@@ -77,19 +77,22 @@
 		<div class="filter-container">
 			{#if browseData.gamertag != undefined}
 				<div class="filter-group" class:input={browseData.filter != undefined}>
-					<p class="filter-text">Contributor:</p>
+					<!-- <p class="filter-text">Contributor:</p> -->
 					<div class="search-bar-filter">
-						<input
-							bind:value={browseData.gamertag}
-							onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-							type="text"
-							placeholder="gamertag"
-						/>
+						<div class="text-on-input">
+							<label>Contributor</label>
+							<input
+								bind:value={browseData.gamertag}
+								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+								type="text"
+								placeholder="gamertag"
+							/>
+						</div>
 					</div>
 					{#if browseData.gamertag !== ''}
 						<!-- Toggle Input with Label -->
 						<div class="toggle-group">
-							<p class="filter-text">Owner Only:</p>
+							<p class="filter-text">Only owned assets:</p>
 							<label class="toggle">
 								<input type="checkbox" bind:checked={browseData.ownerOnly} onchange={updateUrl} />
 								<span class="slider"></span>
@@ -101,14 +104,17 @@
 
 			{#if browseData.tag != undefined}
 				<div class="filter-group input">
-					<p class="filter-text">Tags:</p>
+					<!-- <p class="filter-text">Tags:</p> -->
 					<div class="search-bar-filter">
-						<input
-							bind:value={browseData.tag}
-							onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-							type="text"
-							placeholder="tag"
-						/>
+						<div class="text-on-input">
+							<label>Tag</label>
+							<input
+								bind:value={browseData.tag}
+								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+								type="text"
+								placeholder="tag"
+							/>
+						</div>
 					</div>
 				</div>
 			{/if}
@@ -116,7 +122,7 @@
 				{#if browseData.hide343Assets !== undefined}
 					<!-- Toggle Input with Label -->
 					<div class="toggle-group front">
-						<p class="filter-text">Hide 343 Ugc:</p>
+						<p class="filter-text">Hide 343 assets:</p>
 						<label class="toggle">
 							<input type="checkbox" bind:checked={browseData.hide343Assets} onchange={updateUrl} />
 							<span class="slider"></span>
@@ -124,26 +130,29 @@
 					</div>
 				{/if}
 
-				<p class="filter-text">Sort:</p>
-				<select
-					bind:value={browseData.sort}
-					onchange={updateUrl}
-					name="SortFilter"
-					class="dropdown-el"
-				>
-					{#if browseData.filter != undefined}
-						<option value="publishedAt" label="Date Published"></option>
-						<option value="name" label="Name"></option>
-						<option value="averageRating" label="Rating"></option>
-						<option value="bookmarks" label="Bookmarks"></option>
-						<option value="playsRecent" label="Plays Recent"></option>
-						<option value="playsAllTime" label="Plays"></option>
-					{:else}
-						<option value="updatedAt" label="Date Updated"></option>
-						<option value="name" label="Name"></option>
-						<option value="favorites" label="Favorites"></option>
-					{/if}
-				</select>
+				<!-- <p class="filter-text">Sort:</p> -->
+				<div class="text-on-input">
+					<label>Sort</label>
+					<select
+						bind:value={browseData.sort}
+						onchange={updateUrl}
+						name="SortFilter"
+						class="dropdown-el"
+					>
+						{#if browseData.filter != undefined}
+							<option value="publishedAt" label="Date Published"></option>
+							<option value="name" label="Name"></option>
+							<option value="averageRating" label="Rating"></option>
+							<option value="bookmarks" label="Bookmarks"></option>
+							<option value="playsRecent" label="Plays Recent"></option>
+							<option value="playsAllTime" label="Plays"></option>
+						{:else}
+							<option value="updatedAt" label="Date Updated"></option>
+							<option value="name" label="Name"></option>
+							<option value="favorites" label="Favorites"></option>
+						{/if}
+					</select>
+				</div>
 				<button class="order-button" onclick={updateSortOrder}
 					><SortOrder desc={browseData.order === 'desc'}></SortOrder></button
 				>

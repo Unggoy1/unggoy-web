@@ -18,8 +18,7 @@
 	let modal: Modal;
 	let details: Partial<PlaylistUpdateData & PlaylistCreate> = $state({
 		name: '',
-		description: '',
-		isPrivate: false
+		description: ''
 	});
 	let ogDetails: any = {};
 	let mode = $state<'edit' | 'create'>('edit');
@@ -52,7 +51,6 @@
 	}
 
 	async function save() {
-		details.isPrivate = details.isPrivate ?? false;
 		const diffDetails: Partial<PlaylistUpdateData & PlaylistCreate> = removeSameValues(
 			details,
 			ogDetails
