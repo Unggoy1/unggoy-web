@@ -215,6 +215,9 @@
 				<a href="https://github.com/Unggoy1" target="_blank">
 					<Github class="social-icon"></Github>
 				</a>
+				<a href="/blog">
+					<Github class="social-icon"></Github>
+				</a>
 				<!-- Add more social icons as needed -->
 			</div>
 

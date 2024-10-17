@@ -1,16 +1,8 @@
-*,
-*:before,
-*:after {
-	box-sizing: border-box;
-	font-family: inherit;
-	max-width: 100%;
-}
-
 main {
 	width: 100%;
 	max-width: 42rem;
-	margin: 6rem auto;
-	padding: 0 1rem;
+	margin: 0px auto;
+	/* padding: 0 1rem; */
 }
 
 .layout {
@@ -27,6 +19,9 @@ img {
 }
 
 .post {
+	img {
+		border-radius: 8px;
+	}
 	h1 {
 		margin-bottom: 1rem;
 	}
@@ -36,7 +31,7 @@ img {
 		margin-bottom: 4rem;
 	}
 
-	img+h1 {
+	img + h1 {
 		margin-top: 1rem;
 	}
 }
@@ -50,10 +45,17 @@ li {
 	padding: 0;
 
 	li {
-		margin-bottom: 6rem;
+		margin-bottom: 20px;
+		background: var(--container-bg);
+		border-radius: 8px;
+		padding: 16px 20px;
 	}
 
-	img+h2 {
+	img {
+		border-radius: 8px;
+	}
+
+	img + h2 {
 		margin-top: 1rem;
 	}
 
@@ -75,11 +77,16 @@ li {
 }
 
 .post-footer a {
-	background-color: var(--lightAccent);
-	padding: .5rem 0.75rem;
+	background-color: var(--button-bg);
+	border-radius: 6px;
+	padding: 0.5rem 0.75rem;
 	text-transform: uppercase;
 	font-family: var(--primaryFont);
 	font-weight: bold;
+}
+
+.post-footer a:hover {
+	background-color: var(--button-bg-hover);
 }
 
 .icon-link {
@@ -95,7 +102,7 @@ li {
 	height: 1rem;
 	top: 0;
 	opacity: 0.2;
-	transition: opacity .2s;
+	transition: opacity 0.2s;
 }
 
 @media (min-width: 48rem) {

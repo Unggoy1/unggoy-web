@@ -40,7 +40,7 @@
 	<link rel="stylesheet" href="/css/layout.css" />
 	<link rel="stylesheet" href="/css/components.css" />
 	<link rel="stylesheet" href="/css/header-and-footer.css" />
-	<link rel="stylesheet" href="/css/forms.css" />
+	<!-- <link rel="stylesheet" href="/css/forms.css" /> -->
 	<link rel="stylesheet" href="/css/animation.css" />
 	<link rel="stylesheet" href="/css/utilities.css" />
 	<link rel="stylesheet" href="/css/code.css" />
@@ -57,7 +57,7 @@
 	The below markup is used on every page in the site. The <slot> is where the page's
 	actual contents will show up.
 -->
-<div class="layout" class:open={$isMenuOpen}>
+<div class="main-container" class:open={$isMenuOpen}>
 	<!-- <Header /> -->
 	{#key data.path}
 		<main id="main" tabindex="-1" in:fade|global={transitionIn} out:fade|global={transitionOut}>
