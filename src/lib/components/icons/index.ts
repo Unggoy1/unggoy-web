@@ -16,6 +16,7 @@ export { default as Map } from './Map.svelte';
 export { default as MapSvg } from './MapSvg.svelte';
 export { default as ModeSvg } from './ModeSvg.svelte';
 export { default as Move } from './Move.svelte';
+export { default as News } from './News.svelte';
 export { default as Play } from './Play.svelte';
 export { default as Plus } from './Plus.svelte';
 export { default as PrefabSvg } from './PrefabSvg.svelte';

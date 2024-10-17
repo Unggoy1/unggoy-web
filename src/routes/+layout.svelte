@@ -30,7 +30,8 @@
 		Xbox,
 		Recommended,
 		Github,
-		Discord
+		Discord,
+		News
 	} from '$lib/components/icons';
 	import { pwaInfo } from 'virtual:pwa-info';
 
@@ -216,7 +217,7 @@
 					<Github class="social-icon"></Github>
 				</a>
 				<a href="/blog">
-					<Github class="social-icon"></Github>
+					<News class="social-icon"></News>
 				</a>
 				<!-- Add more social icons as needed -->
 			</div>
