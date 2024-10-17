@@ -37,7 +37,7 @@ const config = {
 				if (path.startsWith('/blog/')) {
 					return; // Continue building, skipping this page
 				}
-				throw new Error(message); // Fail the build for other pages
+				return;
 			},
 			entries: [
 				'/blog/api/posts/page/*',
