@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-vercel';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -31,6 +31,14 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		prerender: {
+			handleHttpError: ({ path, referrer, message }) => {
+				console.warn(`${path} referred from ${referrer} failed to prerender: ${message}`);
+				// Decide whether to throw or return based on the path
+				if (path.startsWith('/blog/')) {
+					return; // Continue building, skipping this page
+				}
+				throw new Error(message); // Fail the build for other pages
+			},
 			entries: [
 				'/blog/api/posts/page/*',
 				'/blog/category/*/page/',
