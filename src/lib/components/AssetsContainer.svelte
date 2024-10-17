@@ -75,6 +75,23 @@
 			{/if}
 		</div>
 		<div class="filter-container">
+			{#if browseData.tag != undefined}
+				<div class="filter-group input">
+					<!-- <p class="filter-text">Tags:</p> -->
+					<div class="search-bar-filter">
+						<div class="text-on-input">
+							<label>Tag</label>
+							<input
+								bind:value={browseData.tag}
+								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+								type="text"
+								placeholder="tag"
+							/>
+						</div>
+					</div>
+				</div>
+			{/if}
+
 			{#if browseData.gamertag != undefined}
 				<div class="filter-group" class:input={browseData.filter != undefined}>
 					<!-- <p class="filter-text">Contributor:</p> -->
@@ -99,23 +116,6 @@
 							</label>
 						</div>
 					{/if}
-				</div>
-			{/if}
-
-			{#if browseData.tag != undefined}
-				<div class="filter-group input">
-					<!-- <p class="filter-text">Tags:</p> -->
-					<div class="search-bar-filter">
-						<div class="text-on-input">
-							<label>Tag</label>
-							<input
-								bind:value={browseData.tag}
-								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-								type="text"
-								placeholder="tag"
-							/>
-						</div>
-					</div>
 				</div>
 			{/if}
 			<div class="filter-group">
