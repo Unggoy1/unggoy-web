@@ -2,7 +2,6 @@
 <script>
 	import { currentPage } from '../../lib/assets/js/store.js';
 	import { fade } from 'svelte/transition';
-	import { siteTitle, siteURL } from '$lib/config.js';
 	export let data;
 
 	const transitionIn = { delay: 150, duration: 150 };
@@ -13,20 +12,6 @@
 	 * the current page in the nav, but could be useful for other purposes.)
 	 **/
 	$: currentPage.set(data.path);
-
-	/**
-	 * This pre-fetches all top-level routes on the site in the background for faster loading.
-	 * https://kit.svelte.dev/docs/modules#$app-navigation-preloaddata
-	 *
-	 * Any route added in src/lib/config.js will be preloaded automatically. You can add your
-	 * own preloadData() calls here, too.
-	 **/
-	// onMount(() => {
-	// 	const navRoutes = navItems.map((item) => item.route);
-	// 	for (const route of navRoutes) {
-	// 		preloadCode(route);
-	// 	}
-	// });
 </script>
 
 <svelte:head>
@@ -42,12 +27,6 @@
 	<link rel="stylesheet" href="/css/utilities.css" />
 	<link rel="stylesheet" href="/css/code.css" />
 	<link rel="stylesheet" href="/css/prism.css" />
-	<link
-		rel="alternate"
-		type="application/rss+xml"
-		title={siteTitle}
-		href="http://{siteURL}/api/rss.xml"
-	/>
 </svelte:head>
 
 <!--
@@ -55,11 +34,9 @@
 	actual contents will show up.
 -->
 <div class="main-container">
-	<!-- <Header /> -->
 	{#key data.path}
 		<main id="main" tabindex="-1" in:fade|global={transitionIn} out:fade|global={transitionOut}>
 			<slot />
 		</main>
 	{/key}
-	<!-- <Footer /> -->
 </div>

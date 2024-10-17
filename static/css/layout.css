@@ -38,6 +38,7 @@ img {
 
 li {
 	margin-bottom: 0.25rem;
+	list-style: initial !important;
 }
 
 .posts-list {
@@ -95,7 +96,8 @@ li {
 
 .icon-link::before {
 	content: url('/link.svg');
-	fill: currentColor;
+	fill: #fff;
+	color: #fff;
 	position: absolute;
 	left: -1rem;
 	width: 1rem;

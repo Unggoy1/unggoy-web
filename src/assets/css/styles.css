@@ -636,22 +636,23 @@ img {
 
 .main-blog-desc {
 	font-size: 14px;
-	max-width: 40%;
+	max-width: 40vw;
 	line-height: 180%;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	-webkit-line-clamp: 3; /* Show only 3 lines */
+	white-space: normal;
 }
 @media screen and (max-width: 769px) {
 	.main-blog-desc {
-		max-width: 55%;
+		max-width: 55vw;
 	}
 }
 
 @media screen and (max-width: 500px) {
 	.main-blog-desc {
-		max-width: 90%;
+		max-width: 90vw;
 	}
 }
 /* TODO: Fix text not appearing on top of image */

@@ -38,7 +38,8 @@ const config = {
 				'/blog/category/page/',
 				'/blog/category/page/*',
 				'/blog/page/',
-				'/blog/page/*'
+				'/blog/page/*',
+				'/legal/*'
 			]
 		},
 		version: {

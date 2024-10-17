@@ -15,7 +15,7 @@
 	<div class="main-blogs">
 		<div class="main-blog">
 			<!-- <img class="main-blog-bg" src="Tenrai_IV.webp" alt="Tenrai blog key art" /> -->
-			<BlogCarousel images={['Tenrai_IV.webp', 'OneShotSlayer.webp']} imagePath={''}></BlogCarousel>
+			<BlogCarousel posts={data.posts}></BlogCarousel>
 		</div>
 	</div>
 	<AssetGroup assets={data.newMaps}>

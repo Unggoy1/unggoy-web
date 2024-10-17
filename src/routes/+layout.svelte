@@ -224,8 +224,8 @@
 			<!-- Line 1: Text Links -->
 			<div class="footer-links">
 				<a href="https://github.com/Unggoy1" target="_blank" class="footer-link">v{version}</a>
-				<a href="/privacy-policy" class="footer-link">Privacy</a>
-				<a href="/terms-of-service" class="footer-link">Terms</a>
+				<a href="/legal/privacy" class="footer-link">Privacy</a>
+				<a href="/legal/terms" class="footer-link">Terms</a>
 			</div>
 		</div>
 		<!-- <div class="side-wrapper"> -->
