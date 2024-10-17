@@ -30,28 +30,28 @@ const config = {
 		// If your environment is not supported or you settled on a specific environment, switch out the adapter.
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
-		prerender: {
-			handleHttpError: ({ path, referrer, message }) => {
-				console.warn(`${path} referred from ${referrer} failed to prerender: ${message}`);
-				// Decide whether to throw or return based on the path
-				if (path.startsWith('/blog/')) {
-					return; // Continue building, skipping this page
-				}
-				return;
-			},
-			entries: [
-				'/blog/api/posts/page/*',
-				'/blog/category/*/page/',
-				'/blog/category/*/page/*',
-				'/blog/category/page/',
-				'/blog/category/page/*',
-				'/blog/page/',
-				'/blog/page/*',
-				'/legal/',
-				'/legal/privacy/',
-				'/legal/terms/'
-			]
-		},
+		// prerender: {
+		// 	handleHttpError: ({ path, referrer, message }) => {
+		// 		console.warn(`${path} referred from ${referrer} failed to prerender: ${message}`);
+		// 		// Decide whether to throw or return based on the path
+		// 		if (path.startsWith('/blog/')) {
+		// 			return; // Continue building, skipping this page
+		// 		}
+		// 		return;
+		// 	},
+		// 	entries: [
+		// 		'/blog/api/posts/page/*',
+		// 		'/blog/category/*/page/',
+		// 		'/blog/category/*/page/*',
+		// 		'/blog/category/page/',
+		// 		'/blog/category/page/*',
+		// 		'/blog/page/',
+		// 		'/blog/page/*',
+		// 		'/legal/',
+		// 		'/legal/privacy/',
+		// 		'/legal/terms/'
+		// 	]
+		// },
 		version: {
 			name: pkg.version
 		}
