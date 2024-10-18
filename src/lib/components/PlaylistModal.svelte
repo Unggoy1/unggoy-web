@@ -55,6 +55,7 @@
 			details,
 			ogDetails
 		);
+		console.log(diffDetails);
 		//jank typeguard stuff to get code to not complain about the data for each field not being 100% identical
 		if (mode === 'create') {
 			if (isPlaylistCreate(diffDetails)) {

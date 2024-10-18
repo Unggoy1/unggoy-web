@@ -29,7 +29,6 @@ export const load: PageLoad = async ({ url, fetch }) => {
 	};
 
 	const newPlaylists = await playlistBrowse(playlistFetchParams);
-	console.log(newPlaylists);
 
 	playlistFetchParams.sort = 'favorites';
 	const topFavoritedPlaylists = await playlistBrowse(playlistFetchParams);

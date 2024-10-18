@@ -12,7 +12,6 @@ export const load = async ({ url }) => {
 			path: url.pathname
 		};
 	} catch (err) {
-		console.log('test: ', err);
 		error(500, err);
 	}
 };

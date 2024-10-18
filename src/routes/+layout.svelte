@@ -31,6 +31,7 @@
 		Recommended,
 		Github,
 		Discord,
+		Gear,
 		News
 	} from '$lib/components/icons';
 	import { pwaInfo } from 'virtual:pwa-info';
@@ -105,6 +106,7 @@
 				},
 				{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '/playlist/me' },
 				{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
+				{ type: DropdownType.A, icon: Gear, text: `Account Settings`, href: '/account' },
 				{
 					type: DropdownType.A,
 					icon: LogOut,

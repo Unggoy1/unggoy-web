@@ -61,7 +61,7 @@
 					</a>
 					<div>
 						&nbsp;&nbsp;•&nbsp;&nbsp;{data.playlist._count.favoritedBy} favorites&nbsp;&nbsp;•&nbsp;&nbsp;{data
-							.assets.length} assets
+							.playlist._count.ugc} assets
 					</div>
 				</div>
 			</div>

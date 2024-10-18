@@ -5,16 +5,12 @@ import { playlistStore } from '../../stores/playlist';
 export async function playlistCreate({
 	name,
 	description,
-	isPrivate,
 	thumbnail,
 	assetId
 }: PlaylistCreate): Promise<void> {
 	const formData = new FormData();
 	formData.append('name', name);
 	formData.append('description', description);
-	if (isPrivate) {
-		formData.append('isPrivate', String(isPrivate));
-	}
 	if (assetId) {
 		formData.append('assetId', assetId);
 	}
@@ -198,7 +194,7 @@ export async function playlistGet({
 	};
 	try {
 		const result = await request(context, svelteFetch);
-		return result.json();
+		return await result.json();
 	} catch (error) {
 		throw error;
 	}
@@ -226,9 +222,9 @@ export async function playlistBrowse({
 	};
 	try {
 		const result = await request(context, svelteFetch);
-		return result.json();
+		return await result.json();
 	} catch (error) {
-		//throw some error here about not being able to decode the data
+		throw error;
 	}
 }
 
@@ -253,18 +249,14 @@ export async function playlistMe({
 	};
 	try {
 		const result = await request(context, svelteFetch);
-		return result.json();
+		return await result.json();
 	} catch (error) {
-		//throw some error here about not being able to decode the data
+		throw error;
 	}
 }
 
 export function isPlaylistCreate(details: Partial<PlaylistCreate>): details is PlaylistCreate {
-	return (
-		details.name !== undefined &&
-		details.description !== undefined &&
-		details.isPrivate !== undefined
-	);
+	return details.name !== undefined && details.description !== undefined;
 }
 
 // Type guard to check if the object is of type PlaylistUpdateData
@@ -277,7 +269,6 @@ export function isPlaylistUpdateData(
 export interface PlaylistCreate {
 	name: string;
 	description: string;
-	isPrivate: boolean;
 	thumbnail?: FileList;
 	assetId?: string;
 }
@@ -347,6 +338,7 @@ export interface PlaylistData {
 	user?: UserData;
 	_count: {
 		favoritedBy: number;
+		ugc: number;
 	};
 }
 

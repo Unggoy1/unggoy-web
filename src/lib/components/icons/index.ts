@@ -9,6 +9,7 @@ export { default as Discord } from './Discord.svelte';
 export { default as Duplicate } from './Duplicate.svelte';
 export { default as Edit } from './Edit.svelte';
 export { default as Gamepad } from './Gamepad.svelte';
+export { default as Gear } from './Gear.svelte';
 export { default as Github } from './Github.svelte';
 export { default as Home } from './Home.svelte';
 export { default as LogOut } from './LogOut.svelte';

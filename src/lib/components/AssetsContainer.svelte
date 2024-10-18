@@ -25,13 +25,10 @@
 		updateUrl();
 	};
 	const updateSortOrder = () => {
-		console.log('HEY<YEY');
 		browseData.order = browseData.order === 'desc' ? 'asc' : 'desc';
-		console.log('OIARESZX?>I<');
 		updateUrl();
 	};
 	const updateUrl = () => {
-		console.log('why we no run baby');
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('page', String(browseData.currentPage));
 		if (browseData.filter) {
@@ -43,10 +40,10 @@
 		browseData.gamertag ? query.set('gamertag', browseData.gamertag) : query.delete('gamertag');
 		browseData.gamertag !== undefined &&
 		browseData.gamertag !== '' &&
-		browseData.filter !== undefined
+		browseData.ownerOnly !== undefined
 			? query.set('ownerOnly', browseData.ownerOnly.toString())
 			: query.delete('ownerOnly');
-		browseData.filter !== undefined
+		browseData.hide343Assets !== undefined
 			? query.set('hide343Assets', browseData.hide343Assets.toString())
 			: query.delete('hide343Assets');
 		query.set('sort', browseData.sort);
@@ -106,7 +103,7 @@
 							/>
 						</div>
 					</div>
-					{#if browseData.gamertag !== ''}
+					{#if browseData.gamertag !== '' && browseData.ownerOnly != undefined}
 						<!-- Toggle Input with Label -->
 						<div class="toggle-group">
 							<p class="filter-text">Only owned assets:</p>
