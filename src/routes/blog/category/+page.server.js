@@ -1,6 +1,6 @@
 export const load = async ({ url, fetch }) => {
 	const res = await fetch(`${url.origin}/blog/api/posts.json`);
-	let posts = await res.json();
+	let posts = (await res.json()) || [];
 
 	let uniqueCategories = {};
 
