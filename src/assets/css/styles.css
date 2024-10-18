@@ -58,7 +58,7 @@ body {
 	/* padding: 1em 2em; */
 	width: 100%;
 	height: 100vh;
-	overflow: hidden;
+	/* overflow: hidden; */
 	/* filter: hue-rotate(45deg); */
 }
 img {
@@ -587,7 +587,8 @@ img {
 	padding: 0 24px 24px;
 	flex-grow: 1;
 	overflow: auto;
-	scrollbar-width: none;
+	/* scrollbar-width: none; */
+	scrollbar-color: var(--button-bg) var(--theme-bg);
 }
 @media screen and (max-width: 769px) {
 	.main-container {
@@ -635,22 +636,23 @@ img {
 
 .main-blog-desc {
 	font-size: 14px;
-	max-width: 40%;
+	max-width: 40vw;
 	line-height: 180%;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	-webkit-line-clamp: 3; /* Show only 3 lines */
+	white-space: normal;
 }
 @media screen and (max-width: 769px) {
 	.main-blog-desc {
-		max-width: 55%;
+		max-width: 55vw;
 	}
 }
 
 @media screen and (max-width: 500px) {
 	.main-blog-desc {
-		max-width: 90%;
+		max-width: 90vw;
 	}
 }
 /* TODO: Fix text not appearing on top of image */
@@ -1482,23 +1484,21 @@ li {
 	margin-left: 15px; /* Adjust the margin as needed for space between groups */
 }
 
-li:hover a,
-li.active a {
-	color: var(--button-color-hover);
-	background-color: var(--button-bg-hover);
-}
+/* li:hover a, */
+/* li.active a { */
+/* color: var(--button-color-hover); */
+/* background-color: var(--button-bg-hover); */
+/* } */
 
-li a {
-	background: var(--button-bg);
-	border-radius: 8px;
-	color: var(--button-color);
-	text-decoration: none;
-	text-transform: uppercase;
-	display: inline-block;
-	text-align: center;
-	padding: 0.5rem 0.9rem;
-	cursor: pointer;
-}
+/* li a { */
+/* 	color: var(--button-color); */
+/* 	text-decoration: none; */
+/* 	text-transform: uppercase; */
+/* 	display: inline-block; */
+/* 	text-align: center; */
+/* 	padding: 0.5rem 0.9rem; */
+/* 	cursor: pointer; */
+/* } */
 
 li:hover button,
 li.active button {

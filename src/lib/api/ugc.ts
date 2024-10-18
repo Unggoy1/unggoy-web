@@ -33,7 +33,7 @@ export async function ugcBrowse({
 	};
 	try {
 		const result = await request(context, svelteFetch);
-		return result.json();
+		return await result.json();
 	} catch (error) {
 		throw error;
 	}
@@ -45,7 +45,7 @@ export async function ugcGet({ assetId, svelteFetch }: UgcGet): Promise<UgcData>
 	};
 	try {
 		const result = await request(context, svelteFetch);
-		return result.json();
+		return await result.json();
 	} catch (error) {
 		throw error;
 	}
