@@ -34,7 +34,6 @@ const config = {
 			entries: [
 				'/blog/api/posts/page/[page]',
 				'/blog/category/[category]/page/',
-				'/blog/category/[category]/page/[page]',
 				'/blog/category/page/',
 				'/blog/category/page/[page]',
 				'/blog/page/',
@@ -45,7 +44,8 @@ const config = {
 				'/blog/api/rss.xml',
 				'/legal',
 				'/legal/privacy/',
-				'/legal/terms/'
+				'/legal/terms/',
+				'/blog/category/[category]/page/[page]'
 			]
 		},
 		version: {
