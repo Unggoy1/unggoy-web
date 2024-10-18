@@ -15,7 +15,7 @@
 	<div class="main-blogs">
 		<div class="main-blog">
 			<!-- <img class="main-blog-bg" src="Tenrai_IV.webp" alt="Tenrai blog key art" /> -->
-			<BlogCarousel images={['Tenrai_IV.webp', 'OneShotSlayer.webp']} imagePath={''}></BlogCarousel>
+			<BlogCarousel posts={data.posts}></BlogCarousel>
 		</div>
 	</div>
 	<AssetGroup assets={data.newMaps}>
@@ -27,7 +27,7 @@
 		</a>
 	</AssetGroup>
 	<AssetGroup assets={data.trendingMaps}>
-		<a href="/browse?assetKind=Map&sort=playsRecent&order=desc">
+		<a href="/browse?assetKind=Map&sort=playsRecent&order=desc&hide343Assets=true">
 			<div class="small-header">
 				Trending Maps
 				<ChevronRight></ChevronRight>
@@ -43,9 +43,25 @@
 		</a>
 	</AssetGroup>
 	<AssetGroup assets={data.trendingModes}>
-		<a href="/browse?assetKind=UgcGameVariant&sort=playsRecent&order=desc">
+		<a href="/browse?assetKind=UgcGameVariant&sort=playsRecent&order=desc&hide343Assets=true">
 			<div class="small-header">
 				Trending Modes
+				<ChevronRight></ChevronRight>
+			</div>
+		</a>
+	</AssetGroup>
+	<AssetGroup assets={data.newPlaylists}>
+		<a href="/browse/playlist">
+			<div class="small-header">
+				New Playlists
+				<ChevronRight></ChevronRight>
+			</div>
+		</a>
+	</AssetGroup>
+	<AssetGroup assets={data.topFavoritedPlaylists}>
+		<a href="/browse/playlist?&sort=favorites&order=desc">
+			<div class="small-header">
+				Top Playlists
 				<ChevronRight></ChevronRight>
 			</div>
 		</a>
