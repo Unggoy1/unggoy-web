@@ -33,18 +33,18 @@ const config = {
 		prerender: {
 			entries: [
 				'/blog/api/posts/page/[page]',
-				// '/blog/category/[category]/page/',
+				'/blog/category/[category]/page/',
 				'/blog/category/page/',
 				'/blog/page/',
-				// '/blog/page/[page]',
+				'/blog/page/[page]',
 				'/blog/api/posts.json',
 				'/blog/api/posts/count',
 				'/blog/api/posts/page/[page]',
 				'/blog/api/rss.xml',
 				'/legal/privacy/',
-				'/legal/terms/'
-				// '/blog/category/[category]/page/[page]',
-				// '/blog/category/page/[page]'
+				'/legal/terms/',
+				'/blog/category/[category]/page/[page]',
+				'/blog/category/page/[page]'
 			]
 		},
 		version: {
