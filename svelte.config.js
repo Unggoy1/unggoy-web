@@ -41,7 +41,6 @@ const config = {
 				'/blog/api/posts/count',
 				'/blog/api/posts/page/[page]',
 				'/blog/api/rss.xml',
-				'/legal',
 				'/legal/privacy/',
 				'/legal/terms/',
 				'/blog/category/[category]/page/[page]',
