@@ -35,7 +35,6 @@ const config = {
 				'/blog/api/posts/page/[page]',
 				'/blog/category/[category]/page/',
 				'/blog/category/page/',
-				'/blog/category/page/[page]',
 				'/blog/page/',
 				'/blog/page/[page]',
 				'/blog/api/posts.json',
@@ -45,7 +44,8 @@ const config = {
 				'/legal',
 				'/legal/privacy/',
 				'/legal/terms/',
-				'/blog/category/[category]/page/[page]'
+				'/blog/category/[category]/page/[page]',
+				'/blog/category/page/[page]'
 			]
 		},
 		version: {
