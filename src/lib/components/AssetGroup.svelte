@@ -31,7 +31,9 @@
 						? 'maps'
 						: asset.assetKind == 6
 							? 'modes'
-							: 'prefabs'}/{asset.assetId}"
+							: asset.assetKind == 4
+								? 'prefabs'
+								: 'playlist'}/{asset.assetId}"
 				/>
 			</div>
 		{/each}
