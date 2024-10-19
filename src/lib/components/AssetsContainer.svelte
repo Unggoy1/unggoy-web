@@ -5,8 +5,11 @@
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
 	import { addAssetModal, playlistModal } from '../../stores/modal';
-	import { SortOrder } from './icons';
+	import FilterModal from '$lib/components/FilterModal.svelte';
+	import { SortOrder, Filter } from './icons';
+	import { currentPage } from '$lib/assets/js/store';
 
+	let filterModal: FilterModal;
 	interface Props {
 		browseData: BrowseData;
 		filterTitle?: string;
@@ -14,44 +17,78 @@
 
 	let { browseData, filterTitle }: Props = $props();
 
-	const changePage = (page: number) => {
-		if (page < 1) {
-			browseData.currentPage = 1;
-		} else if (page > browseData.totalPages) {
-			browseData.currentPage = browseData.totalPages;
-		} else {
-			browseData.currentPage = page;
+	const changePage = (newPage: number) => {
+		// Clamp the new page number between 1 and totalPages
+		const clampedPage = Math.max(1, Math.min(newPage, browseData.totalPages));
+
+		// Only update if the page has changed
+		if (clampedPage !== browseData.currentPage) {
+			const query = new URLSearchParams($page.url.searchParams.toString());
+			query.set('page', clampedPage.toString());
+			goto(`?${query.toString()}`);
 		}
-		updateUrl();
 	};
+
 	const updateSortOrder = () => {
 		browseData.order = browseData.order === 'desc' ? 'asc' : 'desc';
 		updateUrl();
 	};
 	const updateUrl = () => {
 		let query = new URLSearchParams($page.url.searchParams.toString());
-		query.set('page', String(browseData.currentPage));
-		if (browseData.filter) {
-			query.set('assetKind', browseData.filter);
-		} else {
-			query.delete('assetKind');
+		// const query = new URLSearchParams();
+
+		const defaultValues = {
+			assetKind: '',
+			gamertag: '',
+			sort: 'publishedAt',
+			order: 'desc',
+			ownerOnly: false,
+			hide343Assets: false
+		};
+
+		const filterParams = {
+			assetKind: browseData.filter,
+			tags: browseData.tag,
+			gamertag: browseData.gamertag,
+			sort: browseData.sort,
+			order: browseData.order,
+			ownerOnly: browseData.gamertag ? browseData.ownerOnly : undefined,
+			hide343Assets: browseData.hide343Assets
+		};
+
+		// Add parameters that have been explicitly set and differ from defaults
+		for (const [key, value] of Object.entries(filterParams)) {
+			if (value !== undefined && value !== '' && value !== defaultValues[key]) {
+				query.set(key, typeof value === 'string' ? value : value.toString());
+			} else {
+				query.delete(key);
+			}
 		}
-		browseData.tag ? query.set('tags', browseData.tag) : query.delete('tags');
-		browseData.gamertag ? query.set('gamertag', browseData.gamertag) : query.delete('gamertag');
-		browseData.gamertag !== undefined &&
-		browseData.gamertag !== '' &&
-		browseData.ownerOnly !== undefined
-			? query.set('ownerOnly', browseData.ownerOnly.toString())
-			: query.delete('ownerOnly');
-		browseData.hide343Assets !== undefined
-			? query.set('hide343Assets', browseData.hide343Assets.toString())
-			: query.delete('hide343Assets');
-		query.set('sort', browseData.sort);
-		query.set('order', browseData.order);
+
+		// Rset page to 1 when filters change
+		query.delete('page');
+
 		goto(`?${query.toString()}`);
 	};
+
+	async function loadModal() {
+		try {
+			let data = await filterModal.create({
+				sort: browseData.sort,
+				order: browseData.order,
+				filter: browseData.filter,
+				gamertag: browseData.gamertag,
+				ownerOnly: browseData.ownerOnly,
+				hide343Assets: browseData.hide343Assets,
+				tag: browseData.tag
+			});
+			browseData = { ...browseData, ...data };
+			updateUrl();
+		} catch {}
+	}
 </script>
 
+<FilterModal bind:this={filterModal}></FilterModal>
 <div class="assets-container browse">
 	<div class="browse-filter-container">
 		<div class="filter-container">
@@ -90,7 +127,7 @@
 			{/if}
 
 			{#if browseData.gamertag != undefined}
-				<div class="filter-group" class:input={browseData.filter != undefined}>
+				<div class="filter-group input">
 					<!-- <p class="filter-text">Contributor:</p> -->
 					<div class="search-bar-filter">
 						<div class="text-on-input">
@@ -115,18 +152,18 @@
 					{/if}
 				</div>
 			{/if}
-			<div class="filter-group">
-				{#if browseData.hide343Assets !== undefined}
-					<!-- Toggle Input with Label -->
-					<div class="toggle-group front">
-						<p class="filter-text">Hide 343 assets:</p>
-						<label class="toggle">
-							<input type="checkbox" bind:checked={browseData.hide343Assets} onchange={updateUrl} />
-							<span class="slider"></span>
-						</label>
-					</div>
-				{/if}
+			{#if browseData.hide343Assets !== undefined}
+				<!-- Toggle Input with Label -->
+				<div class="toggle-group front">
+					<p class="filter-text">Hide 343 assets:</p>
+					<label class="toggle">
+						<input type="checkbox" bind:checked={browseData.hide343Assets} onchange={updateUrl} />
+						<span class="slider"></span>
+					</label>
+				</div>
+			{/if}
 
+			<div class="filter-group">
 				<!-- <p class="filter-text">Sort:</p> -->
 				<div class="text-on-input">
 					<label>Sort</label>
@@ -153,40 +190,13 @@
 				<button class="order-button" onclick={updateSortOrder}
 					><SortOrder desc={browseData.order === 'desc'}></SortOrder></button
 				>
+				<button class="filter-button order-button" onclick={loadModal}
+					><Filter desc={browseData.order === 'desc'}></Filter></button
+				>
 			</div>
 		</div>
 	</div>
 
-	<div class="browse-filter-container small">
-		<div class="filter-container">
-			{#if browseData.gamertag != undefined}
-				<div class="filter-group">
-					<p class="filter-text">Contributor:</p>
-					<div class="search-bar-filter">
-						<input
-							bind:value={browseData.gamertag}
-							onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-							type="text"
-							placeholder="gamertag"
-						/>
-					</div>
-				</div>
-			{/if}
-			{#if browseData.tag != undefined}
-				<div class="filter-group">
-					<p class="filter-text">Tags:</p>
-					<div class="search-bar-filter">
-						<input
-							bind:value={browseData.tag}
-							onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-							type="text"
-							placeholder="tag"
-						/>
-					</div>
-				</div>
-			{/if}
-		</div>
-	</div>
 	{#if browseData.assets.length}
 		<div class="assets browse">
 			{#each browseData.assets as asset (asset.assetId)}
