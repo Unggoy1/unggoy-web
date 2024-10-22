@@ -55,3 +55,5 @@ The Privacy Policy covers:
 While these documents might not be the most exciting read, they're crucial for maintaining a safe and trustworthy platform for all users.
 
 I'm constantly working to improve Unggoy and provide the Halo community with the best possible experience. I appreciate your continued support and feedback. Happy Halo-ing!
+
+Blog image was created by 343 Industries and taken from [Halo Waypoint](https://www.halowaypoint.com/news/the-yappening-ii-operation-launch)
