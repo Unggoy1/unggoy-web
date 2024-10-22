@@ -25,7 +25,7 @@ We use the information we collect from you for the following purposes:
 
 - To obtain Halo Infinite profile data such as gamertag, service tag, and player emblem
 - Show said information on your personal user profile, and any public posted content to the site
-- Unggoy.xyz uses third party oauth account login via Xbox. We do not store any oauth tokens related to your Microsoft account. Tokens may be used to obtain Halo Infinite profile data but are discarded post login.
+- Unggoy.xyz uses third party oauth account login via Xbox. We do not store any oauth tokens related to your Microsoft account. Oauth tokens are used to obtain xbox userId and gamertag, but are discarded post login.
 
 ## Disclosure of Your Information
 
@@ -42,7 +42,7 @@ We are committed to ensuring that your information is secure. We have implemente
 ## Usage of Third-Party Services
 
 Unggoy.xyz heavily relies on data obtained from halowaypoint.com which is run by Xbox and Microsoft. The site contains links and images from them in order to function. We have no control over the content, cookies, privacy policies, or practices of Xbox and Microsoft.
-Optional user accounts are also provided via Microsoft Oauth and require having an Xbox account. They may collect your IP address and require cookies to work properly. These services are governed by Microsoft privacy policies and terms which are out of unggoy.xyz's control. outside of using the provided. Please refer to [Microsoft privacy policy](https://www.microsoft.com/en-us/privacy/privacystatement) for more information
+Optional user accounts are also provided via Microsoft Oauth and require having an Xbox account. They may collect your IP address and require cookies to work properly. These services are governed by Microsoft privacy policies and terms which are out of unggoy.xyz's control. Please refer to [Microsoft privacy policy](https://www.microsoft.com/en-us/privacy/privacystatement) for more information
 
 Requests to unggoy.xyz are processed by Cloudflare to provide various optimizations the user experience. Please refer to [CloudFlare privacy policy](https://www.cloudflare.com/privacypolicy/) for more information.
 
