@@ -18,11 +18,7 @@
 			<a href={assetUrl} class="">
 				<img
 					class="asset-image"
-					src={asset?.thumbnailUrl
-						? import.meta.env.MODE === 'production'
-							? `/cdn-cgi/image/format=auto,fit=scale-down,width=560/${asset.thumbnailUrl}`
-							: asset.thumbnailUrl
-						: '/placeholder.webp'}
+					src={asset?.thumbnailUrl ? asset.thumbnailUrl : '/placeholder.webp'}
 					alt="thumbnail"
 				/>
 			</a>
