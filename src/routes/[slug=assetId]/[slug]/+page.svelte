@@ -7,7 +7,7 @@
 	import Carousel from '$lib/components/Carousel.svelte';
 	import { DropdownType } from '$lib/enums';
 	import { onMount } from 'svelte';
-	import { Duplicate, Plus, Crown, Star } from '$lib/components/icons';
+	import { Duplicate, Plus, Crown, Link, Star } from '$lib/components/icons';
 	import { getAssetLink } from '$lib/functions';
 
 	export let data: PageData;
@@ -33,13 +33,42 @@
 			}
 		]
 	];
+	const linkGroups = [
+		[
+			{
+				type: DropdownType.Button,
+				icon: Duplicate,
+				text: `Copy Asset Link`,
+				function: () => getAssetLink({ assetId: data.map.assetId, assetKind: data.map.assetKind })
+			},
+			{
+				type: DropdownType.Button,
+				icon: Duplicate,
+				text: `Copy Waypoint Link`,
+				function: () =>
+					getAssetLink({
+						assetId: data.map.assetId,
+						assetKind: data.map.assetKind,
+						isWaypoint: true
+					})
+			}
+		]
+	];
 	let dropdown: DropdownCard;
+	let dropdownLinks: DropdownCard;
+	let showPlaylistOption = false;
 	let isDrawerOpen = false;
 	let drawerRef;
 
-	function toggleDrawer(event) {
+	async function toggleDrawer(type: string) {
 		event.stopPropagation();
+		const prevOption = showPlaylistOption;
+		showPlaylistOption = type === 'playlist' ? true : false;
 		isDrawerOpen = !isDrawerOpen;
+		await new Promise((resolve) => setTimeout(resolve, 200)); // Adjust time to match your animation duration
+		if (!isDrawerOpen && prevOption !== showPlaylistOption) {
+			isDrawerOpen = !isDrawerOpen;
+		}
 	}
 	function closeDrawer() {
 		isDrawerOpen = false;
@@ -91,6 +120,12 @@
 					</button>
 					<div>
 						<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
+					</div>
+					<button use:dropdownLinks.button class="playlist-button left">
+						<Link active={true}></Link>
+					</button>
+					<div>
+						<DropdownCard bind:this={dropdownLinks} groups={linkGroups}></DropdownCard>
 					</div>
 				{/if}
 				<AssetKind assetKind={data.map.assetKind} lg={true} recommended={data.map.recommended}
@@ -147,10 +182,16 @@
 					<div class="title-button-wrapper">
 						<div class="asset-title">{data.map.name}</div>
 						{#if $user}
-							<button onclick={toggleDrawer} class="playlist-button mobile">
+							<button
+								id="share-links"
+								onclick={() => toggleDrawer('link')}
+								class="playlist-button mobile"
+							>
+								<Link active={true}></Link>
+							</button>
+							<button onclick={() => toggleDrawer('playlist')} class="playlist-button mobile">
 								<Plus active={true}></Plus>
 							</button>
-							<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
 						{/if}
 					</div>
 					<div class="asset-description">
@@ -307,28 +348,43 @@
 {#if $user}
 	<div bind:this={drawerRef} class="slideup-drawer z-top" class:open={isDrawerOpen}>
 		<div class="drawer-options">
-			<button onclick={() => $addAssetModal.create(data.map.assetId)} class="drawer-option">
-				<Plus active={false}></Plus>
-				<span>Add to playlist</span>
-			</button>
-			<button
-				onclick={() => $playlistModal.create({ assetId: data.map.assetId })}
-				class="drawer-option"
-			>
-				<Plus active={false}></Plus>
-				<span>Add to new playlist</span>
-			</button>
-			<button
-				onclick={() =>
-					getAssetLink({
-						assetId: data.map.assetId,
-						assetKind: data.map.assetKind
-					})}
-				class="drawer-option"
-			>
-				<Duplicate active={false}></Duplicate>
-				<span>Copy asset link</span>
-			</button>
+			{#if showPlaylistOption}
+				<button onclick={() => $addAssetModal.create(data.map.assetId)} class="drawer-option">
+					<Plus active={false}></Plus>
+					<span>Add to playlist</span>
+				</button>
+				<button
+					onclick={() => $playlistModal.create({ assetId: data.map.assetId })}
+					class="drawer-option"
+				>
+					<Plus active={false}></Plus>
+					<span>Add to new playlist</span>
+				</button>
+			{:else}
+				<button
+					onclick={() =>
+						getAssetLink({
+							assetId: data.map.assetId,
+							assetKind: data.map.assetKind
+						})}
+					class="drawer-option"
+				>
+					<Duplicate active={false}></Duplicate>
+					<span>Copy asset link</span>
+				</button>
+				<button
+					onclick={() =>
+						getAssetLink({
+							assetId: data.map.assetId,
+							assetKind: data.map.assetKind,
+							isWaypoint: true
+						})}
+					class="drawer-option"
+				>
+					<Duplicate active={false}></Duplicate>
+					<span>Copy Waypoint link</span>
+				</button>
+			{/if}
 		</div>
 	</div>
 {/if}

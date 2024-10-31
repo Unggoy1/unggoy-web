@@ -13,6 +13,7 @@ export { default as Gamepad } from './Gamepad.svelte';
 export { default as Gear } from './Gear.svelte';
 export { default as Github } from './Github.svelte';
 export { default as Home } from './Home.svelte';
+export { default as Link } from './Link.svelte';
 export { default as LogOut } from './LogOut.svelte';
 export { default as Map } from './Map.svelte';
 export { default as MapSvg } from './MapSvg.svelte';

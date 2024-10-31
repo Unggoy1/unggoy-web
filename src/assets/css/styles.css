@@ -774,8 +774,8 @@ img {
 
 .playlist-button {
 	position: absolute;
-	width: 64px;
-	height: 64px;
+	width: 56px;
+	height: 56px;
 	bottom: 16px;
 	right: 16px;
 	background-color: var(--button-bg);
@@ -794,8 +794,11 @@ img {
 	fill: var(--button-color-hover);
 }
 .playlist-button svg {
-	width: 32px;
-	height: 64px;
+	width: 28px;
+	height: 56px;
+}
+.playlist-button.left {
+	right: 81px;
 }
 
 .recommended svg {

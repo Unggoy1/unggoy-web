@@ -9,11 +9,13 @@ import { addAssetModal, playlistModal } from '../stores/modal';
 import { get } from 'svelte/store';
 import { playlistDeleteAsset } from './api/playlist';
 import type { PlaylistData } from './api/playlist';
-export async function getAssetLink({ assetId, assetKind }) {
+
+export async function getAssetLink({ assetId, assetKind, isWaypoint = false }) {
 	const assetType =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';
 
-	const assetUrl = `${PUBLIC_URL}/${assetType}/${assetId}`;
+	const assetPrefix = isWaypoint ? 'https://www.halowaypoint.com/halo-infinite/ugc' : PUBLIC_URL;
+	const assetUrl = `${assetPrefix}/${assetType}/${assetId}`;
 	await toast.promise(navigator.clipboard.writeText(assetUrl), {
 		loading: 'Copying...',
 		success: 'Link copied to clipboard',
@@ -80,8 +82,14 @@ export function getAssetCardGroups({
 		{
 			type: DropdownType.Button,
 			icon: Duplicate,
-			text: `Copy asset link`,
+			text: `Copy Asset Link`,
 			function: () => getAssetLink({ assetId: assetId, assetKind: assetKind })
+		},
+		{
+			type: DropdownType.Button,
+			icon: Duplicate,
+			text: `Copy Waypoint Link`,
+			function: () => getAssetLink({ assetId: assetId, assetKind: assetKind, isWaypoint: true })
 		}
 	];
 
