@@ -78,20 +78,22 @@ export function getAssetCardGroups({
 			});
 		}
 	}
-	const noAuthGroups = [
+	let noAuthGroups = [
 		{
 			type: DropdownType.Button,
 			icon: Duplicate,
 			text: `Copy Asset Link`,
 			function: () => getAssetLink({ assetId: assetId, assetKind: assetKind })
-		},
-		{
+		}
+	];
+	if (assetKind !== 5) {
+		noAuthGroups.push({
 			type: DropdownType.Button,
 			icon: Duplicate,
 			text: `Copy Waypoint Link`,
 			function: () => getAssetLink({ assetId: assetId, assetKind: assetKind, isWaypoint: true })
-		}
-	];
+		});
+	}
 
 	return activeUser && authGroups ? [authGroups, noAuthGroups] : [noAuthGroups];
 }
