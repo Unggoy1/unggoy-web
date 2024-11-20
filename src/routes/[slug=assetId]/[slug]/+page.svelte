@@ -121,13 +121,13 @@
 					<div>
 						<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
 					</div>
-					<button use:dropdownLinks.button class="playlist-button left">
-						<Link active={true}></Link>
-					</button>
-					<div>
-						<DropdownCard bind:this={dropdownLinks} groups={linkGroups}></DropdownCard>
-					</div>
 				{/if}
+				<button use:dropdownLinks.button class="playlist-button left">
+					<Link active={true}></Link>
+				</button>
+				<div>
+					<DropdownCard bind:this={dropdownLinks} groups={linkGroups}></DropdownCard>
+				</div>
 				<AssetKind assetKind={data.map.assetKind} lg={true} recommended={data.map.recommended}
 				></AssetKind>
 				<div class="asset-img-sm-wrapper">
@@ -181,14 +181,14 @@
 
 					<div class="title-button-wrapper">
 						<div class="asset-title">{data.map.name}</div>
+						<button
+							id="share-links"
+							onclick={() => toggleDrawer('link')}
+							class="playlist-button mobile"
+						>
+							<Link active={true}></Link>
+						</button>
 						{#if $user}
-							<button
-								id="share-links"
-								onclick={() => toggleDrawer('link')}
-								class="playlist-button mobile"
-							>
-								<Link active={true}></Link>
-							</button>
 							<button onclick={() => toggleDrawer('playlist')} class="playlist-button mobile">
 								<Plus active={true}></Plus>
 							</button>
