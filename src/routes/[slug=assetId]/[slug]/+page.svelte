@@ -122,7 +122,7 @@
 						<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
 					</div>
 				{/if}
-				<button use:dropdownLinks.button class="playlist-button left">
+				<button use:dropdownLinks.button class="playlist-button" class:left={$user}>
 					<Link active={true}></Link>
 				</button>
 				<div>
