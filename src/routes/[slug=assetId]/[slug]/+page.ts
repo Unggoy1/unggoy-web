@@ -11,9 +11,9 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	const jpgFiles = images.filter((image) => image.endsWith('.jpg'));
 	const pngFiles = images.filter((image) => image.endsWith('.png'));
 	let filteredImages = jpgFiles.length > 0 ? jpgFiles : pngFiles;
-	if (filteredImages.length > 1) {
-		filteredImages = filteredImages.filter((image) => !image.startsWith('images/thumbnail.'));
-	}
+	// if (filteredImages.length > 1) {
+	// 	filteredImages = filteredImages.filter((image) => !image.startsWith('images/thumbnail.'));
+	// }
 
 	data.files.fileRelativePaths = filteredImages;
 	return {
