@@ -3,8 +3,8 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import '../assets/css/dialog.css';
-	import '../assets/css/styles.css';
 	import '../assets/css/app.css';
+	import '../assets/css/styles.css';
 	import { PUBLIC_API_URL } from '$env/static/public';
 	import { dev, version } from '$app/environment';
 	import type { LayoutData } from './$types';
@@ -136,7 +136,7 @@
 <AddAssetModal bind:this={addAssetModalComponent} />
 <PlaylistModal bind:this={playlistModalComponent} />
 <Toaster></Toaster>
-<div class="container">
+<div class="unggoy-container">
 	<div class="sidebar" class:collapse={isSidebarCollapsed}>
 		<span class="logo">S</span>
 		<a class="logo-expand" href="/">Unggoy</a>

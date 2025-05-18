@@ -44,6 +44,7 @@
 	"dependencies": {
 		"@sveltejs/adapter-static": "^3.0.5",
 		"@sveltejs/adapter-vercel": "^5.4.5",
+		"@tailwindcss/vite": "^4.1.7",
 		"@tensorflow/tfjs": "^4.21.0",
 		"embla-carousel-autoplay": "^8.3.0",
 		"embla-carousel-svelte": "^8.3.0",
@@ -51,6 +52,7 @@
 		"svelte-french-toast": "^1.2.0",
 		"svelte-headlessui": "^0.0.38",
 		"svelte-transition": "^0.0.17",
+		"tailwindcss": "^4.1.7",
 		"validator": "^13.12.0"
 	}
 }
