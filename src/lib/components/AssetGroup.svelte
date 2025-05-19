@@ -3,7 +3,7 @@
 	import { getAssetCardGroups } from '$lib/functions';
 	import { onMount, type Snippet } from 'svelte';
 	import AssetCard from './AssetCard.svelte';
-	import { addAssetModal, playlistModal } from '../../stores/modal';
+	import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../../stores/modal';
 
 	interface Props {
 		children: Snippet;
@@ -24,8 +24,10 @@
 					groups={getAssetCardGroups({
 						assetId: asset.assetId,
 						assetKind: asset.assetKind,
+						asset: asset,
 						playlistModalVar: $playlistModal,
-						addAssetModalVar: $addAssetModal
+						addAssetModalVar: $addAssetModal,
+						inlineBrowsePairingModalVar: $inlineBrowsePairingModal
 					})}
 					assetUrl="/{asset.assetKind == 2
 						? 'maps'

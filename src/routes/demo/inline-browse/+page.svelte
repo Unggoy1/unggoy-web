@@ -1,9 +1,48 @@
 <script>
-  import { MOCK_MAPS, MOCK_MODES } from '$lib/demo/mockData';
+  import { onMount } from 'svelte';
+  import { ugcBrowse } from '$lib/api/ugc';
   import DemoAssetCardInline from '$lib/components/demo/DemoAssetCardInline.svelte';
   import InlineBrowsePairingModal from '$lib/components/demo/InlineBrowsePairingModal.svelte';
   
   let pairingModal;
+  let maps = [];
+  let modes = [];
+  let loading = true;
+  let error = '';
+  
+  onMount(async () => {
+    await loadAssets();
+  });
+  
+  async function loadAssets() {
+    loading = true;
+    error = '';
+    
+    try {
+      // Load some popular maps
+      const mapsResponse = await ugcBrowse({
+        assetKind: 2, // Maps
+        sort: 'playsAllTime',
+        order: 'desc',
+        count: 6
+      });
+      maps = mapsResponse.assets;
+      
+      // Load some popular modes
+      const modesResponse = await ugcBrowse({
+        assetKind: 6, // Game modes
+        sort: 'playsAllTime',
+        order: 'desc',
+        count: 6
+      });
+      modes = modesResponse.assets;
+    } catch (err) {
+      error = 'Failed to load assets. Please try again.';
+      console.error('Error loading assets:', err);
+    } finally {
+      loading = false;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -18,35 +57,46 @@
     <p>This version includes an inline browse interface within the pairing modal, similar to the AssetsContainer.</p>
   </header>
   
-  <div class="content-grid">
-    <div class="content-section">
-      <h2>Maps</h2>
-      <p class="section-description">Click dropdown → "Add to Paired Playlist"</p>
-      <div class="assets-grid">
-        {#each MOCK_MAPS as map}
-          <DemoAssetCardInline 
-            asset={map} 
-            assetUrl="/demo/map/{map.assetId}" 
-            {pairingModal}
-          />
-        {/each}
+  {#if loading}
+    <div class="loading-container">
+      <p>Loading assets...</p>
+    </div>
+  {:else if error}
+    <div class="error-container">
+      <p>{error}</p>
+      <button onclick={loadAssets} class="retry-button">Retry</button>
+    </div>
+  {:else}
+    <div class="content-grid">
+      <div class="content-section">
+        <h2>Maps</h2>
+        <p class="section-description">Click dropdown → "Add to Paired Playlist"</p>
+        <div class="assets-grid">
+          {#each maps as map}
+            <DemoAssetCardInline 
+              asset={map} 
+              assetUrl="/demo/map/{map.assetId}" 
+              {pairingModal}
+            />
+          {/each}
+        </div>
+      </div>
+      
+      <div class="content-section">
+        <h2>Modes</h2>
+        <p class="section-description">Click dropdown → "Add to Paired Playlist"</p>
+        <div class="assets-grid">
+          {#each modes as mode}
+            <DemoAssetCardInline 
+              asset={mode} 
+              assetUrl="/demo/mode/{mode.assetId}" 
+              {pairingModal}
+            />
+          {/each}
+        </div>
       </div>
     </div>
-    
-    <div class="content-section">
-      <h2>Modes</h2>
-      <p class="section-description">Click dropdown → "Add to Paired Playlist"</p>
-      <div class="assets-grid">
-        {#each MOCK_MODES as mode}
-          <DemoAssetCardInline 
-            asset={mode} 
-            assetUrl="/demo/mode/{mode.assetId}" 
-            {pairingModal}
-          />
-        {/each}
-      </div>
-    </div>
-  </div>
+  {/if}
   
   <div class="demo-info">
     <h3>Inline Browse Features:</h3>
@@ -150,6 +200,27 @@
   
   .demo-link:hover {
     text-decoration: underline;
+  }
+  
+  .loading-container, .error-container {
+    text-align: center;
+    padding: 60px 20px;
+    color: #a0aec0;
+  }
+  
+  .retry-button {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .retry-button:hover {
+    background-color: #5a67d8;
   }
   
   @media (max-width: 1024px) {

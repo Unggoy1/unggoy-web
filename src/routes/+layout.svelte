@@ -15,7 +15,8 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
-	import { addAssetModal, playlistModal } from '../stores/modal';
+	import InlineBrowsePairingModal from '$lib/components/InlineBrowsePairingModal.svelte';
+	import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../stores/modal';
 	import {
 		Compass,
 		Anvil,
@@ -49,6 +50,7 @@
 	let drawerRef;
 	let addAssetModalComponent: AddAssetModal;
 	let playlistModalComponent: PlaylistModal;
+	let inlineBrowsePairingModalComponent: InlineBrowsePairingModal;
 
 	$: currentAssetKind = new URLSearchParams($page.url.search).get('assetKind');
 
@@ -95,6 +97,9 @@
 		if (playlistModalComponent) {
 			$playlistModal = playlistModalComponent;
 		}
+		if (inlineBrowsePairingModalComponent) {
+			$inlineBrowsePairingModal = inlineBrowsePairingModalComponent;
+		}
 
 		groups = [
 			[
@@ -135,6 +140,7 @@
 </svelte:head>
 <AddAssetModal bind:this={addAssetModalComponent} />
 <PlaylistModal bind:this={playlistModalComponent} />
+<InlineBrowsePairingModal bind:this={inlineBrowsePairingModalComponent} />
 <Toaster></Toaster>
 <div class="unggoy-container">
 	<div class="sidebar" class:collapse={isSidebarCollapsed}>

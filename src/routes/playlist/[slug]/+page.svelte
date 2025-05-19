@@ -4,7 +4,7 @@
 	import { playlistDelete, playlistDeleteAsset, playlistUpdate } from '$lib/api/playlist';
 	import { Delete, Edit, Private, Public } from '$lib/components/icons';
 	import Dropdown from '$lib/components/Dropdown.svelte';
-	import AssetsContainer from '$lib/components/AssetsContainer.svelte';
+	import PairedAssetsContainer from '$lib/components/PairedAssetsContainer.svelte';
 	import { playlistModal } from '../../../stores/modal';
 	import { favoritesAdd, favoritesDelete } from '$lib/api/favorites';
 	import { user } from '../../../stores/user';
@@ -61,7 +61,7 @@
 					</a>
 					<div>
 						&nbsp;&nbsp;•&nbsp;&nbsp;{data.playlist._count.favoritedBy} favorites&nbsp;&nbsp;•&nbsp;&nbsp;{data
-							.playlist._count.ugc} assets
+							.playlist._count.ugcPairs} assets
 					</div>
 				</div>
 			</div>
@@ -145,5 +145,10 @@
 		{/if}
 	</div>
 
-	<AssetsContainer browseData={data}></AssetsContainer>
+	<PairedAssetsContainer 
+		browseData={data} 
+		pairs={data.pairs}
+		pairsTotalPages={data.pairsTotalPages}
+		pairsTotalResults={data.pairsTotalResults}
+	></PairedAssetsContainer>
 </div>

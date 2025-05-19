@@ -6,6 +6,7 @@
 	import { dev } from '$app/environment';
 	export let asset: UgcData | PlaylistData = undefined;
 	export let assetUrl: string;
+	export let pairedMode: UgcData | null = null; // Add paired gamemode prop
 	import.meta.env.PROD;
 	let dropdown: DropdownCard;
 	export let groups;
@@ -23,7 +24,18 @@
 				/>
 			</a>
 
-			<AssetKind assetKind={asset.assetKind} recommended={asset?.recommended || false}></AssetKind>
+			{#if pairedMode}
+				<div class="gamemode-chip">
+					<img 
+						src={pairedMode.thumbnailUrl} 
+						alt={pairedMode.name} 
+						class="chip-thumbnail"
+					/>
+					<span class="chip-name">{pairedMode.name}</span>
+				</div>
+			{:else}
+				<AssetKind assetKind={asset.assetKind} recommended={asset?.recommended || false}></AssetKind>
+			{/if}
 			<a href={assetUrl} class="asset-name">
 				{asset.name}
 			</a>
@@ -47,3 +59,36 @@
 		<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
 	</div>
 </div>
+
+<style>
+.gamemode-chip {
+	position: absolute;
+	top: 10px;
+	left: 8px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 0 10px 0 0;
+	border-radius: 18px;
+	background-color: var(--asset-card-bg);
+	color: white;
+	font-size: 0.75rem;
+	max-width: calc(100% - 16px);
+	overflow: hidden;
+}
+
+.chip-thumbnail {
+	width: 36px;
+	height: 36px;
+	border-radius: 18px 0 0 18px;
+	object-fit: cover;
+	flex-shrink: 0;
+}
+
+.chip-name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	flex: 1;
+}
+</style>

@@ -27,9 +27,9 @@
 	const INDEXEDDB_KEY = 'indexeddb://nsfwjs-model';
 	let isModelLoading = false;
 
-	export function create({ assetId }: { assetId?: string }) {
+	export function create({ assetId, asset }: { assetId?: string; asset?: any }) {
 		mode = 'create';
-		return show({ assetId }); //emptyDetails;
+		return show({ assetId, asset }); //emptyDetails;
 	}
 
 	export function edit(value: any) {
@@ -222,7 +222,17 @@
 <Modal bind:this={modal} onclose={cancel}>
 	<h3 class="text-lg font-medium leading-6">Create new playlist</h3>
 
-	<div class="flex w-full flex-col items-center justify-center">
+	{#if mode === 'create' && details.asset}
+		<div class="selected-asset">
+			<img src={details.asset.thumbnailUrl} alt={details.asset.name} class="asset-thumbnail" />
+			<div class="asset-info">
+				<h4>{details.asset.name}</h4>
+				<p class="selected-asset-label">Selected {details.asset.assetKind === 2 ? 'Map' : details.asset.assetKind === 6 ? 'Mode' : 'Asset'}</p>
+			</div>
+		</div>
+	{/if}
+
+	<div class="flex w-full flex-col items-center justify-center" class:has-asset={mode === 'create' && details.asset}>
 		<div class="input-container">
 			<form onsubmit={save}>
 				<div class="z-10 cursor-default input">
@@ -484,5 +494,44 @@
 		color: red;
 		font-weight: bold;
 		/* margin-left: 4px; */
+	}
+	
+	.selected-asset {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 16px 0;
+		padding: 12px;
+		background-color: var(--top-container-bg);
+		border-radius: 8px;
+	}
+	
+	.asset-thumbnail {
+		width: 60px;
+		height: 34px;
+		object-fit: cover;
+		border-radius: 4px;
+	}
+	
+	.asset-info h4 {
+		margin: 0;
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--container-color);
+	}
+	
+	.selected-asset-label {
+		margin: 4px 0 0 0;
+		font-size: 0.75rem;
+		color: #a0aec0;
+	}
+	
+	.flex.has-asset {
+		margin-bottom: 20px;
+	}
+	
+	/* Override modal max-height when we have a selected asset */
+	:global(.dialog-container:has(.selected-asset)) {
+		max-height: 600px !important;
 	}
 </style>

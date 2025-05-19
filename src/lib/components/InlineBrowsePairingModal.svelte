@@ -1,17 +1,23 @@
 <script lang="ts">
   import LargeModal from './LargeModal.svelte';
   import { ugcBrowse, type UgcData, type UgcBrowseResponse } from '$lib/api/ugc';
-  import { playlistMe, playlistCreatePair, type PlaylistData, type PlaylistBrowseResponse } from '$lib/api/playlist';
+  import { playlistMe, playlistCreatePair, playlistUpdatePair, type PlaylistData, type PlaylistBrowseResponse, type PlaylistPair } from '$lib/api/playlist';
   import { onMount } from 'svelte';
   
   let modal: LargeModal;
   let asset: UgcData | null = null;
   let assetType: 'map' | 'mode' = 'map';
+  let assetKind: number = 6; // 2 = Map, 6 = UgcGameVariant (mode)
   let selectedPlaylist: string = '';
   let selectedAsset: UgcData | null = null;
   let searchTerm: string = '';
   let currentPage: number = 1;
   let itemsPerPage: number = 8;
+  
+  // For update mode
+  let isUpdateMode: boolean = false;
+  let existingPair: PlaylistPair | null = null;
+  let existingPairedAsset: UgcData | null = null;
   
   // Playlist dropdown state
   let playlistSearchTerm: string = '';
@@ -49,10 +55,6 @@
     error = '';
     
     try {
-      // Map asset type to API assetKind numbers
-      // 2 = Map, 6 = UgcGameVariant (modes)
-      const assetKind = assetType === 'map' ? 6 : 2; // Inverted because we fetch opposite type
-      
       // Calculate offset based on current page
       const offset = (currentPage - 1) * itemsPerPage;
       
@@ -146,15 +148,23 @@
     }
   }
   
-  export function open(selectedAssetParam: UgcData) {
+  export function open(selectedAssetParam: UgcData, pair?: PlaylistPair, playlistId?: string, pairedAsset?: UgcData) {
     asset = selectedAssetParam;
     
     // assetKind: 2 = Map, 6 = UgcGameVariant (mode)
     assetType = selectedAssetParam.assetKind === 2 ? 'map' : 'mode';
     
-    selectedPlaylist = '';
-    prevSelectedPlaylist = '';
-    selectedAsset = null;
+    // Update mode configuration
+    isUpdateMode = !!pair;
+    existingPair = pair || null;
+    existingPairedAsset = pairedAsset || null;
+    
+    // Determine what we're browsing for based on asset type
+    assetKind = assetType === 'map' ? 6 : 2; // Browse for modes if we have a map, maps if we have a mode
+    
+    selectedPlaylist = playlistId || '';
+    prevSelectedPlaylist = selectedPlaylist;
+    selectedAsset = pairedAsset || null;
     searchTerm = '';
     prevSearchTerm = '';
     currentPage = 1;
@@ -167,6 +177,12 @@
     userPlaylists = [];
     filteredPlaylists = [];
     modal.open();
+    
+    // In update mode, load playlists and assets immediately since we have a pre-selected playlist
+    if (isUpdateMode && selectedPlaylist) {
+      loadPlaylists();
+      loadAssets();
+    }
   }
   
   function cancel() {
@@ -176,23 +192,38 @@
   async function save(keepOpen = false) {
     if (selectedPlaylist && selectedAsset && asset) {
       try {
-        // Prepare the API payload based on asset types
-        const payload = {
-          playlistId: selectedPlaylist
-        };
-        
-        if (assetType === 'map') {
-          payload.mapAssetId = asset.assetId;
-          payload.gamemodeAssetId = selectedAsset.assetId;
+        if (isUpdateMode && existingPair) {
+          // Update existing pair
+          const updatePayload = {
+            playlistId: selectedPlaylist,
+            pairId: existingPair.id
+          };
+          
+          if (assetType === 'map') {
+            updatePayload.gamemodeAssetId = selectedAsset.assetId;
+          } else {
+            updatePayload.mapAssetId = selectedAsset.assetId;
+          }
+          
+          console.log('Updating pair with payload:', updatePayload);
+          await playlistUpdatePair(updatePayload);
         } else {
-          payload.gamemodeAssetId = asset.assetId;
-          payload.mapAssetId = selectedAsset.assetId;
+          // Create new pair
+          const payload = {
+            playlistId: selectedPlaylist
+          };
+          
+          if (assetType === 'map') {
+            payload.mapAssetId = asset.assetId;
+            payload.gamemodeAssetId = selectedAsset.assetId;
+          } else {
+            payload.gamemodeAssetId = asset.assetId;
+            payload.mapAssetId = selectedAsset.assetId;
+          }
+          
+          console.log('Creating pair with payload:', payload);
+          await playlistCreatePair(payload);
         }
-        
-        console.log('Creating pair with payload:', payload);
-        
-        // Call the API to create the pair - the toast is handled by the API function
-        await playlistCreatePair(payload);
         
         if (keepOpen) {
           // Clear the selected asset but keep the modal open
@@ -200,13 +231,21 @@
           searchTerm = '';
           prevSearchTerm = '';
           currentPage = 1;
+          
+          // Reset to create mode after successful update
+          if (isUpdateMode) {
+            isUpdateMode = false;
+            existingPair = null;
+            existingPairedAsset = null;
+          }
+          
           // Reload assets to ensure freshness
           loadAssets();
         } else {
           modal.close();
         }
       } catch (error) {
-        console.error('Error creating pair:', error);
+        console.error('Error saving pair:', error);
         // Error is already handled by toast in the API function
       }
     }
@@ -225,7 +264,9 @@
 </script>
 
 <LargeModal bind:this={modal} onclose={cancel}>
-  <h3 class="text-lg font-medium leading-6">Add to Paired Playlist</h3>
+  <h3 class="text-lg font-medium leading-6">
+    {isUpdateMode ? 'Complete Pair' : 'Add to Paired Playlist'}
+  </h3>
   
   <div class="modal-content">
     {#if asset}
@@ -236,11 +277,24 @@
           <p class="selected-asset-label">Selected {assetType === 'map' ? 'Map' : 'Mode'}</p>
         </div>
       </div>
+      
+      {#if isUpdateMode && existingPairedAsset}
+        <div class="existing-pair-info">
+          <p>Existing pair with:</p>
+          <div class="selected-asset">
+            <img src={existingPairedAsset.thumbnailUrl} alt={existingPairedAsset.name} class="asset-thumbnail" />
+            <div class="asset-info">
+              <h4>{existingPairedAsset.name}</h4>
+              <p class="selected-asset-label">{assetType === 'map' ? 'Mode' : 'Map'}</p>
+            </div>
+          </div>
+        </div>
+      {/if}
     {/if}
     
     <div class="form-section">
       <label for="playlist-select" class="block text-sm font-medium mb-2">
-        Select Playlist
+        {isUpdateMode ? 'Playlist (Locked)' : 'Select Playlist'}
       </label>
       <div class="custom-dropdown">
         <input
@@ -249,26 +303,33 @@
           class="playlist-input"
           placeholder="Search playlists..."
           value={selectedPlaylistName || playlistSearchTerm}
+          disabled={isUpdateMode}
           oninput={(e) => {
-            playlistSearchTerm = e.target.value;
-            if (selectedPlaylist && e.target.value !== selectedPlaylistName) {
-              selectedPlaylist = '';
+            if (!isUpdateMode) {
+              playlistSearchTerm = e.target.value;
+              if (selectedPlaylist && e.target.value !== selectedPlaylistName) {
+                selectedPlaylist = '';
+              }
+              debouncedLoadPlaylists();
             }
-            debouncedLoadPlaylists();
           }}
           onfocus={() => {
-            showPlaylistDropdown = true;
-            if (userPlaylists.length === 0) {
-              loadPlaylists();
+            if (!isUpdateMode) {
+              showPlaylistDropdown = true;
+              if (userPlaylists.length === 0) {
+                loadPlaylists();
+              }
             }
           }}
           onblur={(e) => {
-            // Delay to allow click on dropdown items
-            setTimeout(() => {
-              if (!e.relatedTarget?.classList.contains('playlist-item')) {
-                showPlaylistDropdown = false;
-              }
-            }, 200);
+            if (!isUpdateMode) {
+              // Delay to allow click on dropdown items
+              setTimeout(() => {
+                if (!e.relatedTarget?.classList.contains('playlist-item')) {
+                  showPlaylistDropdown = false;
+                }
+              }, 200);
+            }
           }}
         />
         
@@ -484,6 +545,12 @@
   .playlist-input:focus {
     outline: none;
     border-color: var(--button-color);
+  }
+  
+  .playlist-input:disabled {
+    background-color: var(--sidebar-bg);
+    cursor: not-allowed;
+    opacity: 0.7;
   }
   
   .dropdown-list {

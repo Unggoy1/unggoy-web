@@ -7,9 +7,10 @@
 		children: Snippet;
 		commands?: Snippet;
 		onclose?: () => void;
+		extraClass?: string;
 	}
 
-	let { children, commands, onclose }: Props = $props();
+	let { children, commands, onclose, extraClass = '' }: Props = $props();
 	// let { onclose }: Props = $props();
 
 	const dialog = createDialog();
@@ -55,6 +56,10 @@
 		color: var(--container-color);
 		min-height: 500px;
 		max-height: 550px;
+	}
+	
+	.dialog-container.extended {
+		max-height: 600px;
 	}
 	.dialog-background {
 		background-color: #00000040;

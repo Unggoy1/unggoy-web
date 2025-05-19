@@ -2,24 +2,33 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { BrowseData } from '$lib/api';
+	import type { PlaylistPair } from '$lib/api/playlist';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
 	import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../../stores/modal';
 	import FilterModal from '$lib/components/FilterModal.svelte';
-	import { SortOrder, Filter } from './icons';
+	import { SortOrder, Filter, Plus } from './icons';
 	import { currentPage } from '$lib/assets/js/store';
+	import { DropdownType } from '$lib/enums';
+	import type { DropdownData, AuthGroup, NoAuthGroup } from '$lib/types';
 
 	let filterModal: FilterModal;
 	interface Props {
 		browseData: BrowseData;
+		pairs?: PlaylistPair[];
 		filterTitle?: string;
+		pairsTotalPages?: number;
+		pairsTotalResults?: number;
 	}
 
-	let { browseData, filterTitle }: Props = $props();
+	let { browseData, pairs, filterTitle, pairsTotalPages, pairsTotalResults }: Props = $props();
 
 	const changePage = (newPage: number) => {
+		// Determine which total pages to use
+		const totalPages = pairs && pairsTotalPages ? pairsTotalPages : browseData.totalPages;
+		
 		// Clamp the new page number between 1 and totalPages
-		const clampedPage = Math.max(1, Math.min(newPage, browseData.totalPages));
+		const clampedPage = Math.max(1, Math.min(newPage, totalPages));
 
 		// Only update if the page has changed
 		if (clampedPage !== browseData.currentPage) {
@@ -65,7 +74,7 @@
 			}
 		}
 
-		// Rset page to 1 when filters change
+		// Reset page to 1 when filters change
 		query.delete('page');
 
 		goto(`?${query.toString()}`);
@@ -197,7 +206,65 @@
 		</div>
 	</div>
 
-	{#if browseData.assets.length}
+	{#if pairs && pairs.length > 0}
+		<div class="assets browse">
+			{#each pairs as pair (pair.id)}
+				{#if pair.map && pair.gamemode}
+					<!-- Complete pair - show only paired playlist option -->
+					<AssetCard
+						asset={pair.map}
+						pairedMode={pair.gamemode}
+						groups={getAssetCardGroups({
+							assetId: pair.map.assetId,
+							assetKind: pair.map.assetKind,
+							asset: pair.map,
+							playlist: browseData.playlist || undefined,
+							playlistModalVar: $playlistModal,
+							addAssetModalVar: $addAssetModal,
+							inlineBrowsePairingModalVar: $inlineBrowsePairingModal,
+							pairedAsset: pair.gamemode,
+							pairData: pair
+						})}
+						assetUrl="/maps/{pair.map.assetId}"
+					/>
+				{:else if pair.map}
+					<!-- Incomplete pair - map only, needs mode -->
+					<AssetCard
+						asset={pair.map}
+						groups={getAssetCardGroups({
+							assetId: pair.map.assetId,
+							assetKind: pair.map.assetKind,
+							asset: pair.map,
+							playlist: browseData.playlist || undefined,
+							playlistModalVar: $playlistModal,
+							addAssetModalVar: $addAssetModal,
+							inlineBrowsePairingModalVar: $inlineBrowsePairingModal,
+							isIncompletePair: true,
+							pairData: pair
+						})}
+						assetUrl="/maps/{pair.map.assetId}"
+					/>
+				{:else if pair.gamemode}
+					<!-- Incomplete pair - mode only, needs map -->
+					<AssetCard
+						asset={pair.gamemode}
+						groups={getAssetCardGroups({
+							assetId: pair.gamemode.assetId,
+							assetKind: pair.gamemode.assetKind,
+							asset: pair.gamemode,
+							playlist: browseData.playlist || undefined,
+							playlistModalVar: $playlistModal,
+							addAssetModalVar: $addAssetModal,
+							inlineBrowsePairingModalVar: $inlineBrowsePairingModal,
+							isIncompletePair: true,
+							pairData: pair
+						})}
+						assetUrl="/modes/{pair.gamemode.assetId}"
+					/>
+				{/if}
+			{/each}
+		</div>
+	{:else if browseData.assets.length}
 		<div class="assets browse">
 			{#each browseData.assets as asset (asset.assetId)}
 				<AssetCard
@@ -232,25 +299,29 @@
 	{/if}
 </div>
 <div class="pagination-container">
-	<div class="pagination">
-		<ul>
-			{#if browseData.currentPage > 1}
-				<li>
-					<button onclick={() => changePage(1)}>&lt;&lt;</button>
+	{#if (pairs && pairsTotalPages && pairsTotalPages > 1) || (!pairs && browseData.totalPages > 1)}
+		<div class="pagination">
+			<ul>
+				{#if browseData.currentPage > 1}
+					<li>
+						<button onclick={() => changePage(1)}>&lt;&lt;</button>
+					</li>
+				{/if}
+				<li class="prev-nav-group">
+					<button onclick={() => changePage(browseData.currentPage - 1)}>&lt;</button>
 				</li>
-			{/if}
-			<li class="prev-nav-group">
-				<button onclick={() => changePage(browseData.currentPage - 1)}>&lt;</button>
-			</li>
-			<li class="text-only">{browseData.currentPage} - {browseData.totalPages}</li>
-			<li class="next-nav-group">
-				<button onclick={() => changePage(browseData.currentPage + 1)}>&gt;</button>
-			</li>
-			{#if browseData.currentPage < browseData.totalPages}
-				<li>
-					<button onclick={() => changePage(browseData.totalPages)}>&gt;&gt;</button>
+				<li class="text-only">
+					{browseData.currentPage} - {pairs && pairsTotalPages ? pairsTotalPages : browseData.totalPages}
 				</li>
-			{/if}
-		</ul>
-	</div>
+				<li class="next-nav-group">
+					<button onclick={() => changePage(browseData.currentPage + 1)}>&gt;</button>
+				</li>
+				{#if browseData.currentPage < (pairs && pairsTotalPages ? pairsTotalPages : browseData.totalPages)}
+					<li>
+						<button onclick={() => changePage(pairs && pairsTotalPages ? pairsTotalPages : browseData.totalPages)}>&gt;&gt;</button>
+					</li>
+				{/if}
+			</ul>
+		</div>
+	{/if}
 </div>

@@ -5,7 +5,7 @@ import Plus from './components/icons/Plus.svelte';
 import Duplicate from './components/icons/Duplicate.svelte';
 import Delete from './components/icons/Delete.svelte';
 import { user } from '../stores/user';
-import { addAssetModal, playlistModal } from '../stores/modal';
+import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../stores/modal';
 import { get } from 'svelte/store';
 import { playlistDeleteAsset } from './api/playlist';
 import type { PlaylistData } from './api/playlist';
@@ -27,29 +27,99 @@ export async function getAssetLink({ assetId, assetKind, isWaypoint = false }) {
 export function getAssetCardGroups({
 	assetId,
 	assetKind,
+	asset,
 	playlist,
 	addAssetModalVar,
-	playlistModalVar
+	playlistModalVar,
+	pairedAsset,
+	inlineBrowsePairingModalVar,
+	isIncompletePair,
+	pairData
 }: {
 	assetId: string;
 	assetKind: number;
+	asset?: any;
 	versionId?: string | undefined;
 	playlist?: PlaylistData;
 	addAssetModalVar: any;
 	playlistModalVar: any;
+	pairedAsset?: any;
+	inlineBrowsePairingModalVar?: any;
+	isIncompletePair?: boolean;
+	pairData?: any;
 }) {
 	const activeUser = get(user);
 	// const addAssetModalVar = get(addAssetModal);
 	// const playlistModalVar = get(playlistModal);
-	let authGroups;
-	if (assetKind === 5) {
-		// authGroups = [
-		// 	{
-		// 		type: DropdownType.Button,
-		// 		icon: Plus,
-		// 		text: `Add to favorites`
-		// 	}
-		// ];
+	let authGroups = [];
+	if (assetKind === 5 || assetKind === 4) {  // No playlist options for playlists or prefabs
+		authGroups = [];
+	} else if (isIncompletePair && pairData) {
+		// For incomplete pairs, show option to add the missing asset and regular playlist option
+		const inlineBrowseModalVar = inlineBrowsePairingModalVar || get(inlineBrowsePairingModal);
+		authGroups = [];
+		
+		// Add option to update the pair
+		authGroups.push({
+			type: DropdownType.Button,
+			icon: Plus,
+			text: assetKind === 2 ? 'Add Game Mode' : 'Add Map',
+			function: () => {
+				const playlistId = playlist?.assetId || playlist?.playlistId;
+				if (inlineBrowseModalVar && playlistId) {
+					inlineBrowseModalVar.open(asset, pairData, playlistId);
+				}
+			}
+		});
+		
+		// Also allow adding to regular playlists
+		authGroups.push({
+			type: DropdownType.Button,
+			icon: Plus,
+			text: `Add to Playlist`,
+			function: () => addAssetModalVar.create(assetId)
+		});
+		
+		// Still allow removing from playlist
+		if (playlist && activeUser && playlist.userId == activeUser.id) {
+			authGroups.push({
+				type: DropdownType.Button,
+				icon: Delete,
+				text: `Remove From Playlist`,
+				function: async () => {
+					const { playlistDeletePair } = await import('./api/playlist');
+					await playlistDeletePair({ playlistId: playlist.assetId, pairId: pairData.id });
+				}
+			});
+		}
+	} else if (pairedAsset) {
+		// For complete pairs, only show "Add to Paired Playlist" option
+		authGroups = [];
+		
+		if ((assetKind === 2 || assetKind === 6) && asset) {
+			const inlineBrowseModalVar = inlineBrowsePairingModalVar || get(inlineBrowsePairingModal);
+			authGroups.push({
+				type: DropdownType.Button,
+				icon: Plus,
+				text: `Add to Paired Playlist`,
+				function: () => {
+					// Open with both assets pre-selected
+					inlineBrowseModalVar?.open(asset, null, null, pairedAsset);
+				}
+			});
+		}
+		
+		if (playlist && activeUser && playlist.userId == activeUser.id) {
+			authGroups.push({
+				type: DropdownType.Button,
+				icon: Delete,
+				text: `Remove From Playlist`,
+				function: async () => {
+					const { playlistDeletePair } = await import('./api/playlist');
+					await playlistDeletePair({ playlistId: playlist.assetId, pairId: pairData.id });
+				}
+			});
+		}
 	} else {
 		authGroups = [
 			{
@@ -64,10 +134,24 @@ export function getAssetCardGroups({
 				text: `Add to New Playlist`,
 				function: () =>
 					playlistModalVar.create({
-						assetId: assetId
+						assetId: assetId,
+						asset: asset
 					})
 			}
 		];
+		
+		// Add inline browse pairing option for maps and modes only
+		if ((assetKind === 2 || assetKind === 6) && asset) {
+			const inlineBrowseModalVar = inlineBrowsePairingModalVar || get(inlineBrowsePairingModal);
+			authGroups.push({
+				type: DropdownType.Button,
+				icon: Plus,
+				text: `Add to Paired Playlist`,
+				function: () => {
+					inlineBrowseModalVar?.open(asset);
+				}
+			});
+		}
 
 		if (playlist && activeUser && playlist.userId == activeUser.id) {
 			authGroups.push({
@@ -95,7 +179,8 @@ export function getAssetCardGroups({
 		});
 	}
 
-	return activeUser && authGroups ? [authGroups, noAuthGroups] : [noAuthGroups];
+	const result = activeUser ? [authGroups, noAuthGroups] : [noAuthGroups];
+	return result;
 }
 export function removeSameValues<T extends object>(details: T, ogDetails: T): Partial<T> {
 	return Object.entries(details).reduce((acc, [key, value]) => {
