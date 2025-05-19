@@ -1,7 +1,8 @@
 <script lang="ts">
   import LargeModal from './LargeModal.svelte';
-  import { MOCK_MODES, MOCK_MAPS, MOCK_USER_PAIRED_PLAYLISTS, MOCK_PAIRED_PLAYLISTS } from '$lib/demo/mockData';
-  import type { UgcData } from '$lib/api/ugc';
+  import { ugcBrowse, type UgcData, type UgcBrowseResponse } from '$lib/api/ugc';
+  import { playlistMe, type PlaylistData, type PlaylistBrowseResponse } from '$lib/api/playlist';
+  import { onMount } from 'svelte';
   
   let modal: LargeModal;
   let asset: UgcData | null = null;
@@ -10,79 +11,161 @@
   let selectedAsset: UgcData | null = null;
   let searchTerm: string = '';
   let currentPage: number = 1;
-  let itemsPerPage: number = 6;
+  let itemsPerPage: number = 8;
+  
+  // Playlist dropdown state
+  let playlistSearchTerm: string = '';
+  let showPlaylistDropdown: boolean = false;
+  let userPlaylists: PlaylistData[] = [];
+  let filteredPlaylists: PlaylistData[] = [];
+  let loadingPlaylists = false;
   
   // Sorting options
-  let sortBy: string = 'name';
-  let sortOrder: 'asc' | 'desc' = 'asc';
+  let sortBy: string = 'playsAllTime';
+  let sortOrder: 'asc' | 'desc' = 'desc';
   
-  // Get maps for a specific playlist
-  function getMapsForPlaylist(playlistId: string) {
-    const playlist = MOCK_PAIRED_PLAYLISTS.find(p => p.playlistId === playlistId);
-    if (!playlist) return [];
+  // Loading states
+  let loading = false;
+  let error = '';
+  
+  // Available assets from API
+  let availableAssets: UgcData[] = [];
+  let totalResults: number = 0;
+  let totalPages: number = 0;
+  
+  // Debounce timer for search
+  let searchTimer: NodeJS.Timeout;
+  let playlistSearchTimer: NodeJS.Timeout;
+  
+  // Keep track if this is the first load
+  let isFirstLoad = true;
+  
+  // Load assets from API based on current filters
+  async function loadAssets() {
+    // Don't set loading on first load to prevent empty state
+    if (!isFirstLoad) {
+      loading = true;
+    }
+    error = '';
     
-    // Get all maps from pairs and unpaired maps
-    const mapsFromPairs = playlist.pairs.map(pair => pair.mapAsset);
-    const allMaps = [...mapsFromPairs, ...playlist.unpairedMaps];
-    
-    // Remove duplicates by assetId
-    const uniqueMaps = Array.from(new Map(allMaps.map(map => [map.assetId, map])).values());
-    return uniqueMaps;
+    try {
+      // Map asset type to API assetKind numbers
+      // 2 = Map, 6 = UgcGameVariant (modes)
+      const assetKind = assetType === 'map' ? 6 : 2; // Inverted because we fetch opposite type
+      
+      // Calculate offset based on current page
+      const offset = (currentPage - 1) * itemsPerPage;
+      
+      const response: UgcBrowseResponse = await ugcBrowse({
+        assetKind,
+        sort: sortBy,
+        order: sortOrder,
+        count: itemsPerPage,
+        offset,
+        searchTerm: searchTerm || undefined
+      });
+      
+      availableAssets = response.assets;
+      totalResults = response.totalCount;
+      totalPages = Math.ceil(response.totalCount / itemsPerPage);
+      isFirstLoad = false;
+    } catch (err) {
+      error = 'Failed to load assets. Please try again.';
+      console.error('Error loading assets:', err);
+    } finally {
+      loading = false;
+    }
   }
   
-  $: availableAssets = assetType === 'map' 
-    ? MOCK_MODES
-    : selectedPlaylist 
-      ? getMapsForPlaylist(selectedPlaylist)
-      : [];
-  
-  $: filteredAssets = availableAssets.filter(asset => 
-    asset.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  
-  // Sorting logic
-  $: sortedAssets = [...filteredAssets].sort((a, b) => {
-    let aVal = a[sortBy];
-    let bVal = b[sortBy];
-    
-    // Handle missing fields in mock data
-    if (aVal === undefined) aVal = 0;
-    if (bVal === undefined) bVal = 0;
-    
-    if (typeof aVal === 'string' && typeof bVal === 'string') {
-      aVal = aVal.toLowerCase();
-      bVal = bVal.toLowerCase();
-    }
-    
-    if (sortOrder === 'asc') {
-      return aVal > bVal ? 1 : -1;
-    } else {
-      return aVal < bVal ? 1 : -1;
-    }
-  });
-  
-  // Pagination
-  $: totalPages = Math.ceil(sortedAssets.length / itemsPerPage);
-  $: paginatedAssets = sortedAssets.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-  
-  // Reset page when filters change
-  $: {
-    searchTerm;
-    sortBy;
-    sortOrder;
-    currentPage = 1;
+  // Debounced search function
+  function debouncedLoadAssets() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      currentPage = 1; // Reset to first page on new search
+      loadAssets();
+    }, 300); // 300ms delay
   }
   
-  export function open(selectedAsset: UgcData) {
-    asset = selectedAsset;
-    assetType = selectedAsset.assetKind === 'Map' ? 'map' : 'mode';
+  // Track previous values to prevent unnecessary API calls
+  let prevSortBy = sortBy;
+  let prevSortOrder = sortOrder;
+  let prevSearchTerm = searchTerm;
+  
+  // Load user playlists from API
+  async function loadPlaylists() {
+    loadingPlaylists = true;
+    try {
+      const response: PlaylistBrowseResponse = await playlistMe({
+        searchTerm: playlistSearchTerm || undefined,
+        count: 20 // Get up to 20 playlists, can increase if needed
+      });
+      userPlaylists = response.assets;
+      filteredPlaylists = response.assets;
+    } catch (err) {
+      console.error('Error loading playlists:', err);
+      userPlaylists = [];
+      filteredPlaylists = [];
+    } finally {
+      loadingPlaylists = false;
+    }
+  }
+  
+  // Debounced playlist search
+  function debouncedLoadPlaylists() {
+    clearTimeout(playlistSearchTimer);
+    playlistSearchTimer = setTimeout(() => {
+      loadPlaylists();
+    }, 300);
+  }
+  
+  // Get selected playlist name
+  $: selectedPlaylistName = userPlaylists.find(p => p.assetId === selectedPlaylist)?.name || '';
+  
+  // Load data when playlist is first selected
+  let prevSelectedPlaylist = '';
+  
+  // Load assets when relevant filters change
+  $: if (modal && selectedPlaylist) {
+    // Check if playlist changed (initial load)
+    if (selectedPlaylist !== prevSelectedPlaylist) {
+      prevSelectedPlaylist = selectedPlaylist;
+      currentPage = 1;
+      loadAssets();
+    }
+    // Check if search term changed
+    else if (searchTerm !== prevSearchTerm) {
+      prevSearchTerm = searchTerm;
+      debouncedLoadAssets();
+    } 
+    // Check if sort options changed
+    else if (sortBy !== prevSortBy || sortOrder !== prevSortOrder) {
+      prevSortBy = sortBy;
+      prevSortOrder = sortOrder;
+      currentPage = 1; // Reset to first page on sort change
+      loadAssets();
+    }
+  }
+  
+  export function open(selectedAssetParam: UgcData) {
+    asset = selectedAssetParam;
+    
+    // assetKind: 2 = Map, 6 = UgcGameVariant (mode)
+    assetType = selectedAssetParam.assetKind === 2 ? 'map' : 'mode';
+    
     selectedPlaylist = '';
+    prevSelectedPlaylist = '';
     selectedAsset = null;
     searchTerm = '';
+    prevSearchTerm = '';
     currentPage = 1;
+    availableAssets = [];
+    totalResults = 0;
+    totalPages = 0;
+    isFirstLoad = true;
+    playlistSearchTerm = '';
+    showPlaylistDropdown = false;
+    userPlaylists = [];
+    filteredPlaylists = [];
     modal.open();
   }
   
@@ -105,6 +188,7 @@
         // Clear the selected asset but keep the modal open
         selectedAsset = null;
         searchTerm = '';
+        prevSearchTerm = '';
       } else {
         modal.close();
       }
@@ -116,7 +200,10 @@
   }
   
   function changePage(newPage: number) {
-    currentPage = Math.max(1, Math.min(newPage, totalPages));
+    if (newPage !== currentPage && newPage >= 1 && newPage <= totalPages) {
+      currentPage = newPage;
+      loadAssets();
+    }
   }
 </script>
 
@@ -138,22 +225,66 @@
       <label for="playlist-select" class="block text-sm font-medium mb-2">
         Select Playlist
       </label>
-      <select
-        id="playlist-select"
-        bind:value={selectedPlaylist}
-        class="playlist-select"
-      >
-        <option value="">Choose a playlist...</option>
-        {#each MOCK_USER_PAIRED_PLAYLISTS as playlist}
-          <option value={playlist.playlistId}>
-            {playlist.name} ({playlist.pairCount} pairs)
-          </option>
-        {/each}
-      </select>
+      <div class="custom-dropdown">
+        <input
+          type="text"
+          id="playlist-select"
+          class="playlist-input"
+          placeholder="Search playlists..."
+          value={selectedPlaylistName || playlistSearchTerm}
+          oninput={(e) => {
+            playlistSearchTerm = e.target.value;
+            if (selectedPlaylist && e.target.value !== selectedPlaylistName) {
+              selectedPlaylist = '';
+            }
+            debouncedLoadPlaylists();
+          }}
+          onfocus={() => {
+            showPlaylistDropdown = true;
+            if (userPlaylists.length === 0) {
+              loadPlaylists();
+            }
+          }}
+          onblur={(e) => {
+            // Delay to allow click on dropdown items
+            setTimeout(() => {
+              if (!e.relatedTarget?.classList.contains('playlist-item')) {
+                showPlaylistDropdown = false;
+              }
+            }, 200);
+          }}
+        />
+        
+        {#if showPlaylistDropdown && (loadingPlaylists || filteredPlaylists.length > 0 || playlistSearchTerm)}
+          <div class="dropdown-list">
+            {#if loadingPlaylists}
+              <div class="loading-playlists">Loading playlists...</div>
+            {:else if filteredPlaylists.length > 0}
+              {#each filteredPlaylists as playlist}
+                <button
+                  class="playlist-item"
+                  class:selected={selectedPlaylist === playlist.assetId}
+                  onclick={() => {
+                    selectedPlaylist = playlist.assetId;
+                    playlistSearchTerm = '';
+                    showPlaylistDropdown = false;
+                  }}
+                  tabindex="-1"
+                >
+                  {playlist.name} ({playlist._count?.ugc || 0} items)
+                </button>
+              {/each}
+            {:else}
+              <div class="no-results">No playlists found</div>
+            {/if}
+          </div>
+        {/if}
+      </div>
     </div>
     
-    {#if selectedPlaylist}
-      <div class="browse-section">
+    <!-- Always show the browse section container for consistent height -->
+    <div class={selectedPlaylist ? "browse-section active" : "browse-section"}>
+      {#if selectedPlaylist}
         <h4 class="text-sm font-medium mb-3">
           Select {assetType === 'map' ? 'Mode' : 'Map'} to Pair
         </h4>
@@ -198,24 +329,43 @@
           </div>
         {/if}
         
-        <!-- Assets Grid -->
-        <div class="assets-grid">
-          {#each paginatedAssets as assetItem}
-            <button
-              class="asset-card"
-              class:selected={selectedAsset?.assetId === assetItem.assetId}
-              onclick={() => selectAsset(assetItem)}
-            >
-              <img src={assetItem.thumbnailUrl} alt={assetItem.name} />
-              <div class="asset-card-info">
-                <p class="asset-owner">{assetItem.name}</p>
+        <!-- Content Container with fixed height -->
+        <div class="content-container">
+          {#if error}
+            <div class="error-state">
+              <p>{error}</p>
+              <button onclick={loadAssets} class="retry-btn">Retry</button>
+            </div>
+          {:else}
+            <div class="assets-grid">
+              {#each availableAssets as assetItem}
+                <button
+                  class="asset-card"
+                  class:selected={selectedAsset?.assetId === assetItem.assetId}
+                  onclick={() => selectAsset(assetItem)}
+                  title={assetItem.name}
+                >
+                  <img src={assetItem.thumbnailUrl} alt={assetItem.name} />
+                  <div class="asset-card-info">
+                    <p class="asset-owner">{assetItem.name}</p>
+                  </div>
+                </button>
+              {/each}
+            </div>
+            
+            <!-- Loading overlay -->
+            {#if loading}
+              <div class="loading-overlay">
+                <div class="loading-content">
+                  <p>Loading {assetType === 'map' ? 'modes' : 'maps'}...</p>
+                </div>
               </div>
-            </button>
-          {/each}
+            {/if}
+          {/if}
         </div>
         
-        <!-- Pagination -->
-        {#if totalPages > 1}
+        <!-- Pagination outside content container -->
+        {#if !loading && !error && totalPages > 1}
           <div class="pagination">
             <button 
               onclick={() => changePage(currentPage - 1)}
@@ -234,8 +384,8 @@
             </button>
           </div>
         {/if}
-      </div>
-    {/if}
+      {/if}
+    </div>
   </div>
   
   {#snippet commands()}
@@ -271,6 +421,7 @@
   .modal-content {
     width: 100%;
     margin-top: 20px;
+    min-height: 750px; /* Ensure modal has consistent minimum height */
   }
   
   .selected-asset {
@@ -299,7 +450,12 @@
     margin-bottom: 20px;
   }
   
-  .playlist-select {
+  .custom-dropdown {
+    position: relative;
+    width: 100%;
+  }
+  
+  .playlist-input {
     width: 100%;
     padding: 8px 12px;
     background-color: var(--top-container-bg);
@@ -308,8 +464,71 @@
     color: var(--container-color);
   }
   
+  .playlist-input:focus {
+    outline: none;
+    border-color: var(--button-color);
+  }
+  
+  .dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    background-color: var(--top-container-bg);
+    border: 1px solid var(--sidebar-bg);
+    border-radius: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 50;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .playlist-item {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--container-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .playlist-item:hover {
+    background-color: var(--button-bg);
+  }
+  
+  .playlist-item.selected {
+    background-color: var(--button-bg);
+    font-weight: 500;
+  }
+  
+  .no-results {
+    padding: 10px 12px;
+    color: var(--sidebar-color);
+    text-align: center;
+  }
+  
+  .loading-playlists {
+    padding: 10px 12px;
+    color: var(--sidebar-color);
+    text-align: center;
+  }
+  
   .browse-section {
     margin-top: 24px;
+    min-height: 600px; /* Ensure consistent height whether playlist is selected or not */
+    position: relative;
+  }
+  
+  .browse-section:not(.active) {
+    visibility: hidden; /* Hide content but maintain space */
+  }
+  
+  .browse-section.active {
+    visibility: visible;
   }
   
   .controls-bar {
@@ -354,6 +573,62 @@
   
   .sort-order-btn:hover {
     background-color: var(--button-bg);
+  }
+  
+  .content-container {
+    min-height: 400px;
+    position: relative;
+  }
+  
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 8px;
+  }
+  
+  .loading-content {
+    text-align: center;
+    background-color: var(--top-container-bg);
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loading-content p {
+    margin: 0;
+    color: var(--container-color);
+  }
+  
+  .error-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--sidebar-color);
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .retry-btn {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: var(--button-bg);
+    color: var(--button-color);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .retry-btn:hover {
+    background-color: var(--button-bg-hover);
   }
   
   .selected-for-pairing {
@@ -402,9 +677,9 @@
   .assets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-auto-rows: minmax(150px, auto); /* Ensure minimum height for cards */
     gap: 16px;
-    margin-bottom: 16px;
-    max-height: 500px;
+    height: 100%;
     overflow-y: auto;
     border: 1px solid var(--sidebar-bg);
     border-radius: 8px;
@@ -419,6 +694,9 @@
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
   
   .asset-card:hover {
@@ -438,6 +716,9 @@
   
   .asset-card-info {
     padding: 12px;
+    flex: 1;
+    display: flex;
+    align-items: center;
   }
   
   .asset-owner {
@@ -447,6 +728,12 @@
     width: 100%;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .pagination {
