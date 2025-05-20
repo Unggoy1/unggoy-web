@@ -1,9 +1,12 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit';
+import tailwindcss from '@tailwindcss/vite';
+
 
 export default defineConfig({
 	plugins: [
+		tailwindcss(),
 		sveltekit(),
 		SvelteKitPWA({
 			workbox: {

@@ -25,39 +25,43 @@
 		use:menu.items
 		class="z-20 absolute shadow right-0 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white"
 	>
-		{#each groups as group}
-			<div class="px-1 py-1">
-				{#each group as option}
-					{@const active = $menu.active === option.text}
-					{#if option.type === DropdownType.A}
-						<a
-							use:menu.item
-							href={option.href}
-							class="menu-item flex w-full items-center rounded-md {active
-								? 'menu-item-active'
-								: 'menu-item-inactive'}"
-						>
-							<option.icon class="mr-2 h-5 w-5" {active} />
-							{option.text}
-						</a>
-					{:else if option.type === DropdownType.Button}
-						<button
-							use:menu.item
-							onclick={() => {
-								option.function(option.params);
-								menu.close();
-							}}
-							class="menu-item flex w-full items-center rounded-md {active
-								? 'menu-item-active'
-								: 'menu-item-inactive'}"
-						>
-							<option.icon class="mr-2 h-5 w-5" {active} />
-							{option.text}
-						</button>
-					{/if}
-				{/each}
-			</div>
-		{/each}
+		{#if groups && groups.length > 0}
+			{#each groups as group}
+				{#if group && group.length > 0}
+					<div class="px-1 py-1">
+						{#each group as option}
+							{@const active = $menu.active === option.text}
+							{#if option.type === DropdownType.A}
+								<a
+									use:menu.item
+									href={option.href}
+									class="menu-item flex w-full items-center rounded-md {active
+										? 'menu-item-active'
+										: 'menu-item-inactive'}"
+								>
+									<option.icon class="mr-2 h-5 w-5" {active} />
+									{option.text}
+								</a>
+							{:else if option.type === DropdownType.Button}
+								<button
+									use:menu.item
+									onclick={() => {
+										option.function(option.params);
+										menu.close();
+									}}
+									class="menu-item flex w-full items-center rounded-md {active
+										? 'menu-item-active'
+										: 'menu-item-inactive'}"
+								>
+									<option.icon class="mr-2 h-5 w-5" {active} />
+									{option.text}
+								</button>
+							{/if}
+						{/each}
+					</div>
+				{/if}
+			{/each}
+		{/if}
 	</div>
 </Transition>
 
@@ -65,24 +69,6 @@
 	.shadow {
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	}
-	/* .menu { */
-	/* 	display: flex; */
-	/* 	align-items: center; */
-	/* 	padding-left: 20px; */
-	/* 	flex-shrink: 0; */
-	/* 	margin-left: auto; */
-	/* } */
-	/* .menu-button { */
-	/* 	width: 64px; */
-	/* 	height: 64px; */
-	/* 	border-radius: 100px; */
-	/* 	background-color: var(--button-bg); */
-	/* 	color: var(--button-color); */
-	/* } */
-	/* .menu-button svg { */
-	/* 	width: 32px; */
-	/* 	height: 64px; */
-	/* } */
 
 	.menu-item {
 		padding: 8px;
@@ -91,7 +77,4 @@
 		font-weight: 500;
 		line-height: 140%; /* 22.4px */
 	}
-	/* .mt-2 { */
-	/* 	margin-top: 20px; */
-	/* } */
 </style>

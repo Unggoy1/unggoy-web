@@ -1,14 +1,16 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { user } from '../../../stores/user';
-	import { addAssetModal, playlistModal } from '../../../stores/modal';
+	import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../../../stores/modal';
 	import AssetKind from '$lib/components/AssetKind.svelte';
 	import DropdownCard from '$lib/components/DropdownCard.svelte';
 	import Carousel from '$lib/components/Carousel.svelte';
+	import SkeletonAssetDetail from '$lib/components/SkeletonAssetDetail.svelte';
 	import { DropdownType } from '$lib/enums';
 	import { onMount } from 'svelte';
 	import { Duplicate, Plus, Crown, Link, Star } from '$lib/components/icons';
 	import { getAssetLink } from '$lib/functions';
+	import { navigating } from '$app/stores';
 
 	export let data: PageData;
 	$: previewImage = data.map.files.fileRelativePaths[0];
@@ -17,28 +19,41 @@
 		previewImage = image;
 	};
 
-	const groups = [
-		[
-			{
-				type: DropdownType.Button,
-				icon: Plus,
-				text: `Add to Playlist`,
-				function: () => $addAssetModal.create(data.map.assetId)
-			},
-			{
-				type: DropdownType.Button,
-				icon: Plus,
-				text: `Add to New Playlist`,
-				function: () => $playlistModal.create({ assetId: data.map.assetId })
-			}
-		]
-	];
+	const groups =
+		data.map.assetKind === 4 // Don't show playlist options for prefabs
+			? []
+			: [
+					[
+						{
+							type: DropdownType.Button,
+							icon: Plus,
+							text: `Add to Playlist`,
+							function: () => $addAssetModal.create(data.map.assetId)
+						},
+						{
+							type: DropdownType.Button,
+							icon: Plus,
+							text: `Add to New Playlist`,
+							function: () => $playlistModal.create({ assetId: data.map.assetId })
+						},
+						...(data.map.assetKind === 2 || data.map.assetKind === 6
+							? [
+									{
+										type: DropdownType.Button,
+										icon: Plus,
+										text: `Create Map-Mode Pair`,
+										function: () => $inlineBrowsePairingModal.open(data.map)
+									}
+								]
+							: [])
+					]
+				];
 	const linkGroups = [
 		[
 			{
 				type: DropdownType.Button,
 				icon: Duplicate,
-				text: `Copy Asset Link`,
+				text: `Copy ${data.map.assetKind === 2 ? 'Map' : data.map.assetKind === 6 ? 'Mode' : data.map.assetKind === 4 ? 'Prefab' : 'Playlist'} Link`,
 				function: () => getAssetLink({ assetId: data.map.assetId, assetKind: data.map.assetKind })
 			},
 			{
@@ -114,7 +129,7 @@
 					src={previewImage ? data.map.files.prefix + previewImage : '/unknown.webp'}
 					alt={data.map.name}
 				/>
-				{#if $user}
+				{#if $user && data.map.assetKind !== 4}
 					<button use:dropdown.button class="playlist-button">
 						<Plus active={true}></Plus>
 					</button>
@@ -122,7 +137,11 @@
 						<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
 					</div>
 				{/if}
-				<button use:dropdownLinks.button class="playlist-button" class:left={$user}>
+				<button
+					use:dropdownLinks.button
+					class="playlist-button"
+					class:left={$user && data.map.assetKind !== 4}
+				>
 					<Link active={true}></Link>
 				</button>
 				<div>
@@ -188,7 +207,7 @@
 						>
 							<Link active={true}></Link>
 						</button>
-						{#if $user}
+						{#if $user && data.map.assetKind !== 4}
 							<button onclick={() => toggleDrawer('playlist')} class="playlist-button mobile">
 								<Plus active={true}></Plus>
 							</button>
@@ -348,7 +367,7 @@
 {#if $user}
 	<div bind:this={drawerRef} class="slideup-drawer z-top" class:open={isDrawerOpen}>
 		<div class="drawer-options">
-			{#if showPlaylistOption}
+			{#if showPlaylistOption && data.map.assetKind !== 4}
 				<button onclick={() => $addAssetModal.create(data.map.assetId)} class="drawer-option">
 					<Plus active={false}></Plus>
 					<span>Add to playlist</span>
@@ -370,7 +389,15 @@
 					class="drawer-option"
 				>
 					<Duplicate active={false}></Duplicate>
-					<span>Copy asset link</span>
+					<span
+						>Copy {data.map.assetKind === 2
+							? 'Map'
+							: data.map.assetKind === 6
+								? 'Mode'
+								: data.map.assetKind === 4
+									? 'Prefab'
+									: 'Playlist'} link</span
+					>
 				</button>
 				<button
 					onclick={() =>

@@ -75,7 +75,26 @@
 <style>
 	ul {
 		padding-left: 0px;
-		scrollbar-color: var(--button-bg) var(--container-bg);
+		scrollbar-width: thin;
+		scrollbar-color: var(--button-bg) var(--theme-bg);
+	}
+
+	ul::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	ul::-webkit-scrollbar-track {
+		background: var(--theme-bg);
+		border-radius: 4px;
+	}
+
+	ul::-webkit-scrollbar-thumb {
+		background: var(--button-bg);
+		border-radius: 4px;
+	}
+
+	ul::-webkit-scrollbar-thumb:hover {
+		background: var(--button-bg-hover);
 	}
 	li {
 		padding-left: 8px;

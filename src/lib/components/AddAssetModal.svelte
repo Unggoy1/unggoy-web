@@ -3,7 +3,6 @@
 	import Combobox from './Combobox.svelte';
 	import { playlistAddAsset } from '$lib/api/playlist';
 	import { onMount } from 'svelte';
-
 	let modal: Modal;
 	let assetId: string = $state('');
 	let mode = $state<'edit' | 'create'>('edit');

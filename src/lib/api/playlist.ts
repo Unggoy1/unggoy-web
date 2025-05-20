@@ -338,11 +338,174 @@ export interface PlaylistData {
 	user?: UserData;
 	_count: {
 		favoritedBy: number;
-		ugc: number;
+		ugc?: number; // Legacy field
+		ugcPairs?: number; // New field
 	};
 }
 
 interface UserData {
 	username: string;
 	emblemPath: string;
+}
+
+export async function playlistCreatePair({
+	playlistId,
+	mapAssetId,
+	gamemodeAssetId
+}: PlaylistCreatePairData): Promise<void> {
+	const context: RequestOpts = {
+		path: `/playlist/${playlistId}/pair`,
+		method: 'POST',
+		body: {
+			mapAssetId,
+			gamemodeAssetId
+		}
+	};
+	
+	try {
+		const result = await toast.promise(request(context), {
+			loading: 'Adding pair...',
+			success: () => 'Pair added successfully',
+			error: (err: any) => err.body?.message || 'Failed to add pair'
+		});
+		
+		await invalidateAll();
+	} catch (error) {
+		console.error('Error creating pair:', error);
+		throw error;
+	}
+}
+
+export interface PlaylistCreatePairData {
+	playlistId: string;
+	mapAssetId?: string;
+	gamemodeAssetId?: string;
+}
+
+import type { UgcData } from './ugc';
+
+export interface PlaylistPair {
+	id: string;
+	map?: UgcData | null;
+	gamemode?: UgcData | null;  
+	createdAt: string;
+}
+
+export interface PlaylistPairsResponse {
+	playlistId: string;
+	pairs: PlaylistPair[];
+	totalCount: number;
+	pageSize: number;
+}
+
+export async function playlistGetPairs(
+	{
+		playlistId,
+		assetKind,
+		sort,
+		order,
+		count,
+		offset,
+		tags,
+		searchTerm,
+		gamertag,
+		ownerOnly,
+		svelteFetch
+	}: PlaylistGetPairsParams
+): Promise<PlaylistPairsResponse> {
+	const context: RequestOpts = {
+		path: `/playlist/${playlistId}/pairs`,
+		method: 'GET',
+		query: {
+			assetKind,
+			sort,
+			order,
+			count,
+			offset,
+			tags,
+			searchTerm,
+			gamertag,
+			ownerOnly
+		}
+	};
+	
+	const result = await request(context, svelteFetch);
+	return await result.json();
+}
+
+export interface PlaylistGetPairsParams extends Fetch {
+	playlistId: string;
+	assetKind?: number;
+	sort?: string;
+	order?: 'desc' | 'asc';
+	count?: number;
+	offset?: number;
+	tags?: string;
+	searchTerm?: string;
+	gamertag?: string;
+	ownerOnly?: boolean;
+}
+
+export async function playlistUpdatePair({
+	playlistId,
+	pairId,
+	mapAssetId,
+	gamemodeAssetId
+}: PlaylistUpdatePairData): Promise<void> {
+	const context: RequestOpts = {
+		path: `/playlist/${playlistId}/pair/${pairId}`,
+		method: 'PUT',
+		body: {
+			mapAssetId,
+			gamemodeAssetId
+		}
+	};
+	
+	try {
+		const result = await toast.promise(request(context), {
+			loading: 'Updating pair...',
+			success: () => 'Pair updated successfully',
+			error: (err: any) => err.body?.message || 'Failed to update pair'
+		});
+		
+		await invalidateAll();
+	} catch (error) {
+		console.error('Error updating pair:', error);
+		throw error;
+	}
+}
+
+export interface PlaylistUpdatePairData {
+	playlistId: string;
+	pairId: string;
+	mapAssetId?: string;
+	gamemodeAssetId?: string;
+}
+
+export async function playlistDeletePair({
+	playlistId,
+	pairId
+}: PlaylistDeletePairData): Promise<void> {
+	const context: RequestOpts = {
+		path: `/playlist/${playlistId}/pair/${pairId}`,
+		method: 'DELETE'
+	};
+	
+	try {
+		const result = await toast.promise(request(context), {
+			loading: 'Removing pair...',
+			success: () => 'Pair removed successfully',
+			error: (err: any) => err.body?.message || 'Failed to remove pair'
+		});
+		
+		await invalidateAll();
+	} catch (error) {
+		console.error('Error deleting pair:', error);
+		throw error;
+	}
+}
+
+export interface PlaylistDeletePairData {
+	playlistId: string;
+	pairId: string;
 }

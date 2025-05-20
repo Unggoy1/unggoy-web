@@ -1,6 +1,6 @@
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
-import { playlistGet, type PlaylistGet } from '$lib/api/playlist';
+import { playlistGet, type PlaylistGet, playlistGetPairs } from '$lib/api/playlist';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url, params }) => {
@@ -53,15 +53,39 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		ownerOnly = ownerOnlyString?.toLowerCase() === 'true';
 		fetchParams.ownerOnly = ownerOnly;
 	}
+	
+	// Prepare pairs fetch params
+	const pairsFetchParams = {
+		playlistId: playlistId,
+		svelteFetch: fetch,
+		assetKind: fetchParams.assetKind,
+		sort: fetchParams.sort,
+		order: fetchParams.order,
+		count: fetchParams.count || 20,
+		offset: fetchParams.offset,
+		tags: fetchParams.tags,
+		searchTerm: fetchParams.searchTerm,
+		gamertag: fetchParams.gamertag,
+		ownerOnly: fetchParams.ownerOnly
+	};
+	
+	// Get both playlist data and pairs data
 	let data;
+	let pairsData;
 	try {
 		data = await playlistGet(fetchParams);
+		pairsData = await playlistGetPairs(pairsFetchParams);
 	} catch (error) {
 		throw error;
 	}
+	
 	return {
 		playlist: data.playlist,
 		assets: data.assets,
+		pairs: pairsData.pairs,
+		pairsTotalPages: Math.ceil(pairsData.totalCount / pairsData.pageSize),
+		pairsPageSize: pairsData.pageSize,
+		pairsTotalResults: pairsData.totalCount,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
 		totalResults: data.totalCount,
@@ -69,6 +93,7 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		filter: assetKind || '',
 		sort: sort || 'publishedAt',
 		order: order || 'desc',
+		searchTerm: searchTerm || '',
 		gamertag: gamertag || '',
 		ownerOnly: ownerOnly || false,
 		tag: tags ? tags[0] : ''
