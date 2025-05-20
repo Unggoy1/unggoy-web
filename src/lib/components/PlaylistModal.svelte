@@ -100,7 +100,7 @@
 			fileErrorMessage = ''; // Clear any previous error messages
 		}
 		const allowedFileTypes = ['image/png', 'image/jpeg'];
-		const maxFileSize = 1 * 1024 * 1024; //1MB in bytes
+		const maxFileSize = 5 * 1024 * 1024; //1MB in bytes
 		const file: File = details.thumbnail.item(0);
 
 		if (!allowedFileTypes.includes(file.type)) {
@@ -109,7 +109,7 @@
 			return;
 		}
 		if (file.size > maxFileSize) {
-			fileErrorMessage = 'Max image size is 1MB.';
+			fileErrorMessage = 'Max image size is 5MB.';
 			if (inputElement) inputElement.value = ''; // Clear the file input
 			return;
 		}

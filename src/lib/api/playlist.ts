@@ -481,3 +481,31 @@ export interface PlaylistUpdatePairData {
 	mapAssetId?: string;
 	gamemodeAssetId?: string;
 }
+
+export async function playlistDeletePair({
+	playlistId,
+	pairId
+}: PlaylistDeletePairData): Promise<void> {
+	const context: RequestOpts = {
+		path: `/playlist/${playlistId}/pair/${pairId}`,
+		method: 'DELETE'
+	};
+	
+	try {
+		const result = await toast.promise(request(context), {
+			loading: 'Removing pair...',
+			success: () => 'Pair removed successfully',
+			error: (err: any) => err.body?.message || 'Failed to remove pair'
+		});
+		
+		await invalidateAll();
+	} catch (error) {
+		console.error('Error deleting pair:', error);
+		throw error;
+	}
+}
+
+export interface PlaylistDeletePairData {
+	playlistId: string;
+	pairId: string;
+}
