@@ -764,6 +764,7 @@ img {
 	top: 10px;
 	left: 8px;
 	fill: var(--button-color);
+	z-index: 5;
 }
 
 .asset-type svg {

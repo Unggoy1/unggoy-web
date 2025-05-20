@@ -10,6 +10,9 @@
 	import.meta.env.PROD;
 	let dropdown: DropdownCard;
 	export let groups;
+	
+	// Ensure assetKind is available
+	$: assetKind = asset?.assetKind ?? null;
 </script>
 
 <div style="position:relative">

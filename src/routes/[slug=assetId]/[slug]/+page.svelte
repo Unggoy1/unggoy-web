@@ -19,30 +19,35 @@
 		previewImage = image;
 	};
 
-	const groups = data.map.assetKind === 4 // Don't show playlist options for prefabs
-		? [] 
-		: [
-			[
-				{
-					type: DropdownType.Button,
-					icon: Plus,
-					text: `Add to Playlist`,
-					function: () => $addAssetModal.create(data.map.assetId)
-				},
-				{
-					type: DropdownType.Button,
-					icon: Plus,
-					text: `Add to New Playlist`,
-					function: () => $playlistModal.create({ assetId: data.map.assetId })
-				},
-				...(data.map.assetKind === 2 || data.map.assetKind === 6 ? [{
-					type: DropdownType.Button,
-					icon: Plus,
-					text: `Create Map-Mode Pair`,
-					function: () => $inlineBrowsePairingModal.open(data.map)
-				}] : [])
-			]
-		];
+	const groups =
+		data.map.assetKind === 4 // Don't show playlist options for prefabs
+			? []
+			: [
+					[
+						{
+							type: DropdownType.Button,
+							icon: Plus,
+							text: `Add to Playlist`,
+							function: () => $addAssetModal.create(data.map.assetId)
+						},
+						{
+							type: DropdownType.Button,
+							icon: Plus,
+							text: `Add to New Playlist`,
+							function: () => $playlistModal.create({ assetId: data.map.assetId })
+						},
+						...(data.map.assetKind === 2 || data.map.assetKind === 6
+							? [
+									{
+										type: DropdownType.Button,
+										icon: Plus,
+										text: `Create Map-Mode Pair`,
+										function: () => $inlineBrowsePairingModal.open(data.map)
+									}
+								]
+							: [])
+					]
+				];
 	const linkGroups = [
 		[
 			{
@@ -113,9 +118,6 @@
 	/><meta name="twitter:img:src" content={data.map.thumbnailUrl} />
 </svelte:head>
 
-{#if $navigating}
-	<SkeletonAssetDetail />
-{:else}
 <div class="main-container show">
 	<div class="asset-area">
 		<div class="asset-container">
@@ -135,7 +137,11 @@
 						<DropdownCard bind:this={dropdown} {groups}></DropdownCard>
 					</div>
 				{/if}
-				<button use:dropdownLinks.button class="playlist-button" class:left={$user && data.map.assetKind !== 4}>
+				<button
+					use:dropdownLinks.button
+					class="playlist-button"
+					class:left={$user && data.map.assetKind !== 4}
+				>
 					<Link active={true}></Link>
 				</button>
 				<div>
@@ -383,7 +389,15 @@
 					class="drawer-option"
 				>
 					<Duplicate active={false}></Duplicate>
-					<span>Copy {data.map.assetKind === 2 ? 'Map' : data.map.assetKind === 6 ? 'Mode' : data.map.assetKind === 4 ? 'Prefab' : 'Playlist'} link</span>
+					<span
+						>Copy {data.map.assetKind === 2
+							? 'Map'
+							: data.map.assetKind === 6
+								? 'Mode'
+								: data.map.assetKind === 4
+									? 'Prefab'
+									: 'Playlist'} link</span
+					>
 				</button>
 				<button
 					onclick={() =>
@@ -400,5 +414,4 @@
 			{/if}
 		</div>
 	</div>
-{/if}
 {/if}

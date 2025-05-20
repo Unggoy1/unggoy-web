@@ -199,11 +199,7 @@
 		</div>
 	</div>
 
-	{#if $navigating}
-		<div class="assets browse">
-			<SkeletonAssetsContainer count={12} />
-		</div>
-	{:else if browseData.assets.length}
+	{#if browseData.assets.length}
 		<div class="assets browse">
 			{#each browseData.assets as asset (asset.assetId)}
 				<AssetCard
