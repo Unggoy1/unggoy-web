@@ -265,7 +265,7 @@
 
 <LargeModal bind:this={modal} onclose={cancel}>
   <h3 class="text-lg font-medium leading-6">
-    {isUpdateMode ? 'Complete Pair' : 'Add to Paired Playlist'}
+    {isUpdateMode ? 'Complete Pair' : 'Create Map-Mode Pair'}
   </h3>
   
   <div class="modal-content">
@@ -499,7 +499,7 @@
   .modal-content {
     width: 100%;
     margin-top: 20px;
-    /* min-height: 750px; */ /* Removed to prevent excess space */
+    min-height: 750px; /* Restore original height */
   }
   
   .selected-asset {
@@ -603,7 +603,7 @@
   
   .browse-section {
     margin-top: 24px;
-    min-height: 450px; /* Enough height for dropdown display */
+    min-height: 500px; /* Standard height for browse section */
     position: relative;
   }
   
@@ -661,6 +661,7 @@
   
   .content-container {
     position: relative;
+    height: 400px; /* Good height for content container */
   }
   
   .loading-overlay {
@@ -762,7 +763,7 @@
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     grid-auto-rows: minmax(150px, auto); /* Ensure minimum height for cards */
     gap: 16px;
-    max-height: 400px;
+    height: 400px; /* Match height of content-container */
     overflow-y: auto;
     border: 1px solid var(--sidebar-bg);
     border-radius: 8px;
@@ -909,9 +910,12 @@
     display: flex;
     gap: 12px;
     flex-direction: row-reverse;
+    margin-top: 0; /* Ensure no extra margin */
   }
   
   .add-another {
     margin-left: auto;
   }
+  
+  /* No special modal style needed */
 </style>

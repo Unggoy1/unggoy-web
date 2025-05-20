@@ -4,6 +4,7 @@ import { DropdownType } from './enums';
 import Plus from './components/icons/Plus.svelte';
 import Duplicate from './components/icons/Duplicate.svelte';
 import Delete from './components/icons/Delete.svelte';
+import Link from './components/icons/Link.svelte';
 import { user } from '../stores/user';
 import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../stores/modal';
 import { get } from 'svelte/store';
@@ -93,7 +94,9 @@ export function getAssetCardGroups({
 			});
 		}
 	} else if (pairedAsset) {
-		// For complete pairs, only show "Add to Paired Playlist" option
+		// For complete pairs in a playlist view
+		
+		// Regular authenticated user actions
 		authGroups = [];
 		
 		if ((assetKind === 2 || assetKind === 6) && asset) {
@@ -101,7 +104,7 @@ export function getAssetCardGroups({
 			authGroups.push({
 				type: DropdownType.Button,
 				icon: Plus,
-				text: `Add to Paired Playlist`,
+				text: `Add Pair to Playlist`,
 				function: () => {
 					// Open with both assets pre-selected
 					inlineBrowseModalVar?.open(asset, null, null, pairedAsset);
@@ -146,7 +149,7 @@ export function getAssetCardGroups({
 			authGroups.push({
 				type: DropdownType.Button,
 				icon: Plus,
-				text: `Add to Paired Playlist`,
+				text: `Create Map-Mode Pair`,
 				function: () => {
 					inlineBrowseModalVar?.open(asset);
 				}
@@ -162,24 +165,74 @@ export function getAssetCardGroups({
 			});
 		}
 	}
-	let noAuthGroups = [
-		{
-			type: DropdownType.Button,
-			icon: Duplicate,
-			text: `Copy Asset Link`,
-			function: () => getAssetLink({ assetId: assetId, assetKind: assetKind })
+	let noAuthGroups = [];
+	
+	if (pairedAsset) {
+		// For paired assets, modify the copy link section
+		noAuthGroups = [
+			{
+				type: DropdownType.Button,
+				icon: Duplicate,
+				text: `Copy Map Link`,
+				function: () => getAssetLink({ assetId: assetId, assetKind: assetKind })
+			},
+			{
+				type: DropdownType.Button,
+				icon: Duplicate,
+				text: `Copy Gamemode Link`,
+				function: () => getAssetLink({ assetId: pairedAsset.assetId, assetKind: pairedAsset.assetKind })
+			}
+		];
+		
+		if (assetKind !== 5) {
+			noAuthGroups.push({
+				type: DropdownType.Button,
+				icon: Duplicate,
+				text: `Copy Waypoint Link`,
+				function: () => getAssetLink({ assetId: assetId, assetKind: assetKind, isWaypoint: true })
+			});
 		}
-	];
-	if (assetKind !== 5) {
-		noAuthGroups.push({
-			type: DropdownType.Button,
-			icon: Duplicate,
-			text: `Copy Waypoint Link`,
-			function: () => getAssetLink({ assetId: assetId, assetKind: assetKind, isWaypoint: true })
-		});
+	} else {
+		// Standard copy links for non-paired assets
+		noAuthGroups = [
+			{
+				type: DropdownType.Button,
+				icon: Duplicate,
+				text: `Copy ${assetKind === 2 ? 'Map' : assetKind === 6 ? 'Mode' : assetKind === 4 ? 'Prefab' : 'Playlist'} Link`,
+				function: () => getAssetLink({ assetId: assetId, assetKind: assetKind })
+			}
+		];
+		
+		if (assetKind !== 5) {
+			noAuthGroups.push({
+				type: DropdownType.Button,
+				icon: Duplicate,
+				text: `Copy Waypoint Link`,
+				function: () => getAssetLink({ assetId: assetId, assetKind: assetKind, isWaypoint: true })
+			});
+		}
 	}
 
-	const result = activeUser ? [authGroups, noAuthGroups] : [noAuthGroups];
+	// Prepare result arrays
+	let result = [];
+	
+	// For paired assets, add a "Go to Gamemode" option at the top for mobile users
+	// who might have trouble clicking the small gamemode chip
+	if (pairedAsset && activeUser) {
+		const viewGamemodeGroup = [
+			{
+				type: DropdownType.A,
+				icon: Link,
+				text: `Go to Gamemode`,
+				href: `/modes/${pairedAsset.assetId}`
+			}
+		];
+		result = [viewGamemodeGroup, authGroups, noAuthGroups];
+	} else if (activeUser) {
+		result = [authGroups, noAuthGroups];
+	} else {
+		result = [noAuthGroups];
+	}
 	return result;
 }
 export function removeSameValues<T extends object>(details: T, ogDetails: T): Partial<T> {

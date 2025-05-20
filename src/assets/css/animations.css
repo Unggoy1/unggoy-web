@@ -1,0 +1,83 @@
+/* Animation keyframes */
+@keyframes scaleUp {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(5px); }
+  to { transform: translateY(0); }
+}
+
+/* Asset card hover animations */
+.asset {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@media (hover: hover) {
+  .asset:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .asset:hover .asset-name {
+    color: var(--button-color);
+    background-color: var(--button-bg);
+  }
+}
+
+/* No image transform transition needed since we removed the scale effect */
+
+.asset-name {
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Modal and dropdown styling without animations */
+.dialog-background {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Dropdown menu */
+.dropdown-animation {
+  transform-origin: top center;
+}
+
+/* Button hover effects */
+button, 
+.button,
+a.button {
+  transition: background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+button:hover, 
+.button:hover,
+a.button:hover {
+  opacity: 0.9;
+}
+
+button:active, 
+.button:active,
+a.button:active {
+  transform: scale(0.98);
+}
+
+/* Ellipsis button animation */
+.elipsis {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.elipsis:hover {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.elipsis:active {
+  transform: scale(0.95);
+}
+

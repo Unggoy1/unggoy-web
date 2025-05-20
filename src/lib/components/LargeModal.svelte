@@ -7,9 +7,10 @@
     children: Snippet;
     commands?: Snippet;
     onclose?: () => void;
+    extraClass?: string;
   }
 
-  let { children, commands, onclose }: Props = $props();
+  let { children, commands, onclose, extraClass = '' }: Props = $props();
 
   const dialog = createDialog();
 
@@ -28,7 +29,7 @@
       <div class="flex min-h-full items-center justify-center p-4 text-center">
         <Transition>
           <div
-            class="dialog-container rounded-2xl p-6 text-left shadow-xl transition-all"
+            class="dialog-container rounded-2xl p-6 text-left shadow-xl transition-all {extraClass}"
             use:dialog.modal
             {onclose}
           >
@@ -47,7 +48,7 @@
     color: var(--container-color);
     width: 90vw;
     max-width: 1000px;
-    max-height: 90vh;
+    max-height: 90vh !important;
     overflow-y: auto;
   }
   

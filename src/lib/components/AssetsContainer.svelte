@@ -4,10 +4,12 @@
 	import type { BrowseData } from '$lib/api';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
+	import SkeletonAssetsContainer from './SkeletonAssetsContainer.svelte';
 	import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../../stores/modal';
 	import FilterModal from '$lib/components/FilterModal.svelte';
 	import { SortOrder, Filter } from './icons';
 	import { currentPage } from '$lib/assets/js/store';
+	import { navigating } from '$app/stores';
 
 	let filterModal: FilterModal;
 	interface Props {
@@ -197,7 +199,11 @@
 		</div>
 	</div>
 
-	{#if browseData.assets.length}
+	{#if $navigating}
+		<div class="assets browse">
+			<SkeletonAssetsContainer count={12} />
+		</div>
+	{:else if browseData.assets.length}
 		<div class="assets browse">
 			{#each browseData.assets as asset (asset.assetId)}
 				<AssetCard

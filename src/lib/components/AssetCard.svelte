@@ -16,23 +16,28 @@
 	<div class="asset">
 		<!-- <div class="video-time">{ugc.likes}</div> -->
 		<div class="asset-image-wrapper">
-			<a href={assetUrl} class="">
-				<img
-					class="asset-image"
-					src={asset?.thumbnailUrl ? asset.thumbnailUrl : '/placeholder.webp'}
-					alt="thumbnail"
-				/>
+			<a href={assetUrl} class="asset-link">
+				<div class="asset-image-container">
+					<img
+						class="asset-image"
+						src={asset?.thumbnailUrl ? asset.thumbnailUrl : '/placeholder.webp'}
+						alt="thumbnail"
+					/>
+					<div class="asset-overlay"></div>
+				</div>
 			</a>
 
 			{#if pairedMode}
-				<div class="gamemode-chip">
-					<img 
-						src={pairedMode.thumbnailUrl} 
-						alt={pairedMode.name} 
-						class="chip-thumbnail"
-					/>
-					<span class="chip-name">{pairedMode.name}</span>
-				</div>
+				<a href={`/modes/${pairedMode.assetId}`} class="gamemode-chip-link">
+					<div class="gamemode-chip">
+						<img 
+							src={pairedMode.thumbnailUrl} 
+							alt={pairedMode.name} 
+							class="chip-thumbnail"
+						/>
+						<span class="chip-name">{pairedMode.name}</span>
+					</div>
+				</a>
 			{:else}
 				<AssetKind assetKind={asset.assetKind} recommended={asset?.recommended || false}></AssetKind>
 			{/if}
@@ -61,26 +66,50 @@
 </div>
 
 <style>
-.gamemode-chip {
+.gamemode-chip-link {
 	position: absolute;
 	top: 10px;
 	left: 8px;
+	z-index: 10;
+	text-decoration: none;
+	max-width: calc(100% - 16px);
+	transition: transform 0.15s ease-in-out;
+	/* Increase tap target size */
+	padding: 8px;
+	margin: -8px;
+	border-radius: 24px;
+}
+
+/* Only apply hover effects on non-touch devices */
+@media (hover: hover) {
+	.gamemode-chip-link:hover {
+		transform: translateY(-2px);
+	}
+
+	.gamemode-chip-link:hover .gamemode-chip {
+		background-color: var(--button-bg);
+	}
+}
+
+.gamemode-chip {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	padding: 0 10px 0 0;
-	border-radius: 18px;
+	padding: 0 12px 0 0;
+	border-radius: 20px;
 	background-color: var(--asset-card-bg);
 	color: white;
-	font-size: 0.75rem;
-	max-width: calc(100% - 16px);
+	font-size: 0.875rem; /* Slightly larger font */
 	overflow: hidden;
+	transition: background-color 0.15s ease-in-out;
+	/* Add touch feedback */
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
 }
 
 .chip-thumbnail {
-	width: 36px;
-	height: 36px;
-	border-radius: 18px 0 0 18px;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px 0 0 20px;
 	object-fit: cover;
 	flex-shrink: 0;
 }
@@ -90,5 +119,38 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	flex: 1;
+}
+.asset-link {
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.asset-image-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.asset-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to bottom, rgba(0,0,0,0) 70%, rgba(0,0,0,0.7) 100%);
+	z-index: 2;
+	opacity: 0.8;
+	transition: opacity 0.3s ease;
+}
+
+@media (hover: hover) {
+	.asset:hover .asset-overlay {
+		opacity: 0.4;
+	}
 }
 </style>

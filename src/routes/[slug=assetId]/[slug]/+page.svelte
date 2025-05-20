@@ -5,10 +5,12 @@
 	import AssetKind from '$lib/components/AssetKind.svelte';
 	import DropdownCard from '$lib/components/DropdownCard.svelte';
 	import Carousel from '$lib/components/Carousel.svelte';
+	import SkeletonAssetDetail from '$lib/components/SkeletonAssetDetail.svelte';
 	import { DropdownType } from '$lib/enums';
 	import { onMount } from 'svelte';
 	import { Duplicate, Plus, Crown, Link, Star } from '$lib/components/icons';
 	import { getAssetLink } from '$lib/functions';
+	import { navigating } from '$app/stores';
 
 	export let data: PageData;
 	$: previewImage = data.map.files.fileRelativePaths[0];
@@ -36,7 +38,7 @@
 				...(data.map.assetKind === 2 || data.map.assetKind === 6 ? [{
 					type: DropdownType.Button,
 					icon: Plus,
-					text: `Add to Paired Playlist`,
+					text: `Create Map-Mode Pair`,
 					function: () => $inlineBrowsePairingModal.open(data.map)
 				}] : [])
 			]
@@ -46,7 +48,7 @@
 			{
 				type: DropdownType.Button,
 				icon: Duplicate,
-				text: `Copy Asset Link`,
+				text: `Copy ${data.map.assetKind === 2 ? 'Map' : data.map.assetKind === 6 ? 'Mode' : data.map.assetKind === 4 ? 'Prefab' : 'Playlist'} Link`,
 				function: () => getAssetLink({ assetId: data.map.assetId, assetKind: data.map.assetKind })
 			},
 			{
@@ -111,6 +113,9 @@
 	/><meta name="twitter:img:src" content={data.map.thumbnailUrl} />
 </svelte:head>
 
+{#if $navigating}
+	<SkeletonAssetDetail />
+{:else}
 <div class="main-container show">
 	<div class="asset-area">
 		<div class="asset-container">
@@ -378,7 +383,7 @@
 					class="drawer-option"
 				>
 					<Duplicate active={false}></Duplicate>
-					<span>Copy asset link</span>
+					<span>Copy {data.map.assetKind === 2 ? 'Map' : data.map.assetKind === 6 ? 'Mode' : data.map.assetKind === 4 ? 'Prefab' : 'Playlist'} link</span>
 				</button>
 				<button
 					onclick={() =>
@@ -395,4 +400,5 @@
 			{/if}
 		</div>
 	</div>
+{/if}
 {/if}

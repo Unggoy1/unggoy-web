@@ -5,6 +5,7 @@
 	import '../assets/css/dialog.css';
 	import '../assets/css/app.css';
 	import '../assets/css/styles.css';
+	import '../assets/css/animations.css';
 	import { PUBLIC_API_URL } from '$env/static/public';
 	import { dev, version } from '$app/environment';
 	import type { LayoutData } from './$types';
