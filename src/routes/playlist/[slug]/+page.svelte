@@ -48,53 +48,61 @@
 </svelte:head>
 
 <div class="main-container">
-	<div class="playlist-container">
-		<div class="playlist-metadata-wrapper">
-			<div class="playlist-image-wrapper">
+	<div class="playlist-header">
+		<div class="playlist-content">
+			<div class="playlist-thumbnail">
 				<img
-					class="playlist-image"
 					src={data.playlist.thumbnailUrl || '/placeholder.webp'}
 					alt="thumbnail"
 				/>
 			</div>
-			<div>
+			<div class="playlist-info">
 				<div class="playlist-title">
-					{#if data.playlist.private === true}
-						<Private active={false}></Private>
-					{:else}
-						<Public active={false}></Public>
+					{#if isOwner}
+						{#if data.playlist.private === true}
+							<Private active={false}></Private>
+						{:else}
+							<Public active={false}></Public>
+						{/if}
 					{/if}
-					{data.playlist.name}
+					<span class="title-text">{data.playlist.name}</span>
 				</div>
 				<div class="playlist-description">
 					{data.playlist.description}
 				</div>
-				<div class="user-settings">
-					<img class="user-img" src={data.playlist.user.emblemPath} alt="profile emblem" />
-					<a href="/browse?gamertag={data.playlist.user.username}">
-						<div class="playlist-author">
+				<div class="playlist-meta">
+					<div class="creator-info">
+						<img class="creator-avatar" src={data.playlist.user.emblemPath} alt="profile emblem" />
+						<a href="/browse?gamertag={data.playlist.user.username}" class="creator-name">
 							{data.playlist.user.username}
-						</div>
-					</a>
-					<div>
-						&nbsp;&nbsp;•&nbsp;&nbsp;{data.playlist._count.favoritedBy} favorites&nbsp;&nbsp;•&nbsp;&nbsp;{data
-							.playlist._count.ugcPairs} assets
+						</a>
+					</div>
+					<div class="playlist-stats">
+						<span>{data.playlist._count.favoritedBy} favorites</span>
+						<span>•</span>
+						<span>{data.playlist._count.ugcPairs} assets</span>
 					</div>
 				</div>
 			</div>
 		</div>
+		
 		{#if $user}
-			<div>
+			<div class="playlist-actions">
 				{#if $user.id === data.playlist.userId}
+					<!-- Owner actions - Add Assets is always visible -->
+					<button 
+						class="action-button primary-action" 
+						onclick={openAddToPlaylistModal}
+						aria-label="Add assets to playlist"
+					>
+						<Plus active={false}></Plus>
+						<span class="action-text">Add Assets</span>
+					</button>
+					
+					<!-- More actions dropdown for owner -->
 					<Dropdown
 						groups={[
 							[
-								...(isEmptyPlaylist ? [] : [{
-									type: DropdownType.Button,
-									icon: Plus,
-									text: 'Add Assets',
-									function: openAddToPlaylistModal
-								}]),
 								{
 									type: DropdownType.Button,
 									icon: Edit,
@@ -125,43 +133,28 @@
 							]
 						]}
 					>
-						<button class="favorite more" aria-label="dropdown more menu">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="35"
-								height="32"
-								viewBox="0 0 35 32"
-								fill="none"
-							>
-								<path
-									d="M7.91838 13.3333C6.38967 13.3333 5.13892 14.5333 5.13892 16C5.13892 17.4666 6.38967 18.6666 7.91838 18.6666C9.44708 18.6666 10.6978 17.4666 10.6978 16C10.6978 14.5333 9.44708 13.3333 7.91838 13.3333ZM27.3746 13.3333C25.8459 13.3333 24.5951 14.5333 24.5951 16C24.5951 17.4666 25.8459 18.6666 27.3746 18.6666C28.9033 18.6666 30.1541 17.4666 30.1541 16C30.1541 14.5333 28.9033 13.3333 27.3746 13.3333ZM17.6465 13.3333C16.1178 13.3333 14.867 14.5333 14.867 16C14.867 17.4666 16.1178 18.6666 17.6465 18.6666C19.1752 18.6666 20.426 17.4666 20.426 16C20.426 14.5333 19.1752 13.3333 17.6465 13.3333Z"
-									fill="#CEE7EE"
-								/>
+						<button class="action-button secondary-action" aria-label="More options">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
 							</svg>
 						</button>
 					</Dropdown>
 				{/if}
+				
+				<!-- Favorite button for all logged in users -->
 				<button
-					class="favorite"
+					class="action-button favorite-action"
 					class:favorited={data.playlist.favoritedBy && data.playlist.favoritedBy.length !== 0}
 					onclick={async () =>
 						!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
 							? favoritesAdd(data.playlist)
 							: favoritesDelete(data.playlist)}
 					aria-label={!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
-						? 'favorite button'
-						: 'unfavorite button'}
+						? 'favorite playlist'
+						: 'unfavorite playlist'}
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="34"
-						height="32"
-						viewBox="0 0 34 32"
-						fill="#cee7ee"
-					>
-						<path
-							d="M16.9243 23.0266L22.6917 26.3733C23.7479 26.9866 25.0404 26.08 24.7624 24.9333L23.2337 18.64L28.334 14.4C29.2651 13.6266 28.7648 12.16 27.5419 12.0666L20.8295 11.52L18.2029 5.57331C17.7304 4.49331 16.1183 4.49331 15.6458 5.57331L13.0192 11.5066L6.30679 12.0533C5.08383 12.1466 4.58353 13.6133 5.51465 14.3866L10.615 18.6266L9.08626 24.92C8.80831 26.0666 10.1008 26.9733 11.157 26.36L16.9243 23.0266Z"
-						/>
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
 					</svg>
 				</button>
 			</div>
@@ -274,5 +267,271 @@
 		font-family: var(--body-font);
 		font-size: 16px;
 		font-weight: 500;
+	}
+
+	/* New Playlist Header Styles */
+	.playlist-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		padding: 24px;
+		gap: 24px;
+		background: var(--container-bg);
+		border-radius: 12px;
+		margin-bottom: 24px;
+	}
+
+	.playlist-content {
+		display: flex;
+		gap: 20px;
+		flex: 1;
+		min-width: 0; /* Allow text truncation */
+	}
+
+	.playlist-thumbnail {
+		flex-shrink: 0;
+	}
+
+	.playlist-thumbnail img {
+		width: 200px;
+		height: 112px;
+		object-fit: cover;
+		border-radius: 12px;
+	}
+
+	.playlist-info {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.playlist-header .playlist-title {
+		display: flex !important;
+		align-items: center;
+		gap: 12px;
+		font-size: 2rem !important;
+		font-weight: 700;
+		color: var(--container-color);
+		line-height: 1.1 !important;
+		margin-bottom: 4px;
+		padding-bottom: 0 !important;
+	}
+
+	.playlist-header .playlist-title :global(svg) {
+		width: 24px !important;
+		height: 24px !important;
+		fill: var(--container-color);
+		flex-shrink: 0;
+	}
+
+	.title-text {
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+	}
+
+	.playlist-header .playlist-description {
+		font-size: 1rem !important;
+		color: var(--sidebar-color);
+		line-height: 1.4 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		font-style: normal;
+		font-weight: 400;
+		display: block !important;
+		-webkit-box-orient: initial !important;
+		-webkit-line-clamp: initial !important;
+		overflow: visible !important;
+	}
+
+	.playlist-header .playlist-meta {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		margin-top: 8px;
+	}
+
+	.playlist-header .creator-info {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 2px;
+	}
+
+	.creator-avatar {
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	.creator-name {
+		color: var(--button-color);
+		text-decoration: none;
+		font-weight: 500;
+		font-size: 0.875rem;
+	}
+
+	.creator-name:hover {
+		color: var(--button-color-hover);
+		text-decoration: underline;
+	}
+
+	.playlist-stats {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: 0.875rem;
+		color: var(--sidebar-color);
+	}
+
+	.playlist-actions {
+		display: flex;
+		align-items: flex-start;
+		gap: 12px;
+		flex-shrink: 0;
+	}
+
+	.action-button {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 16px;
+		border-radius: 8px;
+		border: none;
+		cursor: pointer;
+		font-weight: 500;
+		font-size: 0.875rem;
+		transition: all 0.2s ease;
+		white-space: nowrap;
+	}
+
+	.primary-action {
+		background-color: var(--button-bg);
+		color: var(--button-color);
+	}
+
+	.primary-action:hover {
+		background-color: var(--button-bg-hover);
+		color: var(--button-color-hover);
+	}
+
+	.primary-action :global(svg) {
+		width: 18px;
+		height: 18px;
+		fill: currentColor;
+	}
+
+	.secondary-action {
+		background-color: var(--top-container-bg);
+		color: var(--container-color);
+		padding: 10px;
+	}
+
+	.secondary-action:hover {
+		background-color: var(--button-bg);
+		color: var(--button-color);
+	}
+
+	.favorite-action {
+		background-color: var(--top-container-bg);
+		color: var(--sidebar-color);
+		padding: 10px;
+	}
+
+	.favorite-action:hover {
+		background-color: var(--button-bg);
+		color: var(--button-color);
+	}
+
+	.favorite-action.favorited {
+		background-color: #dfb759;
+		color: #fff;
+	}
+
+	.favorite-action.favorited:hover {
+		background-color: #c9a54a;
+	}
+
+	.action-text {
+		font-size: 0.875rem;
+	}
+
+	/* Mobile Responsiveness */
+	@media screen and (max-width: 768px) {
+		.playlist-header {
+			flex-direction: column;
+			align-items: stretch;
+			padding: 16px;
+			gap: 16px;
+		}
+
+		.playlist-content {
+			flex-direction: column;
+			gap: 16px;
+		}
+
+		.playlist-thumbnail {
+			align-self: center;
+		}
+
+		.playlist-thumbnail img {
+			width: 280px;
+			height: 157px;
+		}
+
+		.playlist-title {
+			font-size: 1.5rem;
+			text-align: center;
+			justify-content: center;
+		}
+
+		.playlist-description {
+			text-align: center;
+		}
+
+		.playlist-meta {
+			align-items: center;
+		}
+
+		.playlist-actions {
+			justify-content: center;
+			flex-wrap: wrap;
+		}
+
+		.action-button {
+			flex: 1;
+			justify-content: center;
+			min-width: 120px;
+		}
+	}
+
+	@media screen and (max-width: 480px) {
+		.playlist-thumbnail img {
+			width: 240px;
+			height: 135px;
+		}
+
+		.playlist-title {
+			font-size: 1.25rem;
+		}
+
+		.action-text {
+			display: none;
+		}
+
+		.action-button {
+			min-width: auto;
+			padding: 12px;
+		}
+
+		.primary-action {
+			padding: 10px 16px;
+		}
+
+		.primary-action .action-text {
+			display: inline;
+		}
 	}
 </style>
