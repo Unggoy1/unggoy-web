@@ -2,15 +2,32 @@
 	import type { PageData } from './$types';
 	import { DropdownType } from '$lib/enums';
 	import { playlistDelete, playlistDeleteAsset, playlistUpdate } from '$lib/api/playlist';
-	import { Delete, Edit, Private, Public } from '$lib/components/icons';
+	import { Delete, Edit, Private, Public, Plus } from '$lib/components/icons';
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import PairedAssetsContainer from '$lib/components/PairedAssetsContainer.svelte';
-	import { playlistModal } from '../../../stores/modal';
+	import { playlistModal, addToPlaylistModal } from '../../../stores/modal';
 	import { favoritesAdd, favoritesDelete } from '$lib/api/favorites';
 	import { user } from '../../../stores/user';
 	import { onMount } from 'svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+
+	const currentUser = $derived($user);
+	const addToPlaylistModalVar = $derived($addToPlaylistModal);
+
+	// Check if playlist is empty (no pairs and no regular assets)
+	const isEmptyPlaylist = $derived(!data.pairs?.length && !data.assets?.length);
+	const isOwner = $derived(currentUser && data.playlist.userId === currentUser.id);
+
+	function openAddToPlaylistModal() {
+		if (addToPlaylistModalVar?.open) {
+			addToPlaylistModalVar.open(data.playlist);
+		}
+	}
 
 	onMount(() => {});
 </script>
@@ -72,6 +89,12 @@
 					<Dropdown
 						groups={[
 							[
+								...(isEmptyPlaylist ? [] : [{
+									type: DropdownType.Button,
+									icon: Plus,
+									text: 'Add Assets',
+									function: openAddToPlaylistModal
+								}]),
 								{
 									type: DropdownType.Button,
 									icon: Edit,
@@ -145,10 +168,111 @@
 		{/if}
 	</div>
 
-	<PairedAssetsContainer 
-		browseData={data} 
-		pairs={data.pairs}
-		pairsTotalPages={data.pairsTotalPages}
-		pairsTotalResults={data.pairsTotalResults}
-	></PairedAssetsContainer>
+	<!-- Empty Playlist Call-to-Action -->
+	{#if isEmptyPlaylist && isOwner}
+		<div class="empty-playlist-cta">
+			<div class="empty-playlist-content">
+				<img src="/superintendent_sad.webp" alt="Empty Playlist" class="empty-icon" />
+				<h3>Your playlist is empty</h3>
+				<p>Start building your collection by adding your favorite maps, modes, and prefabs.</p>
+				<button onclick={openAddToPlaylistModal} class="sidebar-link-button">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+						<path d="M12 2C12.5523 2 13 2.44772 13 3V11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H13V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21V13H3C2.44772 13 2 12.5523 2 12C2 11.4477 2.44772 11 3 11H11V3C11 2.44772 11.4477 2 12 2Z" fill="currentColor"/>
+					</svg>
+					<span>Add Assets</span>
+				</button>
+			</div>
+		</div>
+	{:else}
+		<PairedAssetsContainer 
+			browseData={data} 
+			pairs={data.pairs}
+			pairsTotalPages={data.pairsTotalPages}
+			pairsTotalResults={data.pairsTotalResults}
+		></PairedAssetsContainer>
+	{/if}
 </div>
+
+<style>
+	.empty-playlist-cta {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 400px;
+		padding: 2rem;
+	}
+
+	.empty-playlist-content {
+		text-align: center;
+		max-width: 500px;
+	}
+
+	.empty-icon {
+		width: 120px;
+		height: 120px;
+		margin-bottom: 1.5rem;
+		opacity: 0.8;
+	}
+
+	.empty-playlist-content h3 {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin-bottom: 0.75rem;
+		color: var(--text-primary);
+	}
+
+	.empty-playlist-content p {
+		color: var(--text-secondary);
+		margin-bottom: 2rem;
+		line-height: 1.5;
+	}
+
+	.sidebar-link-button {
+		/* Shape and structure like sidebar-link */
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		line-height: 20px;
+		height: 56px;
+		border-radius: 12px;
+		padding-left: 16px;
+		padding-right: 16px;
+		border: none;
+		cursor: pointer;
+		transition: all 0.3s ease-in-out;
+		
+		/* Colors and hover effects like .favorite button */
+		background-color: var(--button-bg);
+		color: var(--button-color);
+		
+		/* Positioning for the empty state */
+		margin: 1rem auto 0;
+		float: none;
+		width: auto;
+		min-width: 140px;
+	}
+
+	.sidebar-link-button:hover {
+		background-color: var(--button-bg-hover);
+		color: var(--button-color-hover);
+		font-weight: 700;
+	}
+
+	.sidebar-link-button svg {
+		width: 24px;
+		height: 24px;
+		margin-right: 16px;
+		fill: var(--button-color);
+		flex-shrink: 0;
+	}
+
+	.sidebar-link-button:hover svg {
+		fill: var(--button-color-hover);
+	}
+
+	.sidebar-link-button span {
+		font-family: var(--body-font);
+		font-size: 16px;
+		font-weight: 500;
+	}
+</style>
