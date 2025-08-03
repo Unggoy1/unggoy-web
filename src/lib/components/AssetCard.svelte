@@ -4,15 +4,21 @@
 	import AssetKind from './AssetKind.svelte';
 	import DropdownCard from './DropdownCard.svelte';
 	import { dev } from '$app/environment';
-	export let asset: UgcData | PlaylistData = undefined;
-	export let assetUrl: string;
-	export let pairedMode: UgcData | null = null; // Add paired gamemode prop
+	
+	interface Props {
+		asset: UgcData | PlaylistData;
+		assetUrl: string;
+		pairedMode?: UgcData | null;
+		groups: any;
+	}
+	
+	let { asset, assetUrl, pairedMode = null, groups }: Props = $props();
+	
 	import.meta.env.PROD;
 	let dropdown: DropdownCard;
-	export let groups;
 	
-	// Ensure assetKind is available
-	$: assetKind = asset?.assetKind ?? null;
+	// Ensure assetKind is available using Svelte 5 runes
+	const assetKind = $derived(asset?.assetKind ?? null);
 </script>
 
 <div style="position:relative">

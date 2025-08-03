@@ -10,6 +10,7 @@
 	import { SortOrder, Filter } from './icons';
 	import { currentPage } from '$lib/assets/js/store';
 	import { navigating } from '$app/stores';
+	import { user } from '../../stores/user';
 
 	let filterModal: FilterModal;
 	interface Props {
@@ -18,6 +19,18 @@
 	}
 
 	let { browseData, filterTitle }: Props = $props();
+	
+	// Subscribe to modal stores once at parent level using Svelte 5 runes
+	const addAssetModalVar = $derived($addAssetModal);
+	const playlistModalVar = $derived($playlistModal);
+	const inlineBrowsePairingModalVar = $derived($inlineBrowsePairingModal);
+	const activeUser = $derived($user);
+	
+	// Debouncing for URL updates
+	let updateTimer: number;
+	
+	// Cache URLSearchParams to avoid recreation using Svelte 5 runes
+	const cachedSearchParams = $derived(new URLSearchParams($page.url.searchParams.toString()));
 
 	const changePage = (newPage: number) => {
 		// Clamp the new page number between 1 and totalPages
@@ -25,7 +38,7 @@
 
 		// Only update if the page has changed
 		if (clampedPage !== browseData.currentPage) {
-			const query = new URLSearchParams($page.url.searchParams.toString());
+			const query = new URLSearchParams(cachedSearchParams);
 			query.set('page', clampedPage.toString());
 			goto(`?${query.toString()}`);
 		}
@@ -35,8 +48,13 @@
 		browseData.order = browseData.order === 'desc' ? 'asc' : 'desc';
 		updateUrl();
 	};
+	const debouncedUpdateUrl = () => {
+		clearTimeout(updateTimer);
+		updateTimer = setTimeout(updateUrl, 300);
+	};
+	
 	const updateUrl = () => {
-		let query = new URLSearchParams($page.url.searchParams.toString());
+		let query = new URLSearchParams(cachedSearchParams);
 		// const query = new URLSearchParams();
 
 		const defaultValues = {
@@ -120,6 +138,7 @@
 							<input
 								bind:value={browseData.tag}
 								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+								oninput={debouncedUpdateUrl}
 								type="text"
 								placeholder="tag"
 							/>
@@ -137,6 +156,7 @@
 							<input
 								bind:value={browseData.gamertag}
 								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+								oninput={debouncedUpdateUrl}
 								type="text"
 								placeholder="gamertag"
 							/>
@@ -209,9 +229,10 @@
 						assetKind: asset.assetKind,
 						asset: asset,
 						playlist: browseData.playlist || undefined,
-						playlistModalVar: $playlistModal,
-						addAssetModalVar: $addAssetModal,
-						inlineBrowsePairingModalVar: $inlineBrowsePairingModal
+						playlistModalVar: playlistModalVar,
+						addAssetModalVar: addAssetModalVar,
+						inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
+						activeUser: activeUser
 					})}
 					assetUrl="/{asset.assetKind == 2
 						? 'maps'

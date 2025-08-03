@@ -11,6 +11,11 @@ import { get } from 'svelte/store';
 import { playlistDeleteAsset } from './api/playlist';
 import type { PlaylistData } from './api/playlist';
 
+// Memoization cache for getAssetCardGroups
+const groupsCache = new Map();
+let lastUserState: any = null;
+const CACHE_SIZE_LIMIT = 100;
+
 export async function getAssetLink({ assetId, assetKind, isWaypoint = false }) {
 	const assetType =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';
@@ -35,7 +40,8 @@ export function getAssetCardGroups({
 	pairedAsset,
 	inlineBrowsePairingModalVar,
 	isIncompletePair,
-	pairData
+	pairData,
+	activeUser
 }: {
 	assetId: string;
 	assetKind: number;
@@ -48,8 +54,35 @@ export function getAssetCardGroups({
 	inlineBrowsePairingModalVar?: any;
 	isIncompletePair?: boolean;
 	pairData?: any;
+	activeUser?: any;
 }) {
-	const activeUser = get(user);
+	// Use provided activeUser or fallback to store (for backward compatibility)
+	const currentUser = activeUser ?? get(user);
+	
+	// Create cache key
+	const cacheKey = JSON.stringify({
+		assetId,
+		assetKind,
+		playlistId: playlist?.assetId,
+		playlistUserId: playlist?.userId,
+		userId: currentUser?.id,
+		isIncompletePair: !!isIncompletePair,
+		hasPairedAsset: !!pairedAsset,
+		pairId: pairData?.id
+	});
+	
+	// Check cache if user state hasn't changed
+	if (currentUser === lastUserState && groupsCache.has(cacheKey)) {
+		return groupsCache.get(cacheKey);
+	}
+	
+	// Clear cache if it gets too large
+	if (groupsCache.size > CACHE_SIZE_LIMIT) {
+		groupsCache.clear();
+	}
+	
+	// Update user state tracker
+	lastUserState = currentUser;
 	// const addAssetModalVar = get(addAssetModal);
 	// const playlistModalVar = get(playlistModal);
 	let authGroups = [];
@@ -82,7 +115,7 @@ export function getAssetCardGroups({
 		});
 		
 		// Still allow removing from playlist
-		if (playlist && activeUser && playlist.userId == activeUser.id) {
+		if (playlist && currentUser && playlist.userId == currentUser.id) {
 			authGroups.push({
 				type: DropdownType.Button,
 				icon: Delete,
@@ -112,7 +145,7 @@ export function getAssetCardGroups({
 			});
 		}
 		
-		if (playlist && activeUser && playlist.userId == activeUser.id) {
+		if (playlist && currentUser && playlist.userId == currentUser.id) {
 			authGroups.push({
 				type: DropdownType.Button,
 				icon: Delete,
@@ -156,7 +189,7 @@ export function getAssetCardGroups({
 			});
 		}
 
-		if (playlist && activeUser && playlist.userId == activeUser.id) {
+		if (playlist && currentUser && playlist.userId == currentUser.id) {
 			authGroups.push({
 				type: DropdownType.Button,
 				icon: Delete,
@@ -218,7 +251,7 @@ export function getAssetCardGroups({
 	
 	// For paired assets, add a "Go to Gamemode" option at the top for mobile users
 	// who might have trouble clicking the small gamemode chip
-	if (pairedAsset && activeUser) {
+	if (pairedAsset && currentUser) {
 		const viewGamemodeGroup = [
 			{
 				type: DropdownType.A,
@@ -228,11 +261,14 @@ export function getAssetCardGroups({
 			}
 		];
 		result = [viewGamemodeGroup, authGroups, noAuthGroups];
-	} else if (activeUser) {
+	} else if (currentUser) {
 		result = [authGroups, noAuthGroups];
 	} else {
 		result = [noAuthGroups];
 	}
+	
+	// Cache the result before returning
+	groupsCache.set(cacheKey, result);
 	return result;
 }
 export function removeSameValues<T extends object>(details: T, ogDetails: T): Partial<T> {

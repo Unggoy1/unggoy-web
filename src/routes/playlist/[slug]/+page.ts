@@ -69,12 +69,14 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		ownerOnly: fetchParams.ownerOnly
 	};
 	
-	// Get both playlist data and pairs data
+	// Get both playlist data and pairs data in parallel for better performance
 	let data;
 	let pairsData;
 	try {
-		data = await playlistGet(fetchParams);
-		pairsData = await playlistGetPairs(pairsFetchParams);
+		[data, pairsData] = await Promise.all([
+			playlistGet(fetchParams),
+			playlistGetPairs(pairsFetchParams)
+		]);
 	} catch (error) {
 		throw error;
 	}
