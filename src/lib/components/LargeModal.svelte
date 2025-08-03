@@ -34,7 +34,7 @@
             {onclose}
           >
             <div>{@render children()}</div>
-            <div class="commands">{@render commands()}</div>
+            {#if commands}<div class="commands">{@render commands()}</div>{/if}
           </div>
         </Transition>
       </div>

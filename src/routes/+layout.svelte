@@ -17,7 +17,8 @@
 	import AddAssetModal from '$lib/components/AddAssetModal.svelte';
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import InlineBrowsePairingModal from '$lib/components/InlineBrowsePairingModal.svelte';
-	import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../stores/modal';
+	import AddToPlaylistModal from '$lib/components/AddToPlaylistModal.svelte';
+	import { addAssetModal, playlistModal, inlineBrowsePairingModal, addToPlaylistModal } from '../stores/modal';
 	import {
 		Compass,
 		Anvil,
@@ -52,6 +53,7 @@
 	let addAssetModalComponent: AddAssetModal;
 	let playlistModalComponent: PlaylistModal;
 	let inlineBrowsePairingModalComponent: InlineBrowsePairingModal;
+	let addToPlaylistModalComponent: AddToPlaylistModal;
 
 	$: currentAssetKind = new URLSearchParams($page.url.search).get('assetKind');
 
@@ -101,6 +103,9 @@
 		if (inlineBrowsePairingModalComponent) {
 			$inlineBrowsePairingModal = inlineBrowsePairingModalComponent;
 		}
+		if (addToPlaylistModalComponent) {
+			$addToPlaylistModal = addToPlaylistModalComponent;
+		}
 
 		groups = [
 			[
@@ -142,6 +147,7 @@
 <AddAssetModal bind:this={addAssetModalComponent} />
 <PlaylistModal bind:this={playlistModalComponent} />
 <InlineBrowsePairingModal bind:this={inlineBrowsePairingModalComponent} />
+<AddToPlaylistModal bind:this={addToPlaylistModalComponent} />
 <Toaster></Toaster>
 <div class="unggoy-container">
 	<div class="sidebar" class:collapse={isSidebarCollapsed}>

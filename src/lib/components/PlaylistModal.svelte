@@ -13,6 +13,7 @@
 	import { onMount } from 'svelte';
 	import { removeSameValues } from '$lib/functions';
 	import validator from 'validator';
+	import { goto } from '$app/navigation';
 	tf.enableProdMode();
 
 	let modal: Modal;
@@ -59,7 +60,13 @@
 		//jank typeguard stuff to get code to not complain about the data for each field not being 100% identical
 		if (mode === 'create') {
 			if (isPlaylistCreate(diffDetails)) {
-				await playlistCreate(diffDetails);
+				const createdPlaylist = await playlistCreate(diffDetails);
+				modal.close();
+				resolve(details);
+				// Navigate to the newly created playlist page
+				if (createdPlaylist && createdPlaylist.assetId) {
+					goto(`/playlist/${createdPlaylist.assetId}`);
+				}
 			} else {
 				throw new Error('Invalid details for playlist creation');
 			}
@@ -69,9 +76,9 @@
 			} else {
 				throw new Error('Invalid details for playlist update');
 			}
+			modal.close();
+			resolve(details);
 		}
-		modal.close();
-		resolve(details);
 	}
 
 	function cancel() {

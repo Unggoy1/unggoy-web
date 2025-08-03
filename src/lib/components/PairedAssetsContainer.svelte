@@ -5,7 +5,7 @@
 	import type { PlaylistPair } from '$lib/api/playlist';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
-	import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../../stores/modal';
+	import { addAssetModal, playlistModal, inlineBrowsePairingModal, addToPlaylistModal } from '../../stores/modal';
 	import FilterModal from '$lib/components/FilterModal.svelte';
 	import { SortOrder, Filter, Plus } from './icons';
 	import { currentPage } from '$lib/assets/js/store';
@@ -28,6 +28,7 @@
 	const addAssetModalVar = $derived($addAssetModal);
 	const playlistModalVar = $derived($playlistModal);
 	const inlineBrowsePairingModalVar = $derived($inlineBrowsePairingModal);
+	const addToPlaylistModalVar = $derived($addToPlaylistModal);
 	const activeUser = $derived($user);
 	
 	// Debouncing for URL updates

@@ -7,7 +7,7 @@ export async function playlistCreate({
 	description,
 	thumbnail,
 	assetId
-}: PlaylistCreate): Promise<void> {
+}: PlaylistCreate): Promise<any> {
 	const formData = new FormData();
 	formData.append('name', name);
 	formData.append('description', description);
@@ -40,8 +40,10 @@ export async function playlistCreate({
 		);
 
 		invalidateAll();
+		return result;
 	} catch (error) {
 		console.error('Error creating playlist:', error);
+		throw error;
 	}
 }
 

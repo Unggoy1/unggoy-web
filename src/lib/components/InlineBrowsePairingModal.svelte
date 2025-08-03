@@ -796,6 +796,8 @@
     width: 100%;
     height: 100px;
     object-fit: cover;
+    border-radius: 8px;
+    margin-top: 5px;
   }
   
   .asset-card-info {
