@@ -51,28 +51,30 @@
 .welcome-title {
 	font-size: 32px;
 	font-weight: 700;
-	margin-bottom: 12px;
+	margin-bottom: 8px;
 	color: var(--container-color);
 	line-height: 1.2;
 }
 
-.welcome-description {
-	font-size: 15px;
-	line-height: 1.5;
+.welcome-tagline {
+	font-size: 18px;
+	font-weight: 500;
 	color: var(--container-color);
-	margin-bottom: 24px;
-	max-width: 700px;
-	margin-left: auto;
-	margin-right: auto;
-	opacity: 0.9;
+	opacity: 0.8;
+	margin: 0;
+}
+
+.welcome-description {
+	display: none;
 }
 
 .features-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	gap: 20px;
-	margin-top: 20px;
-	max-width: 1000px;
+	gap: 16px;
+	margin-top: 32px;
+	margin-bottom: 20px;
+	max-width: 800px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -116,40 +118,33 @@
 	line-height: 1.4;
 }
 
-/* Mobile responsive adjustments */
-@media screen and (max-width: 900px) {
-	.features-grid {
-		grid-template-columns: 1fr 1fr;
-		gap: 16px;
-		max-width: 500px;
+/* Desktop breakpoint for taller content */
+@media screen and (max-width: 1100px) {
+	.welcome-content {
+		min-height: 350px;
+		padding: 25px 40px;
 	}
-}
 
-@media screen and (max-width: 769px) {
 	.welcome-title {
-		font-size: 26px;
+		font-size: 30px;
 	}
 
 	.welcome-description {
 		font-size: 14px;
+		margin-bottom: 20px;
 	}
 
-	.welcome-content {
-		padding: 20px 24px;
-		min-height: 280px;
+	.features-grid {
+		max-width: 700px;
+		gap: 14px;
 	}
 
 	.feature-item {
 		padding: 16px 12px;
 	}
 
-	.feature-item :global(svg) {
-		width: 28px;
-		height: 28px;
-	}
-
 	.feature-text h3 {
-		font-size: 14px;
+		font-size: 15px;
 	}
 
 	.feature-text p {
@@ -157,25 +152,195 @@
 	}
 }
 
+/* Large tablet layout - vertical feature list */
+@media screen and (max-width: 950px) and (min-width: 700px) {
+	.welcome-content {
+		padding: 25px 30px;
+		min-height: 350px;
+		justify-content: flex-start;
+		text-align: center;
+	}
+
+	.welcome-header {
+		margin-bottom: 32px;
+		margin-top: 10px;
+	}
+
+	.welcome-title {
+		font-size: 28px;
+		margin-bottom: 8px;
+	}
+
+	.welcome-tagline {
+		display: block;
+		font-size: 16px;
+	}
+
+	.welcome-body {
+		display: block;
+	}
+
+	.welcome-description {
+		display: none;
+	}
+
+	.features-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		max-width: 500px;
+		margin: 0 auto;
+	}
+
+	.feature-item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		text-align: left;
+		padding: 12px 16px;
+		min-height: 56px;
+		gap: 16px;
+	}
+
+	.feature-item :global(svg) {
+		width: 32px;
+		height: 32px;
+		margin-bottom: 0;
+		flex-shrink: 0;
+	}
+
+	.feature-text {
+		flex: 1;
+	}
+
+	.feature-text h3 {
+		font-size: 14px;
+		margin-bottom: 2px;
+	}
+
+	.feature-text p {
+		font-size: 12px;
+		margin: 0;
+	}
+}
+
+/* Mobile layout - compact vertical feature list */
+@media screen and (max-width: 699px) {
+	.welcome-content {
+		padding: 24px 24px 16px 24px;
+		min-height: 340px;
+		justify-content: flex-start;
+		text-align: center;
+	}
+
+	.welcome-header {
+		margin-bottom: 28px;
+		margin-top: 8px;
+	}
+
+	.welcome-title {
+		font-size: 26px;
+		margin-bottom: 6px;
+	}
+
+	.welcome-tagline {
+		display: block;
+		font-size: 14px;
+	}
+
+	.welcome-body {
+		display: block;
+	}
+
+	.welcome-description {
+		display: none;
+	}
+
+	.features-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		max-width: 400px;
+		margin: 0 auto;
+	}
+
+	.feature-item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		text-align: left;
+		padding: 10px 14px;
+		min-height: 48px;
+		gap: 14px;
+	}
+
+	.feature-item :global(svg) {
+		width: 28px;
+		height: 28px;
+		margin-bottom: 0;
+		flex-shrink: 0;
+	}
+
+	.feature-text {
+		flex: 1;
+	}
+
+	.feature-text h3 {
+		font-size: 13px;
+		margin-bottom: 2px;
+	}
+
+	.feature-text p {
+		font-size: 11px;
+		margin: 0;
+	}
+}
+
+/* Small mobile adjustments */
 @media screen and (max-width: 500px) {
+	.welcome-content {
+		padding: 20px 20px 12px 20px;
+		min-height: 320px;
+	}
+
+	.welcome-header {
+		margin-bottom: 24px;
+		margin-top: 6px;
+	}
+
 	.welcome-title {
 		font-size: 24px;
 	}
 
-	.welcome-content {
-		padding: 16px 20px;
-		min-height: 250px;
+	.welcome-tagline {
+		font-size: 13px;
 	}
 
 	.features-grid {
-		max-width: 400px;
-		gap: 12px;
+		max-width: 350px;
+		gap: 10px;
 	}
 
 	.feature-item {
-		padding: 14px 10px;
+		padding: 8px 12px;
+		min-height: 44px;
+		gap: 12px;
+	}
+
+	.feature-item :global(svg) {
+		width: 24px;
+		height: 24px;
+	}
+
+	.feature-text h3 {
+		font-size: 12px;
+	}
+
+	.feature-text p {
+		font-size: 10px;
 	}
 }
+
 </style>
 
 <div class="main-container">
@@ -187,18 +352,23 @@
 			<!-- Welcome Banner -->
 			<div class="welcome-banner">
 				<div class="welcome-content">
-					<h1 class="welcome-title">Welcome to Unggoy</h1>
-					<p class="welcome-description">
-						The premier Halo Infinite community hub for discovering, creating, and sharing custom content.
-						Browse thousands of community-created maps, game modes, and prefabs, or build your perfect playlist.
-					</p>
+					<div class="welcome-header">
+						<h1 class="welcome-title">Welcome to Unggoy</h1>
+						<p class="welcome-tagline">Your Halo Infinite Community Hub</p>
+					</div>
 
-					<div class="features-grid">
+					<div class="welcome-body">
+						<p class="welcome-description">
+							The premier Halo Infinite community hub for discovering, creating, and sharing custom content.
+							Browse thousands of community-created maps, game modes, and prefabs, or build your perfect playlist.
+						</p>
+
+						<div class="features-grid">
 						<div class="feature-item">
 							<Map active={false}></Map>
 							<div class="feature-text">
 								<h3>Browse Maps</h3>
-								<p>Discover community-created battlegrounds</p>
+								<p>Discover community battlegrounds</p>
 							</div>
 						</div>
 
@@ -206,7 +376,7 @@
 							<Gamepad active={false}></Gamepad>
 							<div class="feature-text">
 								<h3>Game Modes</h3>
-								<p>Find unique gameplay experiences</p>
+								<p>Find unique gameplay</p>
 							</div>
 						</div>
 
@@ -214,7 +384,7 @@
 							<Play active={false}></Play>
 							<div class="feature-text">
 								<h3>Custom Playlists</h3>
-								<p>Create and share your collections</p>
+								<p>Create and share collections</p>
 							</div>
 						</div>
 
@@ -222,8 +392,9 @@
 							<Crown active={false}></Crown>
 							<div class="feature-text">
 								<h3>Browse Forgers</h3>
-								<p>Discover talented creators and their work</p>
+								<p>Follow talented creators</p>
 							</div>
+						</div>
 						</div>
 					</div>
 				</div>
