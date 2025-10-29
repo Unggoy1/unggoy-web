@@ -33,8 +33,9 @@ export const load: PageLoad = async ({ url, fetch }) => {
 	playlistFetchParams.sort = 'favorites';
 	const topFavoritedPlaylists = await playlistBrowse(playlistFetchParams);
 
-	const postRes = await fetch(`${url.origin}/blog/api/posts.json`);
-	const posts = await postRes.json();
+	// Blog posts fetching commented out for now
+	// const postRes = await fetch(`${url.origin}/blog/api/posts.json`);
+	// const posts = await postRes.json();
 
 	return {
 		newMaps: newMaps.assets,
@@ -43,6 +44,6 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		trendingModes: trendingModes.assets,
 		newPlaylists: newPlaylists.assets,
 		topFavoritedPlaylists: topFavoritedPlaylists.assets,
-		posts: posts
+		// posts: posts
 	};
 };
