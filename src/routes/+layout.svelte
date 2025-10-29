@@ -68,6 +68,7 @@
 
 		let query = new URLSearchParams($page.url.searchParams.toString());
 		query.set('searchTerm', searchTerm);
+		query.delete('page'); // Reset to first page when searching
 		goto(`/browse?${query.toString()}`);
 	};
 

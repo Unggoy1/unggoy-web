@@ -139,7 +139,6 @@
 							<input
 								bind:value={browseData.tag}
 								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-								oninput={debouncedUpdateUrl}
 								type="text"
 								placeholder="tag"
 							/>
@@ -157,7 +156,6 @@
 							<input
 								bind:value={browseData.gamertag}
 								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-								oninput={debouncedUpdateUrl}
 								type="text"
 								placeholder="gamertag"
 							/>
