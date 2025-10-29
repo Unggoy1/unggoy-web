@@ -445,6 +445,24 @@ img {
 	fill: var(--button-color-hover); /* Add hover effect for icons */
 }
 
+/* Update notification badge */
+.news-icon-container {
+	position: relative;
+	display: inline-block;
+}
+
+.update-notification-badge {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	width: 10px;
+	height: 10px;
+	background-color: #ff4444;
+	border-radius: 50%;
+	border: 2px solid var(--sidebar-bg);
+	box-shadow: 0 0 4px rgba(255, 68, 68, 0.5);
+}
+
 /* Sidebar Collapse */
 .sidebar.collapse .sidebar-footer {
 	display: none; /* Hide footer when collapsed */
@@ -608,7 +626,7 @@ img {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	height: 390px;
+	height: 320px;
 	border-radius: 20px;
 	align-self: stretch;
 	overflow: hidden;

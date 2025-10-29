@@ -39,13 +39,13 @@
 .welcome-content {
 	position: relative;
 	z-index: 1;
-	padding: 30px 40px;
+	padding: 25px 40px;
 	max-width: 1200px;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	min-height: 330px;
+	min-height: 280px;
 }
 
 .welcome-title {
@@ -118,124 +118,19 @@
 	line-height: 1.4;
 }
 
-/* Desktop breakpoint for taller content */
-@media screen and (max-width: 1100px) {
+
+
+/* Tablet and Mobile - Compact with flowing description */
+@media screen and (max-width: 950px) {
 	.welcome-content {
-		min-height: 350px;
-		padding: 25px 40px;
-	}
-
-	.welcome-title {
-		font-size: 30px;
-	}
-
-	.welcome-description {
-		font-size: 14px;
-		margin-bottom: 20px;
-	}
-
-	.features-grid {
-		max-width: 700px;
-		gap: 14px;
-	}
-
-	.feature-item {
-		padding: 16px 12px;
-	}
-
-	.feature-text h3 {
-		font-size: 15px;
-	}
-
-	.feature-text p {
-		font-size: 12px;
-	}
-}
-
-/* Large tablet layout - vertical feature list */
-@media screen and (max-width: 950px) and (min-width: 700px) {
-	.welcome-content {
-		padding: 25px 30px;
-		min-height: 350px;
-		justify-content: flex-start;
+		padding: 28px 30px 20px 30px;
+		min-height: 140px;
+		justify-content: center;
 		text-align: center;
 	}
 
 	.welcome-header {
-		margin-bottom: 32px;
-		margin-top: 10px;
-	}
-
-	.welcome-title {
-		font-size: 28px;
-		margin-bottom: 8px;
-	}
-
-	.welcome-tagline {
-		display: block;
-		font-size: 16px;
-	}
-
-	.welcome-body {
-		display: block;
-	}
-
-	.welcome-description {
-		display: none;
-	}
-
-	.features-grid {
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-		max-width: 500px;
-		margin: 0 auto;
-	}
-
-	.feature-item {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		text-align: left;
-		padding: 12px 16px;
-		min-height: 56px;
-		gap: 16px;
-	}
-
-	.feature-item :global(svg) {
-		width: 32px;
-		height: 32px;
 		margin-bottom: 0;
-		flex-shrink: 0;
-	}
-
-	.feature-text {
-		flex: 1;
-	}
-
-	.feature-text h3 {
-		font-size: 14px;
-		margin-bottom: 2px;
-	}
-
-	.feature-text p {
-		font-size: 12px;
-		margin: 0;
-	}
-}
-
-/* Mobile layout - compact vertical feature list */
-@media screen and (max-width: 699px) {
-	.welcome-content {
-		padding: 24px 24px 16px 24px;
-		min-height: 340px;
-		justify-content: flex-start;
-		text-align: center;
-	}
-
-	.welcome-header {
-		margin-bottom: 28px;
-		margin-top: 8px;
 	}
 
 	.welcome-title {
@@ -244,68 +139,26 @@
 	}
 
 	.welcome-tagline {
-		display: block;
-		font-size: 14px;
+		font-size: 15px;
+		line-height: 1.4;
+	}
+
+	.welcome-tagline::after {
+		content: " to browse community maps, modes, playlists and creators";
+		opacity: 0.7;
+		font-weight: 400;
 	}
 
 	.welcome-body {
-		display: block;
-	}
-
-	.welcome-description {
 		display: none;
-	}
-
-	.features-grid {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		max-width: 400px;
-		margin: 0 auto;
-	}
-
-	.feature-item {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		text-align: left;
-		padding: 10px 14px;
-		min-height: 48px;
-		gap: 14px;
-	}
-
-	.feature-item :global(svg) {
-		width: 28px;
-		height: 28px;
-		margin-bottom: 0;
-		flex-shrink: 0;
-	}
-
-	.feature-text {
-		flex: 1;
-	}
-
-	.feature-text h3 {
-		font-size: 13px;
-		margin-bottom: 2px;
-	}
-
-	.feature-text p {
-		font-size: 11px;
-		margin: 0;
 	}
 }
 
 /* Small mobile adjustments */
 @media screen and (max-width: 500px) {
 	.welcome-content {
-		padding: 20px 20px 12px 20px;
-		min-height: 320px;
-	}
-
-	.welcome-header {
-		margin-bottom: 24px;
-		margin-top: 6px;
+		padding: 24px 24px 16px 24px;
+		min-height: 120px;
 	}
 
 	.welcome-title {
@@ -313,31 +166,7 @@
 	}
 
 	.welcome-tagline {
-		font-size: 13px;
-	}
-
-	.features-grid {
-		max-width: 350px;
-		gap: 10px;
-	}
-
-	.feature-item {
-		padding: 8px 12px;
-		min-height: 44px;
-		gap: 12px;
-	}
-
-	.feature-item :global(svg) {
-		width: 24px;
-		height: 24px;
-	}
-
-	.feature-text h3 {
-		font-size: 12px;
-	}
-
-	.feature-text p {
-		font-size: 10px;
+		font-size: 14px;
 	}
 }
 
@@ -354,7 +183,7 @@
 				<div class="welcome-content">
 					<div class="welcome-header">
 						<h1 class="welcome-title">Welcome to Unggoy</h1>
-						<p class="welcome-tagline">Your Halo Infinite Community Hub</p>
+						<p class="welcome-tagline">Your Halo Infinite Community Content Hub</p>
 					</div>
 
 					<div class="welcome-body">
@@ -391,8 +220,8 @@
 						<div class="feature-item">
 							<Crown active={false}></Crown>
 							<div class="feature-text">
-								<h3>Browse Forgers</h3>
-								<p>Follow talented creators</p>
+								<h3>Browse Creators</h3>
+								<p>Explore work from talented forgers</p>
 							</div>
 						</div>
 						</div>

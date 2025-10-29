@@ -11,6 +11,7 @@
 	import type { LayoutData } from './$types';
 	import { user } from '../stores/user';
 	import { playlistStore } from '../stores/playlist';
+	import { updateNotification } from '../stores/updates';
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import { DropdownType } from '$lib/enums';
 	import toast, { Toaster } from 'svelte-french-toast';
@@ -56,6 +57,11 @@
 	let addToPlaylistModalComponent: AddToPlaylistModal;
 
 	$: currentAssetKind = new URLSearchParams($page.url.search).get('assetKind');
+
+	// Clear update notification when user visits blog
+	$: if ($page.url.pathname.startsWith('/blog')) {
+		updateNotification.markAsSeen(version);
+	}
 
 	const handleResize = () => {
 		isSidebarCollapsed = window.innerWidth <= 1250;
@@ -107,6 +113,9 @@
 		if (addToPlaylistModalComponent) {
 			$addToPlaylistModal = addToPlaylistModalComponent;
 		}
+
+		// Initialize update notification tracking
+		updateNotification.init(version);
 
 		groups = [
 			[
@@ -232,8 +241,11 @@
 				<a href="https://github.com/Unggoy1" target="_blank">
 					<Github class="social-icon"></Github>
 				</a>
-				<a href="/blog">
+				<a href="/blog" class="news-icon-container">
 					<News class="social-icon"></News>
+					{#if $updateNotification}
+						<span class="update-notification-badge"></span>
+					{/if}
 				</a>
 				<!-- Add more social icons as needed -->
 			</div>
