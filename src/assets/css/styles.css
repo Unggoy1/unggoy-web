@@ -633,6 +633,13 @@ img {
 	margin-bottom: 20px;
 }
 
+@media screen and (max-width: 769px) {
+	.main-blogs {
+		width: 100%;
+		overflow: hidden;
+	}
+}
+
 .main-blog {
 	background-size: 80%;
 	background-position-x: 150px;
@@ -646,6 +653,13 @@ img {
 	position: relative;
 	transition: background 0.3s;
 }
+
+@media screen and (max-width: 769px) {
+	.main-blog {
+		height: 160px;
+	}
+}
+
 .main-blog-bg {
 	filter: brightness(0.5);
 	height: 100%;
@@ -702,6 +716,46 @@ img {
 		padding: 0 8px;
 	}
 }
+
+/* Mobile: Remove container background and padding */
+@media (max-width: 769px) {
+	.assets-container {
+		background-color: transparent;
+		padding: 0;
+		border-radius: 0;
+		margin-bottom: 16px;
+	}
+
+	.assets-container.browse {
+		background-color: transparent;
+		padding: 0;
+		border-radius: 0;
+	}
+}
+
+/* Homepage navigation chips and asset group visibility */
+.mobile-nav-chips {
+	display: none;
+}
+
+.asset-group-wrapper {
+	display: block;
+}
+
+@media (max-width: 769px) {
+	.mobile-nav-chips {
+		display: grid;
+	}
+
+	.asset-group-wrapper {
+		display: none;
+	}
+
+	.asset-group-wrapper.active {
+		display: block;
+	}
+}
+
 .assets {
 	/**
    * User input values.
@@ -725,6 +779,16 @@ img {
 	.assets {
 		grid-template-columns: 1fr;
 		--grid-item--min-width: 100%;
+	}
+}
+
+/* Mobile asset layout for browse pages */
+@media (max-width: 769px) {
+	.assets.mobile {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		padding: 0;
 	}
 }
 
@@ -886,6 +950,11 @@ img {
 	bottom: 0;
 	border-radius: 0 0 20px 20px;
 	aspect-ratio: 560 / 40;
+}
+
+/* Remove rounded corners on mobile asset cards */
+.mobile-asset-card .asset-name {
+	border-radius: 0;
 }
 
 .elipsis {
@@ -1307,8 +1376,11 @@ img {
 		align-items: flex-start !important;
 		padding: 16px 8px;
 	}
+	.filter-container:first-child {
+		display: none;
+	}
 	.filter-container:last-child {
-		padding-top: 0;
+		padding-top: 5px;
 	}
 	.filter-group-sort {
 		flex-direction: column !important;

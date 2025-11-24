@@ -8,9 +8,10 @@
 		commands?: Snippet;
 		onclose?: () => void;
 		extraClass?: string;
+		slideUp?: boolean;
 	}
 
-	let { children, commands, onclose, extraClass = '' }: Props = $props();
+	let { children, commands, onclose, extraClass = '', slideUp = false }: Props = $props();
 	// let { onclose }: Props = $props();
 
 	const dialog = createDialog();
@@ -31,10 +32,11 @@
 		<!-- </Transition> -->
 
 		<div class="fixed inset-0 overflow-y-auto dialog-background">
-			<div class="flex min-h-full items-center justify-center p-4 text-center">
+			<div class="flex min-h-full items-center justify-center p-4 text-center" class:slide-up-wrapper={slideUp}>
 				<Transition>
 					<div
 						class="w-full max-w-md rounded-2xl p-6 text-left shadow-xl transition-all dialog-container"
+						class:dialog-slideup={slideUp}
 						use:dialog.modal
 						{onclose}
 					>
@@ -68,5 +70,26 @@
 	.commands {
 		display: flex;
 		flex-direction: row-reverse;
+	}
+
+	/* Slide-up modal styles for mobile */
+	@media screen and (max-width: 768px) {
+		.slide-up-wrapper {
+			align-items: flex-end;
+			justify-content: center;
+			padding: 0;
+			padding-bottom: 60px; /* Account for bottom nav bar height */
+		}
+
+		.dialog-slideup {
+			margin: 0;
+			border-radius: 16px 16px 0 0;
+			max-width: 100%;
+			width: 100%;
+			max-height: calc(85vh - 60px); /* Reduce height to account for bottom nav bar */
+			overflow-y: auto;
+			padding: 20px;
+			padding-bottom: calc(20px + env(safe-area-inset-bottom)); /* Extra padding for iOS */
+		}
 	}
 </style>

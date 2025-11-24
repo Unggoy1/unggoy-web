@@ -43,11 +43,25 @@
 	}
 </script>
 
-<Modal bind:this={modal} onclose={cancel}>
+<Modal bind:this={modal} onclose={cancel} slideUp={true}>
 	<h3 class="text-lg font-medium leading-6">Filter Search Results</h3>
 
 	<div class="flex w-full flex-col items-center justify-center">
 		<div class="input-container">
+			{#if details.filter !== undefined}
+				<div class="modal-filter-group">
+					<div class="text-on-input">
+						<label>Asset Type</label>
+						<select bind:value={details.filter} class="filter-select">
+							<option value="">All Types</option>
+							<option value="Map">Maps</option>
+							<option value="UgcGameVariant">Modes</option>
+							<option value="Prefab">Prefabs</option>
+						</select>
+					</div>
+				</div>
+			{/if}
+
 			{#if details.tag !== undefined}
 				<div class="modal-filter-group">
 					<!-- <p class="filter-text">Tags:</p> -->
@@ -279,5 +293,27 @@
 		color: red;
 		font-weight: bold;
 		/* margin-left: 4px; */
+	}
+
+	.filter-select {
+		font-size: 14px;
+		width: 100%;
+		height: 48px;
+		color: var(--container-color);
+		border-radius: 8px;
+		border: 2px solid rgba(255, 255, 255, 0.08);
+		background: var(--container-bg);
+		padding: 14px 40px 14px 14px;
+		cursor: pointer;
+		outline: none;
+		transition: border-color 0.2s ease;
+	}
+
+	.filter-select:hover {
+		border-color: rgba(255, 255, 255, 0.12);
+	}
+
+	.filter-select:focus {
+		border-color: rgba(255, 255, 255, 0.16);
 	}
 </style>

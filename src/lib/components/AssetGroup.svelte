@@ -3,6 +3,7 @@
 	import { getAssetCardGroups } from '$lib/functions';
 	import { onMount, type Snippet } from 'svelte';
 	import AssetCard from './AssetCard.svelte';
+	import MobileAssetCard from './MobileAssetCard.svelte';
 	import { addAssetModal, playlistModal, inlineBrowsePairingModal } from '../../stores/modal';
 
 	interface Props {
@@ -11,32 +12,56 @@
 	}
 
 	let { children, assets }: Props = $props();
-	onMount(() => {});
+
+	let isMobile = $state(false);
+
+	function checkMobile() {
+		isMobile = window.innerWidth <= 769;
+	}
+
+	onMount(() => {
+		checkMobile();
+		window.addEventListener('resize', checkMobile);
+		return () => window.removeEventListener('resize', checkMobile);
+	});
 </script>
 
 <div class="assets-container">
 	{@render children()}
-	<div class="assets">
+	<div class="assets" class:mobile={isMobile}>
 		{#each assets as asset (asset.assetId)}
+			{@const groups = getAssetCardGroups({
+				assetId: asset.assetId,
+				assetKind: asset.assetKind,
+				asset: asset,
+				playlistModalVar: $playlistModal,
+				addAssetModalVar: $addAssetModal,
+				inlineBrowsePairingModalVar: $inlineBrowsePairingModal
+			})}
+			{@const assetUrl = `/${asset.assetKind == 2 ? 'maps' : asset.assetKind == 6 ? 'modes' : asset.assetKind == 4 ? 'prefabs' : 'playlist'}/${asset.assetId}`}
+
 			<div style="color: inherit; text-decoration: none;">
-				<AssetCard
-					{asset}
-					groups={getAssetCardGroups({
-						assetId: asset.assetId,
-						assetKind: asset.assetKind,
-						asset: asset,
-						playlistModalVar: $playlistModal,
-						addAssetModalVar: $addAssetModal,
-						inlineBrowsePairingModalVar: $inlineBrowsePairingModal
-					})}
-					assetUrl="/{asset.assetKind == 2
-						? 'maps'
-						: asset.assetKind == 6
-							? 'modes'
-							: asset.assetKind == 4
-								? 'prefabs'
-								: 'playlist'}/{asset.assetId}"
-				/>
+				{#if isMobile}
+					{@const drawerOptions = groups.flatMap(group =>
+						group.map(item => ({
+							icon: item.icon,
+							text: item.text,
+							onClick: item.function
+						}))
+					)}
+					<MobileAssetCard
+						{asset}
+						{assetUrl}
+						pairedMode={asset.pairedMode ?? null}
+						{drawerOptions}
+					/>
+				{:else}
+					<AssetCard
+						{asset}
+						{groups}
+						{assetUrl}
+					/>
+				{/if}
 			</div>
 		{/each}
 	</div>

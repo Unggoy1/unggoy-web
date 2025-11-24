@@ -45,6 +45,9 @@
   
   // Keep track if this is the first load
   let isFirstLoad = true;
+
+  // Mobile filter visibility
+  let showFilters = false;
   
   // Load assets from API based on current filters
   async function loadAssets() {
@@ -122,10 +125,10 @@
   
   // Get selected playlist name
   $: selectedPlaylistName = userPlaylists.find(p => p.assetId === selectedPlaylist)?.name || '';
-  
+
   // Load data when playlist is first selected
   let prevSelectedPlaylist = '';
-  
+
   // Load assets when relevant filters change
   $: if (modal && selectedPlaylist) {
     // Check if playlist changed (initial load)
@@ -138,7 +141,7 @@
     else if (searchTerm !== prevSearchTerm) {
       prevSearchTerm = searchTerm;
       debouncedLoadAssets();
-    } 
+    }
     // Check if sort options changed
     else if (sortBy !== prevSortBy || sortOrder !== prevSortOrder) {
       prevSortBy = sortBy;
@@ -375,8 +378,19 @@
             placeholder="Search {assetType === 'map' ? 'modes' : 'maps'}..."
             class="search-input"
           />
-          
-          <div class="controls-right">
+
+          <button
+            class="filter-toggle-btn"
+            onclick={() => showFilters = !showFilters}
+            title="Toggle filters"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            Filters
+          </button>
+
+          <div class="controls-right" class:show={showFilters}>
             <select bind:value={sortBy} class="sort-select">
               <option value="publishedAt">Date Published</option>
               <option value="name">Name</option>
@@ -385,10 +399,11 @@
               <option value="playsRecent">Plays Recent</option>
               <option value="playsAllTime">Plays</option>
             </select>
-            
-            <button 
+
+            <button
               onclick={() => sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'}
               class="sort-order-btn"
+              title={sortOrder === 'asc' ? 'Ascending' : 'Descending'}
             >
               {sortOrder === 'asc' ? '↑' : '↓'}
             </button>
@@ -501,6 +516,12 @@
     margin-top: 20px;
     min-height: 750px; /* Restore original height */
   }
+
+  @media (max-width: 768px) {
+    .modal-content {
+      margin-top: 12px;
+    }
+  }
   
   .selected-asset {
     display: flex;
@@ -606,6 +627,12 @@
     min-height: 500px; /* Standard height for browse section */
     position: relative;
   }
+
+  @media (max-width: 768px) {
+    .browse-section {
+      margin-top: 16px;
+    }
+  }
   
   .browse-section:not(.active) {
     visibility: hidden; /* Hide content but maintain space */
@@ -620,21 +647,80 @@
     gap: 12px;
     margin-bottom: 16px;
     align-items: center;
+    flex-wrap: wrap;
   }
-  
-  .search-input {
-    flex: 1;
+
+  @media (max-width: 768px) {
+    .controls-bar {
+      gap: 8px;
+    }
+  }
+
+  .filter-toggle-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
     padding: 8px 12px;
     background-color: var(--top-container-bg);
     border: 1px solid var(--sidebar-bg);
     border-radius: 6px;
     color: var(--container-color);
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .filter-toggle-btn svg {
+    stroke: var(--container-color);
+  }
+
+  .filter-toggle-btn:hover {
+    background-color: var(--button-bg);
+  }
+
+  @media (max-width: 768px) {
+    .filter-toggle-btn {
+      display: flex;
+    }
+  }
+  
+  .search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 8px 12px;
+    background-color: var(--top-container-bg);
+    border: 1px solid var(--sidebar-bg);
+    border-radius: 6px;
+    color: var(--container-color);
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .search-input {
+      flex: 1 1 100%;
+      min-width: 100%;
+      font-size: 16px; /* Prevent iOS auto-zoom */
+    }
   }
   
   .controls-right {
     display: flex;
     gap: 8px;
     align-items: center;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .controls-right {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .controls-right.show {
+      display: flex;
+    }
   }
   
   .sort-select {
@@ -643,6 +729,14 @@
     border: 1px solid var(--sidebar-bg);
     border-radius: 6px;
     color: var(--container-color);
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .sort-select {
+      width: 100%;
+      font-size: 16px; /* Prevent iOS auto-zoom */
+    }
   }
   
   .sort-order-btn {
@@ -661,7 +755,15 @@
   
   .content-container {
     position: relative;
-    height: 400px; /* Good height for content container */
+    min-height: 300px;
+    max-height: 500px;
+  }
+
+  @media (max-width: 768px) {
+    .content-container {
+      min-height: 200px;
+      max-height: 45vh; /* Reduced to leave room for buttons */
+    }
   }
   
   .loading-overlay {
@@ -763,11 +865,26 @@
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     grid-auto-rows: minmax(150px, auto); /* Ensure minimum height for cards */
     gap: 16px;
-    height: 400px; /* Match height of content-container */
+    max-height: 450px;
     overflow-y: auto;
     border: 1px solid var(--sidebar-bg);
     border-radius: 8px;
     padding: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .assets-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      max-height: 40vh; /* Reduced to leave room for buttons */
+      gap: 12px;
+      padding: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .assets-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
   }
   
   .asset-card {

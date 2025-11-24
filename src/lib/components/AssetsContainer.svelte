@@ -4,6 +4,7 @@
 	import type { BrowseData } from '$lib/api';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
+	import MobileAssetCard from './MobileAssetCard.svelte';
 	import SkeletonAssetsContainer from './SkeletonAssetsContainer.svelte';
 	import { addAssetModal, playlistModal, inlineBrowsePairingModal, addToPlaylistModal } from '../../stores/modal';
 	import FilterModal from '$lib/components/FilterModal.svelte';
@@ -11,6 +12,7 @@
 	import { currentPage } from '$lib/assets/js/store';
 	import { navigating } from '$app/stores';
 	import { user } from '../../stores/user';
+	import { onMount } from 'svelte';
 
 	let filterModal: FilterModal;
 	interface Props {
@@ -19,13 +21,20 @@
 	}
 
 	let { browseData, filterTitle }: Props = $props();
-	
+
 	// Subscribe to modal stores once at parent level using Svelte 5 runes
 	const addAssetModalVar = $derived($addAssetModal);
 	const playlistModalVar = $derived($playlistModal);
 	const inlineBrowsePairingModalVar = $derived($inlineBrowsePairingModal);
 	const addToPlaylistModalVar = $derived($addToPlaylistModal);
 	const activeUser = $derived($user);
+
+	// Mobile detection
+	let isMobile = $state(false);
+
+	function checkMobile() {
+		isMobile = window.innerWidth <= 769;
+	}
 	
 	// Debouncing for URL updates
 	let updateTimer: number;
@@ -107,6 +116,12 @@
 			updateUrl();
 		} catch {}
 	}
+
+	onMount(() => {
+		checkMobile();
+		window.addEventListener('resize', checkMobile);
+		return () => window.removeEventListener('resize', checkMobile);
+	});
 </script>
 
 <FilterModal bind:this={filterModal}></FilterModal>
@@ -219,28 +234,41 @@
 	</div>
 
 	{#if browseData.assets.length}
-		<div class="assets browse">
+		<div class="assets browse" class:mobile={isMobile}>
 			{#each browseData.assets as asset (asset.assetId)}
-				<AssetCard
-					{asset}
-					groups={getAssetCardGroups({
-						assetId: asset.assetId,
-						assetKind: asset.assetKind,
-						asset: asset,
-						playlist: browseData.playlist || undefined,
-						playlistModalVar: playlistModalVar,
-						addAssetModalVar: addAssetModalVar,
-						inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
-						activeUser: activeUser
-					})}
-					assetUrl="/{asset.assetKind == 2
-						? 'maps'
-						: asset.assetKind == 6
-							? 'modes'
-							: asset.assetKind == 4
-								? 'prefabs'
-								: 'playlist'}/{asset.assetId}"
-				/>
+				{@const groups = getAssetCardGroups({
+					assetId: asset.assetId,
+					assetKind: asset.assetKind,
+					asset: asset,
+					playlist: browseData.playlist || undefined,
+					playlistModalVar: playlistModalVar,
+					addAssetModalVar: addAssetModalVar,
+					inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
+					activeUser: activeUser
+				})}
+				{@const assetUrl = `/${asset.assetKind == 2 ? 'maps' : asset.assetKind == 6 ? 'modes' : asset.assetKind == 4 ? 'prefabs' : 'playlist'}/${asset.assetId}`}
+
+				{#if isMobile}
+					{@const drawerOptions = groups.flatMap(group =>
+						group.map(item => ({
+							icon: item.icon,
+							text: item.text,
+							onClick: item.function
+						}))
+					)}
+					<MobileAssetCard
+						{asset}
+						{assetUrl}
+						pairedMode={asset.pairedMode ?? null}
+						{drawerOptions}
+					/>
+				{:else}
+					<AssetCard
+						{asset}
+						{groups}
+						{assetUrl}
+					/>
+				{/if}
 			{/each}
 		</div>
 	{:else}
