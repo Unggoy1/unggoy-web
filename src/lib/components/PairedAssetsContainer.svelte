@@ -5,6 +5,7 @@
 	import type { PlaylistPair } from '$lib/api/playlist';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
+	import MobileAssetCard from './MobileAssetCard.svelte';
 	import { addAssetModal, playlistModal, inlineBrowsePairingModal, addToPlaylistModal } from '../../stores/modal';
 	import FilterModal from '$lib/components/FilterModal.svelte';
 	import { SortOrder, Filter, Plus } from './icons';
@@ -12,6 +13,7 @@
 	import { DropdownType } from '$lib/enums';
 	import type { DropdownData, AuthGroup, NoAuthGroup } from '$lib/types';
 	import { user } from '../../stores/user';
+	import { onMount } from 'svelte';
 
 	let filterModal: FilterModal;
 	interface Props {
@@ -23,13 +25,20 @@
 	}
 
 	let { browseData, pairs, filterTitle, pairsTotalPages, pairsTotalResults }: Props = $props();
-	
+
 	// Subscribe to modal stores once at parent level using Svelte 5 runes
 	const addAssetModalVar = $derived($addAssetModal);
 	const playlistModalVar = $derived($playlistModal);
 	const inlineBrowsePairingModalVar = $derived($inlineBrowsePairingModal);
 	const addToPlaylistModalVar = $derived($addToPlaylistModal);
 	const activeUser = $derived($user);
+
+	// Mobile detection
+	let isMobile = $state(false);
+
+	function checkMobile() {
+		isMobile = window.innerWidth <= 769;
+	}
 	
 	// Debouncing for URL updates
 	let updateTimer: number;
@@ -114,6 +123,12 @@
 			updateUrl();
 		} catch {}
 	}
+
+	onMount(() => {
+		checkMobile();
+		window.addEventListener('resize', checkMobile);
+		return () => window.removeEventListener('resize', checkMobile);
+	});
 </script>
 
 <FilterModal bind:this={filterModal}></FilterModal>
@@ -228,89 +243,151 @@
 	</div>
 
 	{#if pairs && pairs.length > 0}
-		<div class="assets browse">
+		<div class="assets browse" class:mobile={isMobile}>
 			{#each pairs as pair (pair.id)}
 				{#if pair.map && pair.gamemode}
 					<!-- Complete pair - show only paired playlist option -->
-					<AssetCard
-						asset={pair.map}
-						pairedMode={pair.gamemode}
-						groups={getAssetCardGroups({
-							assetId: pair.map.assetId,
-							assetKind: pair.map.assetKind,
-							asset: pair.map,
-							playlist: browseData.playlist || undefined,
-							playlistModalVar: playlistModalVar,
-							addAssetModalVar: addAssetModalVar,
-							inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
-							pairedAsset: pair.gamemode,
-							pairData: pair,
-							activeUser: activeUser
-						})}
-						assetUrl="/maps/{pair.map.assetId}"
-					/>
-				{:else if pair.map}
-					<!-- Incomplete pair - map only, needs mode -->
-					<AssetCard
-						asset={pair.map}
-						groups={getAssetCardGroups({
-							assetId: pair.map.assetId,
-							assetKind: pair.map.assetKind,
-							asset: pair.map,
-							playlist: browseData.playlist || undefined,
-							playlistModalVar: playlistModalVar,
-							addAssetModalVar: addAssetModalVar,
-							inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
-							isIncompletePair: true,
-							pairData: pair,
-							activeUser: activeUser
-						})}
-						assetUrl="/maps/{pair.map.assetId}"
-					/>
-				{:else if pair.gamemode}
-					<!-- Incomplete pair - mode only, needs map -->
-					<AssetCard
-						asset={pair.gamemode}
-						groups={getAssetCardGroups({
-							assetId: pair.gamemode.assetId,
-							assetKind: pair.gamemode.assetKind,
-							asset: pair.gamemode,
-							playlist: browseData.playlist || undefined,
-							playlistModalVar: playlistModalVar,
-							addAssetModalVar: addAssetModalVar,
-							inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
-							isIncompletePair: true,
-							pairData: pair,
-							activeUser: activeUser
-						})}
-						assetUrl="/modes/{pair.gamemode.assetId}"
-					/>
-				{/if}
-			{/each}
-		</div>
-	{:else if browseData.assets.length}
-		<div class="assets browse">
-			{#each browseData.assets as asset (asset.assetId)}
-				<AssetCard
-					{asset}
-					groups={getAssetCardGroups({
-						assetId: asset.assetId,
-						assetKind: asset.assetKind,
-						asset: asset,
+					{@const groups = getAssetCardGroups({
+						assetId: pair.map.assetId,
+						assetKind: pair.map.assetKind,
+						asset: pair.map,
 						playlist: browseData.playlist || undefined,
 						playlistModalVar: playlistModalVar,
 						addAssetModalVar: addAssetModalVar,
 						inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
+						pairedAsset: pair.gamemode,
+						pairData: pair,
 						activeUser: activeUser
 					})}
-					assetUrl="/{asset.assetKind == 2
-						? 'maps'
-						: asset.assetKind == 6
-							? 'modes'
-							: asset.assetKind == 4
-								? 'prefabs'
-								: 'playlist'}/{asset.assetId}"
-				/>
+					{#if isMobile}
+						{@const drawerOptions = groups.flatMap(group =>
+							group.map(item => ({
+								icon: item.icon,
+								text: item.text,
+								onClick: item.function
+							}))
+						)}
+						<MobileAssetCard
+							asset={pair.map}
+							pairedMode={pair.gamemode}
+							assetUrl="/maps/{pair.map.assetId}"
+							{drawerOptions}
+						/>
+					{:else}
+						<AssetCard
+							asset={pair.map}
+							pairedMode={pair.gamemode}
+							{groups}
+							assetUrl="/maps/{pair.map.assetId}"
+						/>
+					{/if}
+				{:else if pair.map}
+					<!-- Incomplete pair - map only, needs mode -->
+					{@const groups = getAssetCardGroups({
+						assetId: pair.map.assetId,
+						assetKind: pair.map.assetKind,
+						asset: pair.map,
+						playlist: browseData.playlist || undefined,
+						playlistModalVar: playlistModalVar,
+						addAssetModalVar: addAssetModalVar,
+						inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
+						isIncompletePair: true,
+						pairData: pair,
+						activeUser: activeUser
+					})}
+					{#if isMobile}
+						{@const drawerOptions = groups.flatMap(group =>
+							group.map(item => ({
+								icon: item.icon,
+								text: item.text,
+								onClick: item.function
+							}))
+						)}
+						<MobileAssetCard
+							asset={pair.map}
+							assetUrl="/maps/{pair.map.assetId}"
+							{drawerOptions}
+						/>
+					{:else}
+						<AssetCard
+							asset={pair.map}
+							{groups}
+							assetUrl="/maps/{pair.map.assetId}"
+						/>
+					{/if}
+				{:else if pair.gamemode}
+					<!-- Incomplete pair - mode only, needs map -->
+					{@const groups = getAssetCardGroups({
+						assetId: pair.gamemode.assetId,
+						assetKind: pair.gamemode.assetKind,
+						asset: pair.gamemode,
+						playlist: browseData.playlist || undefined,
+						playlistModalVar: playlistModalVar,
+						addAssetModalVar: addAssetModalVar,
+						inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
+						isIncompletePair: true,
+						pairData: pair,
+						activeUser: activeUser
+					})}
+					{#if isMobile}
+						{@const drawerOptions = groups.flatMap(group =>
+							group.map(item => ({
+								icon: item.icon,
+								text: item.text,
+								onClick: item.function
+							}))
+						)}
+						<MobileAssetCard
+							asset={pair.gamemode}
+							assetUrl="/modes/{pair.gamemode.assetId}"
+							{drawerOptions}
+						/>
+					{:else}
+						<AssetCard
+							asset={pair.gamemode}
+							{groups}
+							assetUrl="/modes/{pair.gamemode.assetId}"
+						/>
+					{/if}
+				{/if}
+			{/each}
+		</div>
+	{:else if browseData.assets.length}
+		<div class="assets browse" class:mobile={isMobile}>
+			{#each browseData.assets as asset (asset.assetId)}
+				{@const groups = getAssetCardGroups({
+					assetId: asset.assetId,
+					assetKind: asset.assetKind,
+					asset: asset,
+					playlist: browseData.playlist || undefined,
+					playlistModalVar: playlistModalVar,
+					addAssetModalVar: addAssetModalVar,
+					inlineBrowsePairingModalVar: inlineBrowsePairingModalVar,
+					activeUser: activeUser
+				})}
+				{@const assetUrl = `/${asset.assetKind == 2 ? 'maps' : asset.assetKind == 6 ? 'modes' : asset.assetKind == 4 ? 'prefabs' : 'playlist'}/${asset.assetId}`}
+
+				{#if isMobile}
+					{@const drawerOptions = groups.flatMap(group =>
+						group.map(item => ({
+							icon: item.icon,
+							text: item.text,
+							onClick: item.function
+						}))
+					)}
+					<MobileAssetCard
+						{asset}
+						{assetUrl}
+						pairedMode={asset.pairedMode ?? null}
+						{drawerOptions}
+					/>
+				{:else}
+					<AssetCard
+						{asset}
+						{groups}
+						{assetUrl}
+					/>
+				{/if}
 			{/each}
 		</div>
 	{:else}

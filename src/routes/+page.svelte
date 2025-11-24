@@ -1,10 +1,31 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import AssetGroup from '$lib/components/AssetGroup.svelte';
+	import ScrollableChips from '$lib/components/ScrollableChips.svelte';
 	import { ChevronRight } from '$lib/components/icons';
 	// import BlogCarousel from '$lib/components/BlogCarousel.svelte';
 	import { Map, Gamepad, Play, Crown } from '$lib/components/icons';
-	export let data: PageData;
+
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+
+	let activeChip = $state('newMaps');
+
+	const chips = [
+		{ id: 'newMaps', label: 'New Maps' },
+		{ id: 'trendingMaps', label: 'Trending Maps' },
+		{ id: 'newModes', label: 'New Modes' },
+		{ id: 'trendingModes', label: 'Trending Modes' },
+		{ id: 'newPlaylists', label: 'New Playlists' },
+		{ id: 'topPlaylists', label: 'Top Playlists' }
+	];
+
+	function handleChipClick(chipId: string) {
+		activeChip = chipId;
+	}
 </script>
 
 <svelte:head>
@@ -230,52 +251,76 @@
 			</div>
 		</div>
 	</div>
-	<AssetGroup assets={data.newMaps}>
-		<a href="/browse?assetKind=Map">
-			<div class="small-header">
-				New Maps
-				<ChevronRight></ChevronRight>
-			</div>
-		</a>
-	</AssetGroup>
-	<AssetGroup assets={data.trendingMaps}>
-		<a href="/browse?assetKind=Map&sort=playsRecent&order=desc&hide343Assets=true">
-			<div class="small-header">
-				Trending Maps
-				<ChevronRight></ChevronRight>
-			</div>
-		</a>
-	</AssetGroup>
-	<AssetGroup assets={data.newModes}>
-		<a href="/browse?assetKind=UgcGameVariant">
-			<div class="small-header">
-				New Modes
-				<ChevronRight></ChevronRight>
-			</div>
-		</a>
-	</AssetGroup>
-	<AssetGroup assets={data.trendingModes}>
-		<a href="/browse?assetKind=UgcGameVariant&sort=playsRecent&order=desc&hide343Assets=true">
-			<div class="small-header">
-				Trending Modes
-				<ChevronRight></ChevronRight>
-			</div>
-		</a>
-	</AssetGroup>
-	<AssetGroup assets={data.newPlaylists}>
-		<a href="/browse/playlist">
-			<div class="small-header">
-				New Playlists
-				<ChevronRight></ChevronRight>
-			</div>
-		</a>
-	</AssetGroup>
-	<AssetGroup assets={data.topFavoritedPlaylists}>
-		<a href="/browse/playlist?&sort=favorites&order=desc">
-			<div class="small-header">
-				Top Playlists
-				<ChevronRight></ChevronRight>
-			</div>
-		</a>
-	</AssetGroup>
+
+	<!-- Navigation chips for mobile -->
+	<div class="mobile-nav-chips">
+		<ScrollableChips {chips} bind:activeChip onChipClick={handleChipClick} />
+	</div>
+
+	<!-- Asset groups with conditional visibility on mobile -->
+	<div class="asset-group-wrapper" class:active={activeChip === 'newMaps'} data-group="newMaps">
+		<AssetGroup assets={data.newMaps}>
+			<a href="/browse?assetKind=Map">
+				<div class="small-header">
+					New Maps
+					<ChevronRight></ChevronRight>
+				</div>
+			</a>
+		</AssetGroup>
+	</div>
+
+	<div class="asset-group-wrapper" class:active={activeChip === 'trendingMaps'} data-group="trendingMaps">
+		<AssetGroup assets={data.trendingMaps}>
+			<a href="/browse?assetKind=Map&sort=playsRecent&order=desc&hide343Assets=true">
+				<div class="small-header">
+					Trending Maps
+					<ChevronRight></ChevronRight>
+				</div>
+			</a>
+		</AssetGroup>
+	</div>
+
+	<div class="asset-group-wrapper" class:active={activeChip === 'newModes'} data-group="newModes">
+		<AssetGroup assets={data.newModes}>
+			<a href="/browse?assetKind=UgcGameVariant">
+				<div class="small-header">
+					New Modes
+					<ChevronRight></ChevronRight>
+				</div>
+			</a>
+		</AssetGroup>
+	</div>
+
+	<div class="asset-group-wrapper" class:active={activeChip === 'trendingModes'} data-group="trendingModes">
+		<AssetGroup assets={data.trendingModes}>
+			<a href="/browse?assetKind=UgcGameVariant&sort=playsRecent&order=desc&hide343Assets=true">
+				<div class="small-header">
+					Trending Modes
+					<ChevronRight></ChevronRight>
+				</div>
+			</a>
+		</AssetGroup>
+	</div>
+
+	<div class="asset-group-wrapper" class:active={activeChip === 'newPlaylists'} data-group="newPlaylists">
+		<AssetGroup assets={data.newPlaylists}>
+			<a href="/browse/playlist">
+				<div class="small-header">
+					New Playlists
+					<ChevronRight></ChevronRight>
+				</div>
+			</a>
+		</AssetGroup>
+	</div>
+
+	<div class="asset-group-wrapper" class:active={activeChip === 'topPlaylists'} data-group="topPlaylists">
+		<AssetGroup assets={data.topFavoritedPlaylists}>
+			<a href="/browse/playlist?&sort=favorites&order=desc">
+				<div class="small-header">
+					Top Playlists
+					<ChevronRight></ChevronRight>
+				</div>
+			</a>
+		</AssetGroup>
+	</div>
 </div>
