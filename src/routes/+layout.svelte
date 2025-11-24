@@ -161,8 +161,12 @@
 <Toaster></Toaster>
 <div class="unggoy-container">
 	<div class="sidebar" class:collapse={isSidebarCollapsed}>
-		<span class="logo">S</span>
-		<a class="logo-expand" href="/">Unggoy</a>
+		<a class="logo" href="/">
+			<img src="/images/branding/logo-icon.svg" alt="Unggoy" />
+		</a>
+		<a class="logo-expand" href="/">
+			<img src="/images/branding/logo-full.svg" alt="Unggoy" class="logo-full-img" />
+		</a>
 		<div class="side-wrapper">
 			<div class="side-menu">
 				<a
@@ -305,6 +309,7 @@
 	</div>
 	<div class="header-wrapper">
 		<div class="header">
+			<img src="/images/branding/logo-mobile.svg" alt="Unggoy" class="header-logo-mobile" />
 			<div class="search-bar">
 				<input bind:value={searchTerm} onkeydown={updateUrl} type="text" placeholder="Search" />
 			</div>
