@@ -5,7 +5,7 @@ updated: '2025-11-23'
 categories:
   - 'release'
   - 'update'
-excerpt: Major mobile design improvements and iOS fixes.
+excerpt: Minor mobile design fixes.
 ---
 
 ## Changelog
