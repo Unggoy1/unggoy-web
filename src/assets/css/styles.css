@@ -101,6 +101,8 @@ img {
 		box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 		z-index: 1000;
 		border-top: 1px solid var(--border-color);
+		/* Add padding for iOS devices with notches/home indicators */
+		padding-bottom: env(safe-area-inset-bottom);
 		/* border-radius: 16px 16px 0 0; */
 	}
 
@@ -496,6 +498,13 @@ img {
 	max-width: 530px;
 }
 
+@media (max-width: 768px) {
+	.search-bar {
+		max-width: 100%;
+		margin: 0 8px;
+	}
+}
+
 .search-bar input {
 	width: 100%;
 	height: 100%;
@@ -512,6 +521,8 @@ img {
 	background-position: 96%;
 	color: var(--container-color);
 }
+
+/* Already 16px, good for iOS */
 
 .search-bar input::placeholder {
 	color: #dee3e5bf;
@@ -610,7 +621,9 @@ img {
 }
 @media screen and (max-width: 769px) {
 	.main-container {
-		padding-bottom: 70px;
+		padding-bottom: 90px;
+		/* Add extra padding for iOS devices with notches/home indicators */
+		padding-bottom: calc(90px + env(safe-area-inset-bottom));
 	}
 }
 .main-blogs {
@@ -683,6 +696,12 @@ img {
 	padding: 0 16px;
 	margin-bottom: 16px;
 }
+
+@media (max-width: 640px) {
+	.assets-container {
+		padding: 0 8px;
+	}
+}
 .assets {
 	/**
    * User input values.
@@ -700,9 +719,19 @@ img {
 	padding-bottom: 16px;
 	box-sizing: border-box;
 }
-@media (max-width: 400px) {
+
+/* Mobile: Single column layout */
+@media (max-width: 640px) {
 	.assets {
-		--grid-item--min-width: 200px; /* Or any value that fits your design */
+		grid-template-columns: 1fr;
+		--grid-item--min-width: 100%;
+	}
+}
+
+/* Small tablets: 2 column layout */
+@media (min-width: 641px) and (max-width: 768px) {
+	.assets {
+		--grid-item--min-width: 280px;
 	}
 }
 .browse {
@@ -1267,7 +1296,7 @@ img {
 		display: none;
 	}
 }
-@media only screen and (max-width: 540px) {
+@media only screen and (max-width: 768px) {
 	.browse-filter-container {
 		flex-direction: column;
 		align-items: flex-start;
@@ -1276,6 +1305,7 @@ img {
 	.filter-container {
 		flex-direction: column;
 		align-items: flex-start !important;
+		padding: 16px 8px;
 	}
 	.filter-container:last-child {
 		padding-top: 0;
@@ -1283,9 +1313,15 @@ img {
 	.filter-group-sort {
 		flex-direction: column !important;
 		align-items: flex-start !important;
+		width: 100%;
+	}
+	.filter-group {
+		width: 100%;
+		padding-right: 0;
 	}
 	.filter-group-last {
-		margin-left: 60px;
+		margin-left: 0;
+		margin-top: 10px;
 	}
 }
 
@@ -1325,15 +1361,24 @@ img {
 }
 .dropdown-el {
 	font-size: 14px;
+	min-width: 140px;
 	width: 180px;
 	height: 48px;
-	flex-shrink: 0;
+	flex-shrink: 1;
 	color: var(--container-color);
 	border-radius: 8px;
 	border: 2px solid rgba(255, 255, 255, 0.08);
 	background: var(--container-bg);
 	backdrop-filter: blur(15px);
 	padding: 14px 40px 14px 14px;
+}
+
+@media (max-width: 640px) {
+	.dropdown-el {
+		width: 100%;
+		max-width: 100%;
+		font-size: 16px; /* Prevent iOS auto-zoom */
+	}
 }
 .dropdown-el:focus {
 	border: 2px solid rgba(255, 255, 255, 0.58);
@@ -1376,6 +1421,15 @@ img {
 	height: 48px;
 	display: flex;
 	max-width: 180px;
+	min-width: 140px;
+	flex: 1;
+}
+
+@media (max-width: 640px) {
+	.search-bar-filter {
+		width: 100%;
+		max-width: 100%;
+	}
 }
 
 .search-bar-filter input {
@@ -1392,6 +1446,12 @@ img {
 	border-radius: 8px;
 	border: 2px solid rgba(255, 255, 255, 0.08);
 	color: var(--container-color);
+}
+
+@media (max-width: 768px) {
+	.search-bar-filter input {
+		font-size: 16px; /* Prevent iOS auto-zoom */
+	}
 }
 
 .search-bar-filter input::placeholder {
@@ -1498,6 +1558,12 @@ input:checked + .slider:before {
 	border-radius: 0.2rem;
 	text-align: center;
 	margin-bottom: auto;
+}
+
+@media screen and (max-width: 769px) {
+	.pagination-container {
+		margin-bottom: 1rem;
+	}
 }
 
 .pagination-container ul {

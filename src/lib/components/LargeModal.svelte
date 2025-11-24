@@ -51,6 +51,15 @@
     max-height: 90vh !important;
     overflow-y: auto;
   }
+
+  @media (max-width: 768px) {
+    .dialog-container {
+      width: 95vw;
+      max-height: 95vh !important;
+      padding: 16px;
+      padding-bottom: 24px; /* Extra padding for buttons */
+    }
+  }
   
   .dialog-background {
     background-color: #00000040;
@@ -60,5 +69,13 @@
     margin-top: 20px;
     padding-top: 20px;
     border-top: 1px solid var(--top-container-bg);
+  }
+
+  @media (max-width: 768px) {
+    .commands {
+      margin-top: 16px;
+      padding-top: 16px;
+      position: relative; /* Ensure it's in the flow */
+    }
   }
 </style>
