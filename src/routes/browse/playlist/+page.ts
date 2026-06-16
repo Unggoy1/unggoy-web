@@ -4,16 +4,19 @@ import {
 	type PlaylistBrowse,
 	type PlaylistBrowseResponse
 } from '$lib/api/playlist';
+import { resolvePageSize } from '$lib/api';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url }) => {
 	const fetchParams: PlaylistBrowse = {
 		svelteFetch: fetch
 	};
+	const selectedPageSize = resolvePageSize(url.searchParams.get('count'));
+	fetchParams.count = selectedPageSize;
 
 	const page = url.searchParams.get('page');
 	if (page) {
-		const offset = (parseInt(page) - 1) * 20;
+		const offset = (parseInt(page) - 1) * selectedPageSize;
 		fetchParams.offset = offset;
 	}
 
@@ -48,6 +51,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		assets: data.assets,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
+		selectedPageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
 		sort: sort || 'updatedAt',

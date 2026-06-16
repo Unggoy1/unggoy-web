@@ -1,16 +1,19 @@
 import type { PageLoad } from './$types';
 import { PUBLIC_API_URL } from '$env/static/public';
 import { playlistGet, type PlaylistGet, playlistGetPairs } from '$lib/api/playlist';
+import { resolvePageSize } from '$lib/api';
 
 export const ssr = true;
 export const load: PageLoad = async ({ fetch, url, params }) => {
 	const endpoint = `${PUBLIC_API_URL}/` || 'http://localhost:3000/';
 	const playlistId: string = params.slug;
 	const fetchParams: PlaylistGet = { playlistId: playlistId, svelteFetch: fetch };
+	const selectedPageSize = resolvePageSize(url.searchParams.get('count'));
+	fetchParams.count = selectedPageSize;
 
 	const page = url.searchParams.get('page');
 	if (page) {
-		const offset = (parseInt(page) - 1) * 20;
+		const offset = (parseInt(page) - 1) * selectedPageSize;
 		fetchParams.offset = offset;
 	}
 
@@ -61,7 +64,7 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		assetKind: fetchParams.assetKind,
 		sort: fetchParams.sort,
 		order: fetchParams.order,
-		count: fetchParams.count || 20,
+		count: selectedPageSize,
 		offset: fetchParams.offset,
 		tags: fetchParams.tags,
 		searchTerm: fetchParams.searchTerm,
@@ -90,6 +93,7 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		pairsTotalResults: pairsData.totalCount,
 		totalPages: Math.ceil(data.totalCount / data.pageSize),
 		pageSize: data.pageSize,
+		selectedPageSize,
 		totalResults: data.totalCount,
 		currentPage: parseInt(page) || 1,
 		filter: assetKind || '',

@@ -1484,6 +1484,21 @@ img {
 		font-size: 16px; /* Prevent iOS auto-zoom */
 	}
 }
+/* Compact variant for the results-per-page selector: only needs to show a
+   number, so it stays narrow and never expands to full width on mobile. */
+.dropdown-el.compact {
+	min-width: 72px;
+	width: auto;
+	flex-shrink: 0;
+	padding: 14px 30px 14px 12px;
+}
+@media (max-width: 640px) {
+	.dropdown-el.compact {
+		width: auto;
+		max-width: none;
+		min-width: 64px;
+	}
+}
 .dropdown-el:focus {
 	border: 2px solid rgba(255, 255, 255, 0.58);
 }

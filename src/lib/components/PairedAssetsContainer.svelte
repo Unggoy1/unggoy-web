@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import type { BrowseData } from '$lib/api';
+	import { type BrowseData, PAGE_SIZE_OPTIONS, DEFAULT_PAGE_SIZE, resolvePageSize } from '$lib/api';
 	import type { PlaylistPair } from '$lib/api/playlist';
 	import { getAssetCardGroups } from '$lib/functions';
 	import AssetCard from './AssetCard.svelte';
@@ -33,6 +33,12 @@
 	const addToPlaylistModalVar = $derived($addToPlaylistModal);
 	const activeUser = $derived($user);
 
+	// The selector is shown only when the load function returns a page size.
+	const showPageSizeSelector = $derived(browseData.selectedPageSize !== undefined);
+	// The URL (?count=) is the source of truth; derive the active size straight
+	// from the load data so the <select> stays in sync on every navigation.
+	const selectedPageSize = $derived(resolvePageSize(browseData.selectedPageSize));
+
 	// Mobile detection
 	let isMobile = $state(false);
 
@@ -59,6 +65,20 @@
 			query.set('page', clampedPage.toString());
 			goto(`?${query.toString()}`);
 		}
+	};
+
+	const updatePageSize = (event: Event) => {
+		const value = resolvePageSize((event.currentTarget as HTMLSelectElement).value);
+		const query = new URLSearchParams(cachedSearchParams);
+		// Keep the default out of the URL so links stay clean.
+		if (value === DEFAULT_PAGE_SIZE) {
+			query.delete('count');
+		} else {
+			query.set('count', value.toString());
+		}
+		// Page count changes, so previous page numbers no longer line up.
+		query.delete('page');
+		goto(`?${query.toString()}`);
 	};
 
 	const updateSortOrder = () => {
@@ -209,6 +229,23 @@
 			{/if}
 
 			<div class="filter-group">
+				{#if showPageSizeSelector}
+					<div class="text-on-input">
+						<label>Per page</label>
+						<select
+							value={selectedPageSize}
+							onchange={updatePageSize}
+							name="PageSizeFilter"
+							class="dropdown-el compact"
+							aria-label="Results per page"
+						>
+							{#each PAGE_SIZE_OPTIONS as pageSize (pageSize)}
+								<option value={pageSize}>{pageSize}</option>
+							{/each}
+						</select>
+					</div>
+				{/if}
+
 				<!-- <p class="filter-text">Sort:</p> -->
 				<div class="text-on-input">
 					<label>Sort</label>
