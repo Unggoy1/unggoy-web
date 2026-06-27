@@ -12,6 +12,7 @@
 	import { onMount } from 'svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { absoluteUrl } from '$lib/seo';
+	import { creatorPath } from '$lib/functions';
 
 	interface Props {
 		data: PageData;
@@ -86,7 +87,7 @@
 				<div class="playlist-meta">
 					<div class="creator-info">
 						<img class="creator-avatar" src={data.playlist.user.emblemPath} alt="profile emblem" />
-						<a href="/browse?gamertag={data.playlist.user.username}" class="creator-name">
+						<a href={creatorPath(data.playlist.user.username)} class="creator-name">
 							{data.playlist.user.username}
 						</a>
 					</div>

@@ -1,5 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
+/* Display face for the creator profile (gamertag + stat figures). Self-hosted. */
+@font-face {
+	font-family: 'Oxanium';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/Oxanium-500.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Oxanium';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/Oxanium-600.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Oxanium';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/Oxanium-700.woff2') format('woff2');
+}
+/* Monospace utility face for HUD-style labels (already bundled). */
+@font-face {
+	font-family: 'Fira Code';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/FiraCode-Regular.woff2') format('woff2');
+}
+
 * {
 	outline: none;
 	box-sizing: border-box;
@@ -24,6 +55,8 @@ a:hover {
 }
 :root {
 	--body-font: 'Inter', sans-serif;
+	--display-font: 'Oxanium', 'Inter', sans-serif;
+	--hud-font: 'Fira Code', ui-monospace, monospace;
 	--theme-bg: #171d1e;
 	--body-color: #dee3e5;
 	--sidebar-bg: #1a2021;

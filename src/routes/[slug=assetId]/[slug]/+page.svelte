@@ -9,7 +9,7 @@
 	import { DropdownType } from '$lib/enums';
 	import { onMount } from 'svelte';
 	import { Duplicate, Plus, Crown, Link, Star } from '$lib/components/icons';
-	import { getAssetLink } from '$lib/functions';
+	import { getAssetLink, creatorPath } from '$lib/functions';
 	import { navigating } from '$app/stores';
 	import Seo from '$lib/components/Seo.svelte';
 	import { absoluteUrl } from '$lib/seo';
@@ -405,7 +405,7 @@
 						<div class="contributor-container">
 							<div class="contributor-text">
 								<img class="contributor-img" alt="emblem name here" src={contributor.emblemPath} />
-								<a href="/browse?gamertag={contributor.gamertag}">
+								<a href={creatorPath(contributor.gamertag)}>
 									<div class="contributor-name">
 										{#if contributor.xuid === data.map.authorId}
 											<Crown class="asset-owner"></Crown>

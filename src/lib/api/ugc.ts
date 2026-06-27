@@ -8,6 +8,7 @@ export async function ugcBrowse({
 	count,
 	gamertag,
 	ownerOnly,
+	contributorOnly,
 	recommendedOnly,
 	hide343Assets,
 	tags,
@@ -25,6 +26,7 @@ export async function ugcBrowse({
 			count,
 			gamertag,
 			ownerOnly,
+			contributorOnly,
 			recommendedOnly,
 			hide343Assets,
 			tags,
@@ -59,6 +61,7 @@ export interface UgcBrowse extends Fetch {
 	tags?: string;
 	gamertag?: string;
 	ownerOnly?: boolean; // "boolean"
+	contributorOnly?: boolean; // assets the user contributed to but does not own
 	recommendedOnly?: boolean;
 	hide343Assets?: boolean;
 	searchTerm?: string;

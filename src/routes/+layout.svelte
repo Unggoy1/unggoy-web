@@ -19,7 +19,12 @@
 	import PlaylistModal from '$lib/components/PlaylistModal.svelte';
 	import InlineBrowsePairingModal from '$lib/components/InlineBrowsePairingModal.svelte';
 	import AddToPlaylistModal from '$lib/components/AddToPlaylistModal.svelte';
-	import { addAssetModal, playlistModal, inlineBrowsePairingModal, addToPlaylistModal } from '../stores/modal';
+	import {
+		addAssetModal,
+		playlistModal,
+		inlineBrowsePairingModal,
+		addToPlaylistModal
+	} from '../stores/modal';
 	import {
 		Compass,
 		Anvil,
@@ -36,9 +41,11 @@
 		Github,
 		Discord,
 		Gear,
-		News
+		News,
+		Crown
 	} from '$lib/components/icons';
 	import { pwaInfo } from 'virtual:pwa-info';
+	import { creatorPath } from '$lib/functions';
 
 	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 	export let data: LayoutData;
@@ -124,6 +131,12 @@
 					icon: Plus,
 					text: `Create New Playlist`,
 					function: () => $playlistModal.create({})
+				},
+				{
+					type: DropdownType.A,
+					icon: Crown,
+					text: `My Profile`,
+					href: creatorPath($user?.username ?? '')
 				},
 				{ type: DropdownType.A, icon: Play, text: `My Playlists`, href: '/playlist/me' },
 				{ type: DropdownType.A, icon: Star, text: `Favorites`, href: '/playlist/favorites' },
@@ -392,7 +405,7 @@
 			<div class="drawer-header">
 				<div class="drawer-header-text">
 					<img class="contributor-img" alt="emblem name here" src={$user.emblemPath} />
-					<a href="/browse?gamertag={$user.username}">
+					<a href={creatorPath($user.username)} onclick={closeDrawer}>
 						<div class="contributor-name">{$user.username}</div>
 						<div class="contributor-tag">{$user.serviceTag}</div>
 					</a>

@@ -167,6 +167,23 @@ export const GET: RequestHandler = async ({ fetch }) => {
 		);
 	}
 
+	// Creator profiles: dedupe authors from the assets we already fetched.
+	const creators = new Set<string>();
+	for (const asset of [...maps, ...modes, ...prefabs]) {
+		const author = asset?.contributors?.find((c: any) => c.xuid === asset.authorId);
+		const gamertag = author?.gamertag ?? asset?.contributors?.[0]?.gamertag;
+		if (gamertag) creators.add(gamertag);
+	}
+	for (const gamertag of creators) {
+		entries.push(
+			urlEntry({
+				loc: `${SITE_BASE}/creator/${encodeURIComponent(gamertag)}`,
+				changefreq: 'weekly',
+				priority: '0.5'
+			})
+		);
+	}
+
 	const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries.join('\n')}

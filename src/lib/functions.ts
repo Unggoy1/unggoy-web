@@ -16,6 +16,11 @@ const groupsCache = new Map();
 let lastUserState: any = null;
 const CACHE_SIZE_LIMIT = 100;
 
+/** Path to a creator's profile page (gamertags can contain spaces/specials). */
+export function creatorPath(gamertag: string): string {
+	return `/creator/${encodeURIComponent(gamertag)}`;
+}
+
 export async function getAssetLink({ assetId, assetKind, isWaypoint = false }) {
 	const assetType =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';
@@ -58,7 +63,7 @@ export function getAssetCardGroups({
 }) {
 	// Use provided activeUser or fallback to store (for backward compatibility)
 	const currentUser = activeUser ?? get(user);
-	
+
 	// Create cache key
 	const cacheKey = JSON.stringify({
 		assetId,
@@ -70,29 +75,30 @@ export function getAssetCardGroups({
 		hasPairedAsset: !!pairedAsset,
 		pairId: pairData?.id
 	});
-	
+
 	// Check cache if user state hasn't changed
 	if (currentUser === lastUserState && groupsCache.has(cacheKey)) {
 		return groupsCache.get(cacheKey);
 	}
-	
+
 	// Clear cache if it gets too large
 	if (groupsCache.size > CACHE_SIZE_LIMIT) {
 		groupsCache.clear();
 	}
-	
+
 	// Update user state tracker
 	lastUserState = currentUser;
 	// const addAssetModalVar = get(addAssetModal);
 	// const playlistModalVar = get(playlistModal);
 	let authGroups = [];
-	if (assetKind === 5 || assetKind === 4) {  // No playlist options for playlists or prefabs
+	if (assetKind === 5 || assetKind === 4) {
+		// No playlist options for playlists or prefabs
 		authGroups = [];
 	} else if (isIncompletePair && pairData) {
 		// For incomplete pairs, show option to add the missing asset and regular playlist option
 		const inlineBrowseModalVar = inlineBrowsePairingModalVar || get(inlineBrowsePairingModal);
 		authGroups = [];
-		
+
 		// Add option to update the pair
 		authGroups.push({
 			type: DropdownType.Button,
@@ -105,7 +111,7 @@ export function getAssetCardGroups({
 				}
 			}
 		});
-		
+
 		// Also allow adding to regular playlists
 		authGroups.push({
 			type: DropdownType.Button,
@@ -113,7 +119,7 @@ export function getAssetCardGroups({
 			text: `Add to Playlist`,
 			function: () => addAssetModalVar.create(assetId)
 		});
-		
+
 		// Still allow removing from playlist
 		if (playlist && currentUser && playlist.userId == currentUser.id) {
 			authGroups.push({
@@ -128,10 +134,10 @@ export function getAssetCardGroups({
 		}
 	} else if (pairedAsset) {
 		// For complete pairs in a playlist view
-		
+
 		// Regular authenticated user actions
 		authGroups = [];
-		
+
 		if ((assetKind === 2 || assetKind === 6) && asset) {
 			const inlineBrowseModalVar = inlineBrowsePairingModalVar || get(inlineBrowsePairingModal);
 			authGroups.push({
@@ -144,7 +150,7 @@ export function getAssetCardGroups({
 				}
 			});
 		}
-		
+
 		if (playlist && currentUser && playlist.userId == currentUser.id) {
 			authGroups.push({
 				type: DropdownType.Button,
@@ -175,7 +181,7 @@ export function getAssetCardGroups({
 					})
 			}
 		];
-		
+
 		// Add inline browse pairing option for maps and modes only
 		if ((assetKind === 2 || assetKind === 6) && asset) {
 			const inlineBrowseModalVar = inlineBrowsePairingModalVar || get(inlineBrowsePairingModal);
@@ -199,7 +205,7 @@ export function getAssetCardGroups({
 		}
 	}
 	let noAuthGroups = [];
-	
+
 	if (pairedAsset) {
 		// For paired assets, modify the copy link section
 		noAuthGroups = [
@@ -213,10 +219,11 @@ export function getAssetCardGroups({
 				type: DropdownType.Button,
 				icon: Duplicate,
 				text: `Copy Gamemode Link`,
-				function: () => getAssetLink({ assetId: pairedAsset.assetId, assetKind: pairedAsset.assetKind })
+				function: () =>
+					getAssetLink({ assetId: pairedAsset.assetId, assetKind: pairedAsset.assetKind })
 			}
 		];
-		
+
 		if (assetKind !== 5) {
 			noAuthGroups.push({
 				type: DropdownType.Button,
@@ -235,7 +242,7 @@ export function getAssetCardGroups({
 				function: () => getAssetLink({ assetId: assetId, assetKind: assetKind })
 			}
 		];
-		
+
 		if (assetKind !== 5) {
 			noAuthGroups.push({
 				type: DropdownType.Button,
@@ -248,7 +255,7 @@ export function getAssetCardGroups({
 
 	// Prepare result arrays
 	let result = [];
-	
+
 	// For paired assets, add a "Go to Gamemode" option at the top for mobile users
 	// who might have trouble clicking the small gamemode chip
 	if (pairedAsset && currentUser) {
@@ -266,7 +273,7 @@ export function getAssetCardGroups({
 	} else {
 		result = [noAuthGroups];
 	}
-	
+
 	// Cache the result before returning
 	groupsCache.set(cacheKey, result);
 	return result;
