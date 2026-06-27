@@ -32,6 +32,7 @@ const config = {
 		adapter: adapter(),
 		prerender: {
 			entries: [
+				'/robots.txt',
 				'/blog/api/posts/page/[page]',
 				'/blog/category/[category]/page/',
 				'/blog/category/page/',

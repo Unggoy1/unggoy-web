@@ -11,9 +11,73 @@
 	import { Duplicate, Plus, Crown, Link, Star } from '$lib/components/icons';
 	import { getAssetLink } from '$lib/functions';
 	import { navigating } from '$app/stores';
+	import Seo from '$lib/components/Seo.svelte';
+	import { absoluteUrl } from '$lib/seo';
 
 	export let data: PageData;
 	$: previewImage = data.map.files.fileRelativePaths[0];
+
+	// --- SEO ---------------------------------------------------------------
+	$: kindLabel = data.map.assetKind === 2 ? 'Map' : data.map.assetKind === 6 ? 'Mode' : 'Prefab';
+	$: assetSegment =
+		data.map.assetKind === 2 ? 'maps' : data.map.assetKind === 6 ? 'modes' : 'prefabs';
+	$: assetKindParam =
+		data.map.assetKind === 2 ? 'Map' : data.map.assetKind === 6 ? 'UgcGameVariant' : 'Prefab';
+	$: assetAuthor =
+		data.map.contributors?.find((c) => c.xuid === data.map.authorId) ?? data.map.contributors?.[0];
+	$: seoDescription = data.map.description?.trim()
+		? data.map.description
+		: `${data.map.name} — a Halo Infinite ${kindLabel.toLowerCase()}${assetAuthor ? ` by ${assetAuthor.gamertag}` : ''} with ${data.map.playsAllTime ?? 0} plays. Browse it and add it to your playlists on Unggoy.`;
+	$: assetCanonical = `/${assetSegment}/${data.map.assetId}`;
+	$: assetJsonLd = [
+		{
+			'@context': 'https://schema.org',
+			'@type': 'CreativeWork',
+			name: data.map.name,
+			url: absoluteUrl(assetCanonical),
+			genre: 'Halo Infinite User Generated Content',
+			...(seoDescription ? { description: seoDescription } : {}),
+			...(data.map.thumbnailUrl ? { image: absoluteUrl(data.map.thumbnailUrl) } : {}),
+			...(data.map.publishedAt
+				? { datePublished: new Date(data.map.publishedAt).toISOString() }
+				: {}),
+			...(assetAuthor ? { author: { '@type': 'Person', name: assetAuthor.gamertag } } : {}),
+			...(data.map.numberOfRatings > 0 && data.map.averageRating > 0
+				? {
+						aggregateRating: {
+							'@type': 'AggregateRating',
+							ratingValue: data.map.averageRating,
+							ratingCount: data.map.numberOfRatings,
+							bestRating: 5,
+							worstRating: 1
+						}
+					}
+				: {}),
+			...(typeof data.map.playsAllTime === 'number'
+				? {
+						interactionStatistic: {
+							'@type': 'InteractionCounter',
+							interactionType: 'https://schema.org/PlayAction',
+							userInteractionCount: data.map.playsAllTime
+						}
+					}
+				: {})
+		},
+		{
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: `${kindLabel}s`,
+					item: absoluteUrl(`/browse?assetKind=${assetKindParam}`)
+				},
+				{ '@type': 'ListItem', position: 3, name: data.map.name, item: absoluteUrl(assetCanonical) }
+			]
+		}
+	];
 
 	const updatePreview = (image: string) => {
 		previewImage = image;
@@ -103,20 +167,14 @@
 	});
 </script>
 
-<svelte:head>
-	<title>{data.map.name}</title>
-	<meta name="description" content={data.map.description} />
-	<meta property="og:title" content={data.map.name} /><meta
-		name="twitter:card"
-		content="summary_large_image"
-	/><meta name="twitter:title" content={data.map.name} /><meta
-		name="twitter:description"
-		content={data.map.description}
-	/><meta property="og:image" content={data.map.thumbnailUrl} /><meta
-		property="og:image:alt"
-		content={'Thumbnail:' + data.map.name}
-	/><meta name="twitter:img:src" content={data.map.thumbnailUrl} />
-</svelte:head>
+<Seo
+	title={data.map.name}
+	description={seoDescription}
+	canonical={assetCanonical}
+	image={data.map.thumbnailUrl}
+	type="article"
+	jsonLd={assetJsonLd}
+/>
 
 <div class="main-container show">
 	<div class="asset-area">

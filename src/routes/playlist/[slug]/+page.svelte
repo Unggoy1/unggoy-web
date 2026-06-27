@@ -10,6 +10,8 @@
 	import { favoritesAdd, favoritesDelete } from '$lib/api/favorites';
 	import { user } from '../../../stores/user';
 	import { onMount } from 'svelte';
+	import Seo from '$lib/components/Seo.svelte';
+	import { absoluteUrl } from '$lib/seo';
 
 	interface Props {
 		data: PageData;
@@ -19,6 +21,25 @@
 
 	const currentUser = $derived($user);
 	const addToPlaylistModalVar = $derived($addToPlaylistModal);
+
+	// --- SEO ---------------------------------------------------------------
+	const playlistCanonical = $derived(`/playlist/${data.playlist.assetId}`);
+	const playlistDescription = $derived(
+		data.playlist.description?.trim()
+			? data.playlist.description
+			: `${data.playlist.name} — a Halo Infinite custom playlist${data.playlist.user?.username ? ` by ${data.playlist.user.username}` : ''} on Unggoy.`
+	);
+	const playlistJsonLd = $derived({
+		'@context': 'https://schema.org',
+		'@type': 'CollectionPage',
+		name: data.playlist.name,
+		url: absoluteUrl(playlistCanonical),
+		...(playlistDescription ? { description: playlistDescription } : {}),
+		...(data.playlist.thumbnailUrl ? { image: absoluteUrl(data.playlist.thumbnailUrl) } : {}),
+		...(data.playlist.user?.username
+			? { author: { '@type': 'Person', name: data.playlist.user.username } }
+			: {})
+	});
 
 	// Check if playlist is empty (no pairs and no regular assets)
 	const isEmptyPlaylist = $derived(!data.pairs?.length && !data.assets?.length);
@@ -33,20 +54,14 @@
 	onMount(() => {});
 </script>
 
-<svelte:head>
-	<title>{data.playlist.name}</title>
-	<meta name="description" content={data.playlist.description} />
-	<meta property="og:title" content={data.playlist.name} /><meta
-		name="twitter:card"
-		content="summary_large_image"
-	/><meta name="twitter:title" content={data.playlist.name} /><meta
-		name="twitter:description"
-		content={data.playlist.description}
-	/><meta property="og:image" content={data.playlist.thumbnailUrl} /><meta
-		property="og:image:alt"
-		content={'Thumbnail:' + data.playlist.name}
-	/><meta name="twitter:img:src" content={data.playlist.thumbnailUrl} />
-</svelte:head>
+<Seo
+	title={data.playlist.name}
+	description={playlistDescription}
+	canonical={playlistCanonical}
+	image={data.playlist.thumbnailUrl}
+	type="article"
+	jsonLd={playlistJsonLd}
+/>
 
 <div class="main-container">
 	<div class="playlist-header">

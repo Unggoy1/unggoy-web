@@ -859,6 +859,7 @@ img {
 	margin: 24px 0;
 	display: flex;
 	align-items: center;
+	padding-top: 12px;
 }
 .small-header svg {
 	/* margin-left: 4px; */

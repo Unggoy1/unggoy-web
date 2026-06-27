@@ -1,41 +1,36 @@
 import type { PageLoad } from './$types';
-import { PUBLIC_API_URL } from '$env/static/public';
-import { ugcBrowse, type UgcBrowse, type UgcBrowseResponse } from '$lib/api/ugc';
-import { playlistBrowse, type PlaylistBrowse } from '$lib/api/playlist';
+import { ugcBrowse } from '$lib/api/ugc';
+import { playlistBrowse } from '$lib/api/playlist';
 
 export const ssr = true;
-export const load: PageLoad = async ({ url, fetch }) => {
-	const fetchParams: UgcBrowse = {
-		svelteFetch: fetch,
-		assetKind: 2,
-		count: 8
-	};
 
-	const newMaps: UgcBrowseResponse = await ugcBrowse(fetchParams);
+// Number of items shown in each homepage row.
+const HOME_COUNT = 8;
 
-	fetchParams.assetKind = 6;
-	const newModes: UgcBrowseResponse = await ugcBrowse(fetchParams);
-
-	fetchParams.sort = 'playsRecent';
-	fetchParams.hide343Assets = true;
-	const trendingModes: UgcBrowseResponse = await ugcBrowse(fetchParams);
-
-	fetchParams.assetKind = 2;
-	const trendingMaps: UgcBrowseResponse = await ugcBrowse(fetchParams);
-
-	const playlistFetchParams: PlaylistBrowse = {
-		svelteFetch: fetch,
-		count: 8
-	};
-
-	const newPlaylists = await playlistBrowse(playlistFetchParams);
-
-	playlistFetchParams.sort = 'favorites';
-	const topFavoritedPlaylists = await playlistBrowse(playlistFetchParams);
-
-	// Blog posts fetching commented out for now
-	// const postRes = await fetch(`${url.origin}/blog/api/posts.json`);
-	// const posts = await postRes.json();
+export const load: PageLoad = async ({ fetch }) => {
+	// Fire every row's request at once instead of awaiting them one after another.
+	// Each call gets its own params object so they don't clobber each other.
+	const [newMaps, newModes, trendingMaps, trendingModes, newPlaylists, topFavoritedPlaylists] =
+		await Promise.all([
+			ugcBrowse({ svelteFetch: fetch, assetKind: 2, count: HOME_COUNT }),
+			ugcBrowse({ svelteFetch: fetch, assetKind: 6, count: HOME_COUNT }),
+			ugcBrowse({
+				svelteFetch: fetch,
+				assetKind: 2,
+				count: HOME_COUNT,
+				sort: 'playsRecent',
+				hide343Assets: true
+			}),
+			ugcBrowse({
+				svelteFetch: fetch,
+				assetKind: 6,
+				count: HOME_COUNT,
+				sort: 'playsRecent',
+				hide343Assets: true
+			}),
+			playlistBrowse({ svelteFetch: fetch, count: HOME_COUNT }),
+			playlistBrowse({ svelteFetch: fetch, count: HOME_COUNT, sort: 'favorites' })
+		]);
 
 	return {
 		newMaps: newMaps.assets,
@@ -43,7 +38,6 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		newModes: newModes.assets,
 		trendingModes: trendingModes.assets,
 		newPlaylists: newPlaylists.assets,
-		topFavoritedPlaylists: topFavoritedPlaylists.assets,
-		// posts: posts
+		topFavoritedPlaylists: topFavoritedPlaylists.assets
 	};
 };

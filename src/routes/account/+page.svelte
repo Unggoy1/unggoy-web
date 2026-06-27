@@ -1,5 +1,6 @@
 <script>
 	import { userDelete } from '$lib/api/user';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let isDeleting = false;
 
@@ -10,6 +11,8 @@
 		isDeleting = false;
 	}
 </script>
+
+<Seo title="Account Settings" description="Manage your Unggoy account." noindex />
 
 <div class="main-container">
 	<h1>Account Settings</h1>
