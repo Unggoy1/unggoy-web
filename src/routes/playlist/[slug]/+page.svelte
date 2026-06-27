@@ -24,20 +24,6 @@
 	const isEmptyPlaylist = $derived(!data.pairs?.length && !data.assets?.length);
 	const isOwner = $derived(currentUser && data.playlist.userId === currentUser.id);
 
-	// First up-to-4 map thumbnails for the layered cover fallback, sourced from
-	// already-loaded data (no extra request). Prefer pairs; fall back to assets.
-	const coverThumbnails = $derived.by(() => {
-		const fromPairs = (data.pairs ?? [])
-			.map((p: { map?: { thumbnailUrl?: string } | null }) => p.map?.thumbnailUrl)
-			.filter((u: string | undefined): u is string => !!u);
-		if (fromPairs.length) return fromPairs.slice(0, 4);
-		return (data.assets ?? [])
-			.filter((a: { assetKind?: number }) => a.assetKind === 2)
-			.map((a: { thumbnailUrl?: string }) => a.thumbnailUrl)
-			.filter((u: string | undefined): u is string => !!u)
-			.slice(0, 4);
-	});
-
 	function openAddToPlaylistModal() {
 		if (addToPlaylistModalVar?.open) {
 			addToPlaylistModalVar.open(data.playlist);
@@ -66,11 +52,7 @@
 	<div class="playlist-header">
 		<div class="playlist-content">
 			<div class="playlist-thumbnail">
-				<PlaylistCover
-					name={data.playlist.name}
-					thumbnailUrl={data.playlist.thumbnailUrl}
-					{coverThumbnails}
-				/>
+				<PlaylistCover name={data.playlist.name} thumbnailUrl={data.playlist.thumbnailUrl} />
 			</div>
 			<div class="playlist-info">
 				<div class="playlist-title">

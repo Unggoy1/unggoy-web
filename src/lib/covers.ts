@@ -1,7 +1,7 @@
-// Layered playlist cover logic. Framework-free so it can be unit-tested and
-// reused anywhere a cover is rendered (listing grids + the detail-page hero).
-//
-// Fallback ladder (see planCover): custom upload -> mosaic -> hero -> name tint.
+// Playlist cover logic. The backend serves a single cover image as `thumbnailUrl`
+// — either a user upload or a server-generated composite of the playlist's maps.
+// The frontend shows that image when present, and otherwise renders a stable,
+// name-derived tint over the placeholder.
 
 // Slightly muted so the tint reads as "themed", not neon.
 export const COVER_PALETTE = [
@@ -36,27 +36,16 @@ export function coverColor(name: string): string {
 	return COVER_PALETTE[hashString(name) % COVER_PALETTE.length];
 }
 
-export type CoverPlan =
-	| { kind: 'custom'; src: string }
-	| { kind: 'mosaic'; srcs: string[] } // length 4
-	| { kind: 'hero'; src: string }
-	| { kind: 'tint'; color: string };
-
 // The backend returns the placeholder path as a sentinel `thumbnailUrl` when a
-// playlist has no real uploaded cover, so a non-empty value is not enough to
-// count as "custom" — exclude the placeholder (by path or any host + path).
-export function isCustomCover(url?: string | null): url is string {
+// playlist has no cover image, so a non-empty value is not enough — exclude the
+// placeholder (by path or any host + path).
+export function hasCoverImage(url?: string | null): url is string {
 	return !!url && url !== COVER_CONFIG.placeholderSrc && !url.endsWith('/placeholder.webp');
 }
 
-export function planCover(p: {
-	name: string;
-	thumbnailUrl?: string | null; // playlist cover ('/placeholder.webp' when none)
-	coverThumbnails?: string[] | null; // up to 4 map thumbnail URLs
-}): CoverPlan {
-	if (isCustomCover(p.thumbnailUrl)) return { kind: 'custom', src: p.thumbnailUrl };
-	const thumbs = (p.coverThumbnails ?? []).filter(Boolean);
-	if (thumbs.length >= 4) return { kind: 'mosaic', srcs: thumbs.slice(0, 4) };
-	if (thumbs.length >= 1) return { kind: 'hero', src: thumbs[0] };
+export type CoverPlan = { kind: 'image'; src: string } | { kind: 'tint'; color: string };
+
+export function planCover(p: { name: string; thumbnailUrl?: string | null }): CoverPlan {
+	if (hasCoverImage(p.thumbnailUrl)) return { kind: 'image', src: p.thumbnailUrl };
 	return { kind: 'tint', color: coverColor(p.name) };
 }

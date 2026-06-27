@@ -334,9 +334,6 @@ export interface PlaylistData {
 	description: string;
 	assetKind: number;
 	thumbnailUrl: string;
-	// Up to 4 map thumbnail URLs for the layered cover fallback (mosaic/hero).
-	// Populated by the listing endpoints (browse/me/favorites); absent elsewhere.
-	coverThumbnails?: string[];
 	private: boolean;
 	userId: string;
 	recommended?: boolean;

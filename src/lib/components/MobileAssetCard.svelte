@@ -43,11 +43,7 @@
 			<a href={assetUrl} class="asset-link">
 				<div class="asset-image-container">
 					{#if isPlaylist}
-						<PlaylistCover
-							name={asset.name}
-							thumbnailUrl={asset.thumbnailUrl}
-							coverThumbnails={(asset as PlaylistData).coverThumbnails}
-						/>
+						<PlaylistCover name={asset.name} thumbnailUrl={asset.thumbnailUrl} />
 					{:else}
 						<img
 							class="mobile-asset-image"
