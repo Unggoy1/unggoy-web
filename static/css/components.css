@@ -28,6 +28,9 @@
 
 		li {
 			margin: 0;
+			/* Override the global `li { list-style: initial !important }`; page
+			   numbers aren't a bulleted list. */
+			list-style: none !important;
 		}
 
 		a {

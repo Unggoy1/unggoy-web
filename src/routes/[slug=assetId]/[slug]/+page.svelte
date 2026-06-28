@@ -280,7 +280,7 @@
 		<div class="asset-aside">
 			<div class="asset-details">
 				<div class="asset-header-container">
-					<div class="asset-header">Map Details</div>
+					<div class="asset-header">{kindLabel} Details</div>
 				</div>
 				<div class="aside-text">
 					<div class="detail-icon">

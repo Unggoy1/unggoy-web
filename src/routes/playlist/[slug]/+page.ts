@@ -38,11 +38,16 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		fetchParams.searchTerm = searchTerm;
 	}
 
-	const tagArray = url.searchParams.get('tags');
-	let tags: string[];
-	if (tagArray) {
-		tags = tagArray.split(',');
-		fetchParams.tags = tags[0];
+	const tagParam = url.searchParams.get('tags');
+	let tags: string[] = [];
+	if (tagParam) {
+		tags = tagParam
+			.split(',')
+			.map((t) => t.trim())
+			.filter(Boolean);
+		if (tags.length) {
+			fetchParams.tags = tags.join(',');
+		}
 	}
 
 	const gamertag = url.searchParams.get('gamertag');
@@ -102,6 +107,6 @@ export const load: PageLoad = async ({ fetch, url, params }) => {
 		searchTerm: searchTerm || '',
 		gamertag: gamertag || '',
 		ownerOnly: ownerOnly || false,
-		tag: tags ? tags[0] : ''
+		tags
 	};
 };

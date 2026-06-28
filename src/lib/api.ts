@@ -29,6 +29,6 @@ export interface BrowseData {
 	gamertag: string;
 	ownerOnly?: boolean;
 	hide343Assets?: boolean;
-	tag?: string;
+	tags?: string[];
 	searchTerm?: string;
 }

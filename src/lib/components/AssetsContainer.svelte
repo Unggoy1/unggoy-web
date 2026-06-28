@@ -7,14 +7,15 @@
 	import MobileAssetCard from './MobileAssetCard.svelte';
 	import SkeletonAssetsContainer from './SkeletonAssetsContainer.svelte';
 	import { addAssetModal, playlistModal, inlineBrowsePairingModal, addToPlaylistModal } from '../../stores/modal';
-	import FilterModal from '$lib/components/FilterModal.svelte';
-	import { SortOrder, Filter } from './icons';
+	import { SortOrder } from './icons';
+	import FilterButton from '$lib/components/filters/FilterButton.svelte';
+	import AppliedFilters from '$lib/components/filters/AppliedFilters.svelte';
+	import type { FilterValues } from '$lib/components/filters/types';
 	import { currentPage } from '$lib/assets/js/store';
 	import { navigating } from '$app/stores';
 	import { user } from '../../stores/user';
 	import { onMount } from 'svelte';
 
-	let filterModal: FilterModal;
 	interface Props {
 		browseData: BrowseData;
 		filterTitle?: string;
@@ -94,12 +95,13 @@
 			order: 'desc',
 			ownerOnly: false,
 			hide343Assets: false,
-			searchTerm: ''
+			searchTerm: '',
+			tags: ''
 		};
 
 		const filterParams = {
 			assetKind: browseData.filter,
-			tags: browseData.tag,
+			tags: browseData.tags && browseData.tags.length ? browseData.tags.join(',') : '',
 			gamertag: browseData.gamertag,
 			sort: browseData.sort,
 			order: browseData.order,
@@ -123,22 +125,36 @@
 		goto(`?${query.toString()}`);
 	};
 
-	async function loadModal() {
-		try {
-			let data = await filterModal.create({
-				sort: browseData.sort,
-				order: browseData.order,
-				filter: browseData.filter,
-				gamertag: browseData.gamertag,
-				ownerOnly: browseData.ownerOnly,
-				hide343Assets: browseData.hide343Assets,
-				tag: browseData.tag,
-				searchTerm: browseData.searchTerm
-			});
-			browseData = { ...browseData, ...data };
-			updateUrl();
-		} catch {}
+	// Commit the filter panel's values (or an applied-chip removal) to the URL.
+	// Only touch fields this page actually supports, so undefined-ness (and thus
+	// which filter sections render) is preserved.
+	function applyFilters(values: FilterValues) {
+		if (browseData.tags !== undefined) browseData.tags = values.tags;
+		if (browseData.gamertag !== undefined) browseData.gamertag = values.gamertag;
+		if (browseData.ownerOnly !== undefined) browseData.ownerOnly = values.ownerOnly;
+		if (browseData.hide343Assets !== undefined) browseData.hide343Assets = values.hide343Assets;
+		updateUrl();
 	}
+
+	function clearFilters() {
+		if (browseData.tags !== undefined) browseData.tags = [];
+		if (browseData.gamertag !== undefined) browseData.gamertag = '';
+		if (browseData.ownerOnly !== undefined) browseData.ownerOnly = false;
+		if (browseData.hide343Assets !== undefined) browseData.hide343Assets = false;
+		updateUrl();
+	}
+
+	const hasFilters = $derived(
+		browseData.tags !== undefined ||
+			browseData.gamertag !== undefined ||
+			browseData.hide343Assets !== undefined
+	);
+	const activeFilterCount = $derived(
+		(browseData.tags?.length ?? 0) +
+			(browseData.gamertag ? 1 : 0) +
+			(browseData.ownerOnly ? 1 : 0) +
+			(browseData.hide343Assets ? 1 : 0)
+	);
 
 	onMount(() => {
 		checkMobile();
@@ -147,12 +163,8 @@
 	});
 </script>
 
-<FilterModal bind:this={filterModal}></FilterModal>
 <div class="assets-container browse">
-	<div
-		class="browse-filter-container"
-		class:owned-shown={browseData.gamertag !== '' && browseData.ownerOnly != undefined}
-	>
+	<div class="browse-filter-container">
 		<div class="filter-container">
 			{#if browseData.filter != undefined}
 				<select
@@ -186,71 +198,9 @@
 					</div>
 				</div>
 			{/if}
-			{#if browseData.tag != undefined}
-				<div class="filter-group input">
-					<!-- <p class="filter-text">Tags:</p> -->
-					<div class="search-bar-filter">
-						<div class="text-on-input">
-							<label>Tag</label>
-							<input
-								bind:value={browseData.tag}
-								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-								type="text"
-								placeholder="tag"
-							/>
-						</div>
-					</div>
-				</div>
-			{/if}
-
-			{#if browseData.gamertag != undefined}
-				<div class="filter-group input">
-					<!-- <p class="filter-text">Contributor:</p> -->
-					<div class="search-bar-filter">
-						<div class="text-on-input">
-							<label>Contributor</label>
-							<input
-								bind:value={browseData.gamertag}
-								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
-								type="text"
-								placeholder="gamertag"
-							/>
-						</div>
-					</div>
-					{#if browseData.gamertag !== '' && browseData.ownerOnly != undefined}
-						<button
-							type="button"
-							class="filter-toggle"
-							class:active={browseData.ownerOnly}
-							aria-pressed={browseData.ownerOnly}
-							onclick={() => {
-								browseData.ownerOnly = !browseData.ownerOnly;
-								updateUrl();
-							}}
-						>
-							Owned only
-						</button>
-					{/if}
-				</div>
-			{/if}
-			{#if browseData.hide343Assets !== undefined}
-				<button
-					type="button"
-					class="filter-toggle front"
-					class:active={browseData.hide343Assets}
-					aria-pressed={browseData.hide343Assets}
-					onclick={() => {
-						browseData.hide343Assets = !browseData.hide343Assets;
-						updateUrl();
-					}}
-				>
-					Hide 343
-				</button>
-			{/if}
-
 			<div class="filter-group">
 				{#if showPageSizeSelector}
-					<div class="text-on-input">
+					<div class="text-on-input page-size-field">
 						<label>Per page</label>
 						<select
 							value={selectedPageSize}
@@ -292,12 +242,21 @@
 				<button class="order-button" onclick={updateSortOrder}
 					><SortOrder desc={browseData.order === 'desc'}></SortOrder></button
 				>
-				<button class="filter-button order-button" onclick={loadModal}
-					><Filter desc={browseData.order === 'desc'}></Filter></button
-				>
 			</div>
+			{#if hasFilters}
+				<FilterButton
+					{browseData}
+					activeCount={activeFilterCount}
+					onApply={applyFilters}
+					onClear={clearFilters}
+				/>
+			{/if}
 		</div>
 	</div>
+
+	{#if hasFilters}
+		<AppliedFilters {browseData} onApply={applyFilters} onClear={clearFilters} />
+	{/if}
 
 	{#if browseData.assets.length}
 		<div class="assets browse" class:mobile={isMobile}>

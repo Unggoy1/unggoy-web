@@ -1407,91 +1407,69 @@ img {
 	flex-direction: row;
 	justify-content: space-between;
 }
-.browse-filter-container.small {
-	display: none;
-}
-.filter-button.order-button {
-	display: none;
-}
-/* The filter bar collapses into the Filter button when it would overflow. The
-   collapse width depends on whether the wide "Owned only" pill is present
-   (added as .owned-shown when a contributor filter is active): the default bar
-   fits down to ~1400px, the contributor variant only to ~1540px. */
-@media only screen and (max-width: 1540px) {
-	.browse-filter-container.owned-shown.small {
-		font-size: 14px;
-		font-weight: 500;
-		color: #fff;
-		display: flex;
-		flex-direction: row-reverse;
-		justify-content: space-between;
-		margin-top: -30px;
-	}
-	.browse-filter-container.owned-shown .order-button,
-	.browse-filter-container.owned-shown .filter-button {
-		display: block !important;
-	}
-	.browse-filter-container.owned-shown .filter-group.input,
-	.browse-filter-container.owned-shown .filter-toggle.front {
-		display: none;
-	}
-}
-@media only screen and (max-width: 1400px) {
-	.browse-filter-container.small {
-		font-size: 14px;
-		font-weight: 500;
-		color: #fff;
-		display: flex;
-		flex-direction: row-reverse;
-		justify-content: space-between;
-		margin-top: -30px;
-	}
-	.order-button,
-	.filter-button {
-		display: block !important;
-	}
-
-	.filter-group.input,
-	.filter-toggle.front {
-		display: none;
-	}
-}
+/* The slim bar (type · search · per-page · sort · order · Filters) fits without
+   overflow; filters live behind the Filters button, so no breakpoint collapse. */
 @media only screen and (max-width: 768px) {
 	.browse-filter-container {
 		flex-direction: column;
-		align-items: flex-start;
+		align-items: stretch;
+		/* Gap below the bar before the chips row / first asset card. */
+		padding-bottom: 14px;
 	}
-
-	.filter-container {
-		flex-direction: column;
-		align-items: flex-start !important;
-		padding: 16px 8px;
-	}
+	/* Asset type is reachable from the nav on mobile. */
 	.filter-container:first-child {
 		display: none;
 	}
+	/* Per-page moves into the Filters panel on mobile, so the row stays uncrowded. */
+	.filter-container .page-size-field {
+		display: none;
+	}
+	/* Two rows: search on top (full width); sort · order · Filters grouped on the
+	   next row. Per-page now lives in the Filters panel, so this row has room to
+	   keep everything in one flex group (no separate pinned Filters column). */
 	.filter-container:last-child {
-		padding-top: 5px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 14px 12px;
+		padding: 14px 0 0;
 	}
-	.filter-group-sort {
-		flex-direction: column !important;
-		align-items: flex-start !important;
-		width: 100%;
+	.filter-container .filter-group.input {
+		flex: 1 1 100%;
 	}
-	.filter-group {
-		width: 100%;
+	.filter-container .search-bar-filter {
+		max-width: none;
+		min-width: 0;
+	}
+	.filter-container .filter-group {
+		flex: 0 1 auto;
+		justify-content: flex-start;
+		min-width: 0;
+		width: auto;
 		padding-right: 0;
+		gap: 12px;
 	}
-	.filter-group-last {
-		margin-left: 0;
-		margin-top: 10px;
+	.filter-container .filter-button-root {
+		flex: 0 0 auto;
+	}
+	/* Let the sort dropdown shrink/truncate instead of forcing width:100% (≤640). */
+	.filter-container .dropdown-el {
+		min-width: 0;
+		width: auto;
 	}
 }
 
 .filter-container {
 	display: flex;
 	align-items: center;
+	gap: 10px;
 	padding: 22px 14px;
+	min-width: 0;
+}
+/* Search is the only flexible item — it shrinks to keep the bar on ONE line. */
+.filter-group.input {
+	flex-shrink: 1;
+	min-width: 0;
 }
 .filter-group,
 .filter-group-sort {
@@ -1598,8 +1576,8 @@ img {
 .search-bar-filter {
 	height: 48px;
 	display: flex;
-	max-width: 150px;
-	min-width: 110px;
+	max-width: 240px;
+	min-width: 0;
 	flex: 1;
 }
 
