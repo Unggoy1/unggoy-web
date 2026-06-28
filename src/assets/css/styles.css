@@ -889,10 +889,12 @@ img {
 .small-header {
 	font-size: 24px;
 	font-weight: 500;
-	margin: 24px 0;
+	/* Balanced space above/below the row header (was 24px margin + 12px padding,
+	   which collapsed unevenly and sat cramped against the container top). */
+	margin: 0 0 14px;
 	display: flex;
 	align-items: center;
-	padding-top: 12px;
+	padding-top: 16px;
 }
 .small-header svg {
 	/* margin-left: 4px; */
@@ -1405,68 +1407,69 @@ img {
 	flex-direction: row;
 	justify-content: space-between;
 }
-.browse-filter-container.small {
-	display: none;
-}
-.filter-button.order-button {
-	display: none;
-}
-@media only screen and (max-width: 1120px) {
-	.browse-filter-container.small {
-		font-size: 14px;
-		font-weight: 500;
-		color: #fff;
-		display: flex;
-		flex-direction: row-reverse;
-		justify-content: space-between;
-		margin-top: -30px;
-	}
-	.order-button,
-	.filter-button {
-		display: block !important;
-	}
-
-	.filter-group.input,
-	.toggle-group.front {
-		display: none;
-	}
-}
+/* The slim bar (type · search · per-page · sort · order · Filters) fits without
+   overflow; filters live behind the Filters button, so no breakpoint collapse. */
 @media only screen and (max-width: 768px) {
 	.browse-filter-container {
 		flex-direction: column;
-		align-items: flex-start;
+		align-items: stretch;
+		/* Gap below the bar before the chips row / first asset card. */
+		padding-bottom: 14px;
 	}
-
-	.filter-container {
-		flex-direction: column;
-		align-items: flex-start !important;
-		padding: 16px 8px;
-	}
+	/* Asset type is reachable from the nav on mobile. */
 	.filter-container:first-child {
 		display: none;
 	}
+	/* Per-page moves into the Filters panel on mobile, so the row stays uncrowded. */
+	.filter-container .page-size-field {
+		display: none;
+	}
+	/* Two rows: search on top (full width); sort · order · Filters grouped on the
+	   next row. Per-page now lives in the Filters panel, so this row has room to
+	   keep everything in one flex group (no separate pinned Filters column). */
 	.filter-container:last-child {
-		padding-top: 5px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 14px 12px;
+		padding: 14px 0 0;
 	}
-	.filter-group-sort {
-		flex-direction: column !important;
-		align-items: flex-start !important;
-		width: 100%;
+	.filter-container .filter-group.input {
+		flex: 1 1 100%;
 	}
-	.filter-group {
-		width: 100%;
+	.filter-container .search-bar-filter {
+		max-width: none;
+		min-width: 0;
+	}
+	.filter-container .filter-group {
+		flex: 0 1 auto;
+		justify-content: flex-start;
+		min-width: 0;
+		width: auto;
 		padding-right: 0;
+		gap: 12px;
 	}
-	.filter-group-last {
-		margin-left: 0;
-		margin-top: 10px;
+	.filter-container .filter-button-root {
+		flex: 0 0 auto;
+	}
+	/* Let the sort dropdown shrink/truncate instead of forcing width:100% (≤640). */
+	.filter-container .dropdown-el {
+		min-width: 0;
+		width: auto;
 	}
 }
 
 .filter-container {
 	display: flex;
 	align-items: center;
+	gap: 10px;
 	padding: 22px 14px;
+	min-width: 0;
+}
+/* Search is the only flexible item — it shrinks to keep the bar on ONE line. */
+.filter-group.input {
+	flex-shrink: 1;
+	min-width: 0;
 }
 .filter-group,
 .filter-group-sort {
@@ -1485,7 +1488,7 @@ img {
 	align-items: center;
 	gap: 10px;
 	flex-shrink: 0;
-	padding-right: 20px;
+	padding-right: 12px;
 }
 .filter-group:last-child {
 	padding-right: 0px;
@@ -1573,8 +1576,8 @@ img {
 .search-bar-filter {
 	height: 48px;
 	display: flex;
-	max-width: 180px;
-	min-width: 140px;
+	max-width: 240px;
+	min-width: 0;
 	flex: 1;
 }
 
@@ -1703,6 +1706,51 @@ input:checked + .slider {
 
 input:checked + .slider:before {
 	transform: translateX(20px);
+}
+
+/* Compact filter toggle pill — replaces the wide "label + slider" in the filter
+   bar and modal. Off: outlined like the inputs, so an empty pill clearly reads
+   as inactive. On: fills with the light accent. The slide toggle (.toggle/
+   .slider) is no longer used by either. */
+.filter-toggle {
+	height: 48px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 18px;
+	border: 2px solid rgba(255, 255, 255, 0.08);
+	border-radius: 8px;
+	background: var(--container-bg);
+	color: var(--sidebar-color);
+	font-family: var(--body-font);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+.filter-toggle:hover {
+	border-color: rgba(255, 255, 255, 0.2);
+	color: var(--container-color);
+}
+.filter-toggle:focus-visible {
+	outline: 2px solid var(--button-color);
+	outline-offset: 2px;
+}
+.filter-toggle.active {
+	background: var(--button-color);
+	border-color: transparent;
+	color: var(--button-bg);
+}
+.filter-toggle.active:hover {
+	background: var(--button-color-hover);
+}
+.filter-group .filter-toggle {
+	margin-left: 10px;
+}
+.filter-toggle.front {
+	margin-right: 10px;
 }
 
 /* PAGINATION */

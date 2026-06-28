@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 	import '../assets/css/dialog.css';
 	import '../assets/css/app.css';
 	import '../assets/css/styles.css';
@@ -46,6 +45,7 @@
 	} from '$lib/components/icons';
 	import { pwaInfo } from 'virtual:pwa-info';
 	import { creatorPath } from '$lib/functions';
+	import SearchBar from '$lib/components/SearchBar.svelte';
 
 	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 	export let data: LayoutData;
@@ -55,7 +55,6 @@
 	let groups;
 
 	let isSidebarCollapsed = false;
-	let searchTerm = '';
 	let isDrawerOpen = false;
 	let drawerRef;
 	let addAssetModalComponent: AddAssetModal;
@@ -72,17 +71,6 @@
 
 	const handleResize = () => {
 		isSidebarCollapsed = window.innerWidth <= 1250;
-	};
-
-	const updateUrl = (event) => {
-		if (event.key !== 'Enter') {
-			return;
-		}
-
-		let query = new URLSearchParams($page.url.searchParams.toString());
-		query.set('searchTerm', searchTerm);
-		query.delete('page'); // Reset to first page when searching
-		goto(`/browse?${query.toString()}`);
 	};
 
 	function toggleDrawer(event) {
@@ -323,9 +311,7 @@
 	<div class="header-wrapper">
 		<div class="header">
 			<img src="/images/branding/logo-mobile.svg" alt="Unggoy" class="header-logo-mobile" />
-			<div class="search-bar">
-				<input bind:value={searchTerm} onkeydown={updateUrl} type="text" placeholder="Search" />
-			</div>
+			<SearchBar />
 			{#if $user}
 				<!-- <div class="user-settings"> -->
 				<!-- 	<img class="user-img" src="/emblems/popculture_dealerschoice_bigfoot_emblem.png" alt="" /> -->

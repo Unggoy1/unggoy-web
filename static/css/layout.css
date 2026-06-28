@@ -50,6 +50,10 @@ li {
 		background: var(--container-bg);
 		border-radius: 8px;
 		padding: 16px 20px;
+		/* Override the global `li { list-style: initial !important }` (which exists
+		   so real lists inside posts keep their bullets) — the post index isn't a
+		   bulleted list. */
+		list-style: none !important;
 	}
 
 	img {
