@@ -12,7 +12,8 @@
 		gamertag: undefined,
 		ownerOnly: undefined,
 		hide343Assets: undefined,
-		tag: undefined
+		tag: undefined,
+		searchTerm: undefined
 	});
 	let ogDetails: any = {};
 
@@ -48,6 +49,17 @@
 
 	<div class="flex w-full flex-col items-center justify-center">
 		<div class="input-container">
+			{#if details.searchTerm !== undefined}
+				<div class="modal-filter-group">
+					<div class="search-bar-filter">
+						<div class="text-on-input">
+							<label>Search</label>
+							<input bind:value={details.searchTerm} type="text" placeholder="search" />
+						</div>
+					</div>
+				</div>
+			{/if}
+
 			{#if details.filter !== undefined}
 				<div class="modal-filter-group">
 					<div class="text-on-input">
@@ -85,24 +97,30 @@
 					</div>
 				</div>
 			{/if}
-			{#if details.ownerOnly !== undefined}
-				<!-- Toggle Input with Label -->
-				<div class="toggle-group modal">
-					<p class="filter-text">Only owned assets:</p>
-					<label class="toggle">
-						<input type="checkbox" bind:checked={details.ownerOnly} />
-						<span class="slider"></span>
-					</label>
-				</div>
-			{/if}
-			{#if details.hide343Assets !== undefined}
-				<!-- Toggle Input with Label -->
-				<div class="toggle-group modal">
-					<p class="filter-text">Hide 343 assets:</p>
-					<label class="toggle">
-						<input type="checkbox" bind:checked={details.hide343Assets} />
-						<span class="slider"></span>
-					</label>
+			{#if details.ownerOnly !== undefined || details.hide343Assets !== undefined}
+				<div class="modal-filter-group modal-toggles">
+					{#if details.ownerOnly !== undefined}
+						<button
+							type="button"
+							class="filter-toggle"
+							class:active={details.ownerOnly}
+							aria-pressed={details.ownerOnly}
+							onclick={() => (details.ownerOnly = !details.ownerOnly)}
+						>
+							Owned only
+						</button>
+					{/if}
+					{#if details.hide343Assets !== undefined}
+						<button
+							type="button"
+							class="filter-toggle"
+							class:active={details.hide343Assets}
+							aria-pressed={details.hide343Assets}
+							onclick={() => (details.hide343Assets = !details.hide343Assets)}
+						>
+							Hide 343
+						</button>
+					{/if}
 				</div>
 			{/if}
 
@@ -132,24 +150,31 @@
 	.modal-filter-group {
 		padding-bottom: 30px;
 	}
+	.modal-toggles {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
 	toggle-group.modal {
 		display: flex;
 		align-items: center;
 		gap: 10px;
 	}
-	button {
+	/* The command buttons (Submit/Cancel) only — not the .filter-toggle pills,
+	   which carry their own outlined/active styling. */
+	button:not(.filter-toggle) {
 		display: inline-flex;
 		flex-direction: row-reverse;
 		background-color: var(--button-bg);
 		color: var(--button-color);
 		margin: 0px 4px;
 	}
-	button:hover {
+	button:not(.filter-toggle):hover {
 		background-color: var(--button-bg-hover);
 		color: var(--button-color-hover);
 	}
 
-	button:disabled {
+	button:not(.filter-toggle):disabled {
 		background-color: var(--button-disabled-bg);
 		color: var(--button-disabled-color);
 	}

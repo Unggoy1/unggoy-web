@@ -30,4 +30,5 @@ export interface BrowseData {
 	ownerOnly?: boolean;
 	hide343Assets?: boolean;
 	tag?: string;
+	searchTerm?: string;
 }

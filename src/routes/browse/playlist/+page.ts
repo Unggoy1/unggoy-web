@@ -56,6 +56,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		currentPage: parseInt(page) || 1,
 		sort: sort || 'updatedAt',
 		order: order || 'desc',
-		gamertag: gamertag || ''
+		gamertag: gamertag || '',
+		searchTerm: searchTerm || ''
 	};
 };

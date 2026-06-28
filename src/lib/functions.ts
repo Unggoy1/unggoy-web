@@ -21,6 +21,11 @@ export function creatorPath(gamertag: string): string {
 	return `/creator/${encodeURIComponent(gamertag)}`;
 }
 
+/** Path to the unified search results page for a query. */
+export function searchPath(query: string): string {
+	return `/search?q=${encodeURIComponent(query)}`;
+}
+
 export async function getAssetLink({ assetId, assetKind, isWaypoint = false }) {
 	const assetType =
 		assetKind === 2 ? 'maps' : assetKind === 6 ? 'modes' : assetKind === 4 ? 'prefabs' : 'playlist';

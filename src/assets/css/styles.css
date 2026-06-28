@@ -889,10 +889,12 @@ img {
 .small-header {
 	font-size: 24px;
 	font-weight: 500;
-	margin: 24px 0;
+	/* Balanced space above/below the row header (was 24px margin + 12px padding,
+	   which collapsed unevenly and sat cramped against the container top). */
+	margin: 0 0 14px;
 	display: flex;
 	align-items: center;
-	padding-top: 12px;
+	padding-top: 16px;
 }
 .small-header svg {
 	/* margin-left: 4px; */
@@ -1411,7 +1413,30 @@ img {
 .filter-button.order-button {
 	display: none;
 }
-@media only screen and (max-width: 1120px) {
+/* The filter bar collapses into the Filter button when it would overflow. The
+   collapse width depends on whether the wide "Owned only" pill is present
+   (added as .owned-shown when a contributor filter is active): the default bar
+   fits down to ~1400px, the contributor variant only to ~1540px. */
+@media only screen and (max-width: 1540px) {
+	.browse-filter-container.owned-shown.small {
+		font-size: 14px;
+		font-weight: 500;
+		color: #fff;
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: space-between;
+		margin-top: -30px;
+	}
+	.browse-filter-container.owned-shown .order-button,
+	.browse-filter-container.owned-shown .filter-button {
+		display: block !important;
+	}
+	.browse-filter-container.owned-shown .filter-group.input,
+	.browse-filter-container.owned-shown .filter-toggle.front {
+		display: none;
+	}
+}
+@media only screen and (max-width: 1400px) {
 	.browse-filter-container.small {
 		font-size: 14px;
 		font-weight: 500;
@@ -1427,7 +1452,7 @@ img {
 	}
 
 	.filter-group.input,
-	.toggle-group.front {
+	.filter-toggle.front {
 		display: none;
 	}
 }
@@ -1485,7 +1510,7 @@ img {
 	align-items: center;
 	gap: 10px;
 	flex-shrink: 0;
-	padding-right: 20px;
+	padding-right: 12px;
 }
 .filter-group:last-child {
 	padding-right: 0px;
@@ -1573,8 +1598,8 @@ img {
 .search-bar-filter {
 	height: 48px;
 	display: flex;
-	max-width: 180px;
-	min-width: 140px;
+	max-width: 150px;
+	min-width: 110px;
 	flex: 1;
 }
 
@@ -1703,6 +1728,51 @@ input:checked + .slider {
 
 input:checked + .slider:before {
 	transform: translateX(20px);
+}
+
+/* Compact filter toggle pill — replaces the wide "label + slider" in the filter
+   bar and modal. Off: outlined like the inputs, so an empty pill clearly reads
+   as inactive. On: fills with the light accent. The slide toggle (.toggle/
+   .slider) is no longer used by either. */
+.filter-toggle {
+	height: 48px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 18px;
+	border: 2px solid rgba(255, 255, 255, 0.08);
+	border-radius: 8px;
+	background: var(--container-bg);
+	color: var(--sidebar-color);
+	font-family: var(--body-font);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+.filter-toggle:hover {
+	border-color: rgba(255, 255, 255, 0.2);
+	color: var(--container-color);
+}
+.filter-toggle:focus-visible {
+	outline: 2px solid var(--button-color);
+	outline-offset: 2px;
+}
+.filter-toggle.active {
+	background: var(--button-color);
+	border-color: transparent;
+	color: var(--button-bg);
+}
+.filter-toggle.active:hover {
+	background: var(--button-color-hover);
+}
+.filter-group .filter-toggle {
+	margin-left: 10px;
+}
+.filter-toggle.front {
+	margin-right: 10px;
 }
 
 /* PAGINATION */

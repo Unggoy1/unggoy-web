@@ -93,7 +93,8 @@
 			sort: 'publishedAt',
 			order: 'desc',
 			ownerOnly: false,
-			hide343Assets: false
+			hide343Assets: false,
+			searchTerm: ''
 		};
 
 		const filterParams = {
@@ -103,7 +104,8 @@
 			sort: browseData.sort,
 			order: browseData.order,
 			ownerOnly: browseData.gamertag ? browseData.ownerOnly : undefined,
-			hide343Assets: browseData.hide343Assets
+			hide343Assets: browseData.hide343Assets,
+			searchTerm: browseData.searchTerm
 		};
 
 		// Add parameters that have been explicitly set and differ from defaults
@@ -130,7 +132,8 @@
 				gamertag: browseData.gamertag,
 				ownerOnly: browseData.ownerOnly,
 				hide343Assets: browseData.hide343Assets,
-				tag: browseData.tag
+				tag: browseData.tag,
+				searchTerm: browseData.searchTerm
 			});
 			browseData = { ...browseData, ...data };
 			updateUrl();
@@ -146,7 +149,10 @@
 
 <FilterModal bind:this={filterModal}></FilterModal>
 <div class="assets-container browse">
-	<div class="browse-filter-container">
+	<div
+		class="browse-filter-container"
+		class:owned-shown={browseData.gamertag !== '' && browseData.ownerOnly != undefined}
+	>
 		<div class="filter-container">
 			{#if browseData.filter != undefined}
 				<select
@@ -165,6 +171,21 @@
 			{/if}
 		</div>
 		<div class="filter-container">
+			{#if browseData.searchTerm != undefined}
+				<div class="filter-group input">
+					<div class="search-bar-filter">
+						<div class="text-on-input">
+							<label>Search</label>
+							<input
+								bind:value={browseData.searchTerm}
+								onkeydown={(event) => event.key === 'Enter' && updateUrl()}
+								type="text"
+								placeholder="search"
+							/>
+						</div>
+					</div>
+				</div>
+			{/if}
 			{#if browseData.tag != undefined}
 				<div class="filter-group input">
 					<!-- <p class="filter-text">Tags:</p> -->
@@ -197,26 +218,34 @@
 						</div>
 					</div>
 					{#if browseData.gamertag !== '' && browseData.ownerOnly != undefined}
-						<!-- Toggle Input with Label -->
-						<div class="toggle-group">
-							<p class="filter-text">Only owned assets:</p>
-							<label class="toggle">
-								<input type="checkbox" bind:checked={browseData.ownerOnly} onchange={updateUrl} />
-								<span class="slider"></span>
-							</label>
-						</div>
+						<button
+							type="button"
+							class="filter-toggle"
+							class:active={browseData.ownerOnly}
+							aria-pressed={browseData.ownerOnly}
+							onclick={() => {
+								browseData.ownerOnly = !browseData.ownerOnly;
+								updateUrl();
+							}}
+						>
+							Owned only
+						</button>
 					{/if}
 				</div>
 			{/if}
 			{#if browseData.hide343Assets !== undefined}
-				<!-- Toggle Input with Label -->
-				<div class="toggle-group front">
-					<p class="filter-text">Hide 343 assets:</p>
-					<label class="toggle">
-						<input type="checkbox" bind:checked={browseData.hide343Assets} onchange={updateUrl} />
-						<span class="slider"></span>
-					</label>
-				</div>
+				<button
+					type="button"
+					class="filter-toggle front"
+					class:active={browseData.hide343Assets}
+					aria-pressed={browseData.hide343Assets}
+					onclick={() => {
+						browseData.hide343Assets = !browseData.hide343Assets;
+						updateUrl();
+					}}
+				>
+					Hide 343
+				</button>
 			{/if}
 
 			<div class="filter-group">

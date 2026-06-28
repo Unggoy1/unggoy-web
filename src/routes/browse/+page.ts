@@ -78,6 +78,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		gamertag: gamertag || '',
 		ownerOnly: ownerOnly || false,
 		hide343Assets: hide343Assets || false,
-		tag: tags ? tags[0] : ''
+		tag: tags ? tags[0] : '',
+		searchTerm: searchTerm || ''
 	};
 };
