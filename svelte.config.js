@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-vercel';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -26,10 +26,9 @@ const config = {
 	],
 
 	kit: {
-		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
-		// If your environment is not supported or you settled on a specific environment, switch out the adapter.
-		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
-		adapter: adapter(),
+		// Pin the Vercel function runtime so builds don't depend on the local Node version.
+		// Keep in sync with the Node.js version in the Vercel project settings.
+		adapter: adapter({ runtime: 'nodejs24.x' }),
 		prerender: {
 			entries: [
 				'/robots.txt',
