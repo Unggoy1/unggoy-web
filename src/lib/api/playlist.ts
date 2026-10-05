@@ -257,6 +257,62 @@ export async function playlistMe({
 	}
 }
 
+// Downloads the playlist as an OpenLink dedicated server playlist.json.
+// The API rejects playlists with no complete map + mode pairs (422).
+export async function playlistExport({ playlistId, name }: PlaylistExportData): Promise<void> {
+	const context: RequestOpts = {
+		path: `/playlist/${playlistId}/export`,
+		method: 'GET'
+	};
+	try {
+		await toast.promise(
+			request(context).then(async (response) => {
+				const filename =
+					filenameFromDisposition(response.headers.get('Content-Disposition')) ??
+					`${name}.playlist.json`;
+				saveBlob(await response.blob(), filename);
+			}),
+			{
+				loading: 'Exporting...',
+				success: () => 'Downloaded OpenLink playlist',
+				error: (err: any) => err.body?.message || 'Failed to export playlist'
+			}
+		);
+	} catch (error) {
+		console.error('Error exporting playlist:', error);
+	}
+}
+
+function filenameFromDisposition(header: string | null): string | null {
+	if (!header) return null;
+	const encoded = header.match(/filename\*=UTF-8''([^;]+)/i);
+	if (encoded) {
+		try {
+			return decodeURIComponent(encoded[1]);
+		} catch {
+			// Fall through to the plain filename
+		}
+	}
+	return header.match(/filename="([^"]+)"/i)?.[1] ?? null;
+}
+
+function saveBlob(blob: Blob, filename: string) {
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement('a');
+	link.href = url;
+	link.download = filename;
+	document.body.appendChild(link);
+	link.click();
+	link.remove();
+	// Give the browser a moment to start the download before revoking
+	setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+export interface PlaylistExportData {
+	playlistId: string;
+	name: string;
+}
+
 export function isPlaylistCreate(details: Partial<PlaylistCreate>): details is PlaylistCreate {
 	return details.name !== undefined && details.description !== undefined;
 }
@@ -338,6 +394,8 @@ export interface PlaylistData {
 	userId: string;
 	recommended?: boolean;
 	user?: UserData;
+	// Complete map + mode pairs; only returned by GET /playlist/:id
+	exportablePairCount?: number;
 	_count: {
 		favoritedBy: number;
 		ugc?: number; // Legacy field

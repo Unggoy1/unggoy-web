@@ -1,8 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { DropdownType } from '$lib/enums';
-	import { playlistDelete, playlistDeleteAsset, playlistUpdate } from '$lib/api/playlist';
-	import { Delete, Edit, Private, Public, Plus } from '$lib/components/icons';
+	import {
+		playlistDelete,
+		playlistDeleteAsset,
+		playlistExport,
+		playlistUpdate
+	} from '$lib/api/playlist';
+	import { Delete, Download, Edit, Private, Public, Plus } from '$lib/components/icons';
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import PairedAssetsContainer from '$lib/components/PairedAssetsContainer.svelte';
 	import PlaylistCover from '$lib/components/PlaylistCover.svelte';
@@ -45,6 +50,19 @@
 	// Check if playlist is empty (no pairs and no regular assets)
 	const isEmptyPlaylist = $derived(!data.pairs?.length && !data.assets?.length);
 	const isOwner = $derived(currentUser && data.playlist.userId === currentUser.id);
+
+	// Only playlists with at least one complete map + mode pair can be exported
+	const canExport = $derived((data.playlist.exportablePairCount ?? 0) > 0);
+	let exporting = $state(false);
+
+	async function exportPlaylist() {
+		exporting = true;
+		try {
+			await playlistExport({ playlistId: data.playlist.assetId, name: data.playlist.name });
+		} finally {
+			exporting = false;
+		}
+	}
 
 	function openAddToPlaylistModal() {
 		if (addToPlaylistModalVar?.open) {
@@ -100,9 +118,9 @@
 			</div>
 		</div>
 
-		{#if $user}
+		{#if $user || canExport}
 			<div class="playlist-actions">
-				{#if $user.id === data.playlist.userId}
+				{#if $user && $user.id === data.playlist.userId}
 					<!-- Owner actions - Add Assets is always visible -->
 					<button
 						class="action-button primary-action"
@@ -157,24 +175,40 @@
 					</Dropdown>
 				{/if}
 
-				<!-- Favorite button for all logged in users -->
-				<button
-					class="action-button favorite-action"
-					class:favorited={data.playlist.favoritedBy && data.playlist.favoritedBy.length !== 0}
-					onclick={async () =>
-						!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
-							? favoritesAdd(data.playlist)
-							: favoritesDelete(data.playlist)}
-					aria-label={!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
-						? 'favorite playlist'
-						: 'unfavorite playlist'}
-				>
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-						<path
-							d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-						/>
-					</svg>
-				</button>
+				<!-- OpenLink dedicated server export, available to everyone -->
+				{#if canExport}
+					<button
+						class="action-button export-action"
+						onclick={exportPlaylist}
+						disabled={exporting}
+						aria-label="Download OpenLink playlist.json"
+						title="Download OpenLink playlist.json"
+					>
+						<Download active={false}></Download>
+						<span class="action-text">Export</span>
+					</button>
+				{/if}
+
+				{#if $user}
+					<!-- Favorite button for all logged in users -->
+					<button
+						class="action-button favorite-action"
+						class:favorited={data.playlist.favoritedBy && data.playlist.favoritedBy.length !== 0}
+						onclick={async () =>
+							!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
+								? favoritesAdd(data.playlist)
+								: favoritesDelete(data.playlist)}
+						aria-label={!data.playlist.favoritedBy || data.playlist.favoritedBy.length === 0
+							? 'favorite playlist'
+							: 'unfavorite playlist'}
+					>
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+							<path
+								d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+							/>
+						</svg>
+					</button>
+				{/if}
 			</div>
 		{/if}
 	</div>
@@ -479,6 +513,27 @@
 		background-color: #c9a54a;
 	}
 
+	.export-action {
+		background-color: var(--top-container-bg);
+		color: var(--container-color);
+	}
+
+	.export-action:hover:not(:disabled) {
+		background-color: var(--button-bg);
+		color: var(--button-color);
+	}
+
+	.export-action:disabled {
+		opacity: 0.6;
+		cursor: progress;
+	}
+
+	.export-action :global(svg) {
+		width: 18px;
+		height: 18px;
+		fill: currentColor;
+	}
+
 	.action-text {
 		font-size: 0.875rem;
 	}
@@ -527,6 +582,12 @@
 			justify-content: center;
 			min-width: 120px;
 		}
+
+		/* Export gets its own full-width row under the other actions */
+		.export-action {
+			order: 1;
+			flex-basis: 100%;
+		}
 	}
 
 	@media screen and (max-width: 480px) {
@@ -552,7 +613,8 @@
 			padding: 10px 16px;
 		}
 
-		.primary-action .action-text {
+		.primary-action .action-text,
+		.export-action .action-text {
 			display: inline;
 		}
 	}

@@ -6,6 +6,7 @@ export { default as Compass } from './Compass.svelte';
 export { default as Crown } from './Crown.svelte';
 export { default as Delete } from './Delete.svelte';
 export { default as Discord } from './Discord.svelte';
+export { default as Download } from './Download.svelte';
 export { default as Duplicate } from './Duplicate.svelte';
 export { default as Edit } from './Edit.svelte';
 export { default as Filter } from './Filter.svelte';
